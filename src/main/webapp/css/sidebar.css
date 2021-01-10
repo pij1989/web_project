@@ -1,0 +1,17 @@
+.bd-sidebar {
+    position: sticky;
+    /*top: 4rem;*/
+    /*z-index: 1000;*/
+    /*height: calc(125vh - 0.5rem);*/
+    border-right: 1px solid rgba(0, 0, 0, .1);
+}
+
+.bd-links {
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.bd-link {
+    color: rgba(0, 0, 0, .65);;
+    font-weight: 600;
+}

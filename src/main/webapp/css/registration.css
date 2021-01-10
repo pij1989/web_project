@@ -1,0 +1,22 @@
+.register-container {
+    display: flex;
+    justify-content: center;
+}
+
+.register-container h2{
+    text-align: center;
+    margin: 30px;
+}
+
+.register-item-wrapper{
+    margin-top: 25px;
+    border: 1px solid rgba(0, 0, 0, .1);
+    border-radius: 20px;
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+.register-item {
+    text-align: center;
+}
+
