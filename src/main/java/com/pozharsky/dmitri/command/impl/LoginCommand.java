@@ -24,7 +24,7 @@ public class LoginCommand implements Command {
             HttpSession session = request.getSession();
             List<String> errors = userService.checkEmailAndPassword(email, password);
             if (errors.isEmpty()) {
-                if (userService.checkUser(email, password)) {
+                if (userService.loginUser(email, password)) {
                     session.setAttribute(SessionAttribute.ROLE, RoleType.USER.toString());
                     session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.MAIN);
                     return new Router(PagePath.MAIN);

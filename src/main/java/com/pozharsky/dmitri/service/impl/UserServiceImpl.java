@@ -8,10 +8,12 @@ import com.pozharsky.dmitri.entity.User;
 import com.pozharsky.dmitri.exception.DaoException;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.service.UserService;
+import com.pozharsky.dmitri.util.PasswordEncryptor;
 import com.pozharsky.dmitri.validator.UserValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,35 +36,37 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean checkUser(String email, String password) throws ServiceException {
+    public boolean loginUser(String email, String password) throws ServiceException {
         try {
             UserDao userDao = UserDaoImpl.INSTANCE;
             Optional<User> optionalUser = userDao.findUserByEmail(email);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
                 logger.debug("User: " + user);
-                return user.getPassword().equals(password);
+                String hashPassword = PasswordEncryptor.encryptPassword(password);
+                return user.getPassword().equals(hashPassword);
             } else {
                 return false;
             }
-        } catch (DaoException e) {
+        } catch (DaoException | NoSuchAlgorithmException e) {
             logger.error(e);
             throw new ServiceException(e);
         }
     }
 
     @Override
-    public boolean createUser(String firstName, String lastName, String email, String password) throws ServiceException {
+    public boolean registrationUser(String firstName, String lastName, String email, String password) throws ServiceException {
         try {
             UserDao userDao = UserDaoImpl.INSTANCE;
             Optional<User> optionalUser = userDao.findUserByEmail(email);
             if(optionalUser.isEmpty()){
-                User user = new User(firstName, lastName, email, password, RoleType.USER);
+                String hashPassword = PasswordEncryptor.encryptPassword(password);
+                User user = new User(firstName, lastName, email, hashPassword, RoleType.USER);
                 return userDao.create(user);
             } else {
                 return false;
             }
-        } catch (DaoException e) {
+        } catch (DaoException | NoSuchAlgorithmException e) {
             logger.error(e);
             throw new ServiceException(e);
         }

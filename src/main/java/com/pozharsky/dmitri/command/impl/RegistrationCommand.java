@@ -24,7 +24,7 @@ public class RegistrationCommand implements Command {
             HttpSession session = request.getSession();
             List<String> errors = userService.checkEmailAndPassword(email, password);
             if (errors.isEmpty()) {
-                if (userService.createUser(firstName, lastName, email, password)) {
+                if (userService.registrationUser(firstName, lastName, email, password)) {
                     session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.LOGIN);
                     return new Router(PagePath.LOGIN, RouterType.REDIRECT);
                 } else {
