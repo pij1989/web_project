@@ -1,6 +1,6 @@
-package com.pozharsky.dmitri.dao;
+package com.pozharsky.dmitri.model.dao;
 
-import com.pozharsky.dmitri.entity.User;
+import com.pozharsky.dmitri.model.entity.User;
 import com.pozharsky.dmitri.exception.DaoException;
 
 import java.util.Optional;

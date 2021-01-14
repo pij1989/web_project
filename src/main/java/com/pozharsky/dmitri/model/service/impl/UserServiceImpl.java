@@ -1,13 +1,13 @@
-package com.pozharsky.dmitri.service.impl;
+package com.pozharsky.dmitri.model.service.impl;
 
 import com.pozharsky.dmitri.command.RequestAttribute;
-import com.pozharsky.dmitri.dao.UserDao;
-import com.pozharsky.dmitri.dao.impl.UserDaoImpl;
-import com.pozharsky.dmitri.entity.RoleType;
-import com.pozharsky.dmitri.entity.User;
+import com.pozharsky.dmitri.model.dao.UserDao;
+import com.pozharsky.dmitri.model.dao.impl.UserDaoImpl;
+import com.pozharsky.dmitri.model.entity.RoleType;
+import com.pozharsky.dmitri.model.entity.User;
 import com.pozharsky.dmitri.exception.DaoException;
 import com.pozharsky.dmitri.exception.ServiceException;
-import com.pozharsky.dmitri.service.UserService;
+import com.pozharsky.dmitri.model.service.UserService;
 import com.pozharsky.dmitri.util.PasswordEncryptor;
 import com.pozharsky.dmitri.validator.UserValidator;
 import org.apache.logging.log4j.LogManager;

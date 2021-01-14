@@ -1,4 +1,4 @@
-package com.pozharsky.dmitri.entity;
+package com.pozharsky.dmitri.model.entity;
 
 public class User implements Entity {
     private long id;

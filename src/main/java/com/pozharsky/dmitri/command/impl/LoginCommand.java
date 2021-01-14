@@ -1,10 +1,10 @@
 package com.pozharsky.dmitri.command.impl;
 
 import com.pozharsky.dmitri.command.*;
-import com.pozharsky.dmitri.entity.RoleType;
+import com.pozharsky.dmitri.model.entity.RoleType;
 import com.pozharsky.dmitri.exception.ServiceException;
-import com.pozharsky.dmitri.service.UserService;
-import com.pozharsky.dmitri.service.impl.UserServiceImpl;
+import com.pozharsky.dmitri.model.service.UserService;
+import com.pozharsky.dmitri.model.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

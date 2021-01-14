@@ -1,9 +1,10 @@
-package com.pozharsky.dmitri.dao.impl;
+package com.pozharsky.dmitri.model.dao.impl;
 
-import com.pozharsky.dmitri.connector.Connector;
-import com.pozharsky.dmitri.dao.UserDao;
-import com.pozharsky.dmitri.entity.RoleType;
-import com.pozharsky.dmitri.entity.User;
+import com.pozharsky.dmitri.model.connector.ConnectionCreator;
+import com.pozharsky.dmitri.model.connector.ConnectionPool;
+import com.pozharsky.dmitri.model.dao.UserDao;
+import com.pozharsky.dmitri.model.entity.RoleType;
+import com.pozharsky.dmitri.model.entity.User;
 import com.pozharsky.dmitri.exception.DaoException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +23,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean create(User user) throws DaoException {
-        try (Connection connection = Connector.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER_SQL, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getEmail());
@@ -50,7 +51,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> findUserByEmail(String email) throws DaoException {
-        try (Connection connection = Connector.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_BY_EMAIL_SQL)) {
+        try (Connection connection = ConnectionPool.INSTANCE.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_BY_EMAIL_SQL)) {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {

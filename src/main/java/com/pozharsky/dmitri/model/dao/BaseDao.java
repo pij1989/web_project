@@ -1,6 +1,6 @@
-package com.pozharsky.dmitri.dao;
+package com.pozharsky.dmitri.model.dao;
 
-import com.pozharsky.dmitri.entity.Entity;
+import com.pozharsky.dmitri.model.entity.Entity;
 import com.pozharsky.dmitri.exception.DaoException;
 
 public interface BaseDao<T extends Entity> {

@@ -4,6 +4,7 @@ import com.pozharsky.dmitri.command.Command;
 import com.pozharsky.dmitri.command.Router;
 import com.pozharsky.dmitri.command.RouterType;
 import com.pozharsky.dmitri.command.factory.CommandFactory;
+import com.pozharsky.dmitri.model.connector.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,5 +51,11 @@ public class ControllerServlet extends HttpServlet {
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
+    }
+
+    @Override
+    public void destroy() {
+        ConnectionPool.INSTANCE.destroyPool();
+        super.destroy();
     }
 }

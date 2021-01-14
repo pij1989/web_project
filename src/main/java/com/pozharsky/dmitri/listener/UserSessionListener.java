@@ -2,7 +2,7 @@ package com.pozharsky.dmitri.listener;
 
 import com.pozharsky.dmitri.command.PagePath;
 import com.pozharsky.dmitri.command.SessionAttribute;
-import com.pozharsky.dmitri.entity.RoleType;
+import com.pozharsky.dmitri.model.entity.RoleType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
