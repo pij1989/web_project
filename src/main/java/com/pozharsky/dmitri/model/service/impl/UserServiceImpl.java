@@ -1,12 +1,13 @@
 package com.pozharsky.dmitri.model.service.impl;
 
 import com.pozharsky.dmitri.command.RequestAttribute;
+import com.pozharsky.dmitri.exception.DaoException;
+import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.dao.UserDao;
 import com.pozharsky.dmitri.model.dao.impl.UserDaoImpl;
 import com.pozharsky.dmitri.model.entity.RoleType;
+import com.pozharsky.dmitri.model.entity.StatusType;
 import com.pozharsky.dmitri.model.entity.User;
-import com.pozharsky.dmitri.exception.DaoException;
-import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.service.UserService;
 import com.pozharsky.dmitri.util.PasswordEncryptor;
 import com.pozharsky.dmitri.validator.UserValidator;
@@ -38,13 +39,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean loginUser(String email, String password) throws ServiceException {
         try {
-            UserDao userDao = UserDaoImpl.INSTANCE;
-            Optional<User> optionalUser = userDao.findUserByEmail(email);
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
-                logger.debug("User: " + user);
+            UserDao userDao = UserDaoImpl.getInstance();
+            String findPassword = userDao.findPasswordByEmail(email);
+            if (!findPassword.isBlank()) {
                 String hashPassword = PasswordEncryptor.encryptPassword(password);
-                return user.getPassword().equals(hashPassword);
+                return findPassword.equals(hashPassword);
             } else {
                 return false;
             }
@@ -55,13 +54,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean registrationUser(String firstName, String lastName, String email, String password) throws ServiceException {
+    public boolean registrationUser(String firstName, String lastName, String username, String email, String password) throws ServiceException {
         try {
-            UserDao userDao = UserDaoImpl.INSTANCE;
+            UserDao userDao = UserDaoImpl.getInstance();
             Optional<User> optionalUser = userDao.findUserByEmail(email);
-            if(optionalUser.isEmpty()){
+            if (optionalUser.isEmpty()) {
                 String hashPassword = PasswordEncryptor.encryptPassword(password);
-                User user = new User(firstName, lastName, email, hashPassword, RoleType.USER);
+                User user = new User(firstName, lastName, username, email, hashPassword, RoleType.USER, StatusType.ACTIVE);
                 return userDao.create(user);
             } else {
                 return false;

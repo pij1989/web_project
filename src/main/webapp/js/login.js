@@ -1,74 +1,51 @@
-const locale = {
-    'en': {
-        'invalid.email': 'Invalid email',
-        'invalid.password': 'Invalid password',
-        'valid': 'Looks good!'
-    },
-    'ru': {
-        'invalid.email': 'Невалидный адрес электронной почты',
-        'invalid.password': 'Невалидный пароль',
-        'valid': 'Валидные данные'
-    }
-};
 const LOGIN_FORM = 'loginForm';
 const SUBMIT = 'submit';
 const CHANGE = 'change';
+const HIDDEN = 'hidden';
 const WAS_VALIDATED = 'was-validated';
-const EMAIL_VALIDATION_MESSAGE = 'emailValidationMessage';
-const PASSWORD_VALIDATION_MESSAGE = 'passwordValidationMessage';
-const VALID_FEEDBACK = 'valid-feedback';
-const INVALID_FEEDBACK = 'invalid-feedback';
+const EMAIL_VALID_MESSAGE = 'emailValidMessage';
+const EMAIL_INVALID_MESSAGE = 'emailInvalidMessage';
+const PASSWORD_VALID_MESSAGE = 'passwordValidMessage';
+const PASSWORD_INVALID_MESSAGE = 'passwordInvalidMessage';
 
 let loginForm = document.getElementById(LOGIN_FORM);
-let passwordValidationMessage = document.getElementById(PASSWORD_VALIDATION_MESSAGE);
-let emailValidationMessage = document.getElementById(EMAIL_VALIDATION_MESSAGE);
+let emailValidMessage = document.getElementById(EMAIL_VALID_MESSAGE);
+let emailInvalidMessage = document.getElementById(EMAIL_INVALID_MESSAGE);
+let passwordValidMessage = document.getElementById(PASSWORD_VALID_MESSAGE);
+let passwordInvalidMessage = document.getElementById(PASSWORD_INVALID_MESSAGE);
+
 let alert = document.querySelector('.alert');
-let language = 'en';
 
-const setLocale = (lang) => {
-    if (lang.trim() !== '') {
-        console.log("Language: " + lang);
-        language = lang;
+const showValidationMessage = (element1, element2) => {
+    if(element1.getAttribute(HIDDEN) != null){
+        element1.removeAttribute(HIDDEN);
     }
-};
-
-const addValidFeedback = (element, validMessage) => {
-    if (element.classList.contains(INVALID_FEEDBACK)) {
-        element.classList.remove(INVALID_FEEDBACK);
+    if(element2.getAttribute(HIDDEN) == null){
+        element2.setAttribute(HIDDEN,HIDDEN);
     }
-    element.classList.add(VALID_FEEDBACK);
-    element.innerText = validMessage;
-};
-
-const addInvalidFeedback = (element, invalidMessage) => {
-    if (element.classList.contains(VALID_FEEDBACK)) {
-        element.classList.remove(VALID_FEEDBACK);
-    }
-    element.classList.add(INVALID_FEEDBACK);
-    element.innerText = invalidMessage;
 };
 
 loginForm.email.addEventListener(CHANGE, () => {
     console.log("Email change...");
     if (alert != null) {
-        alert.setAttribute('hidden', 'hidden');
+        alert.setAttribute(HIDDEN, HIDDEN);
     }
     if (loginForm.email.checkValidity() === true) {
-        addValidFeedback(emailValidationMessage, locale[language]["valid"])
+        showValidationMessage(emailValidMessage, emailInvalidMessage);
     } else {
-        addInvalidFeedback(emailValidationMessage, locale[language]["invalid.email"])
+        showValidationMessage(emailInvalidMessage, emailValidMessage);
     }
 });
 
 loginForm.password.addEventListener(CHANGE, () => {
     console.log("Password change...");
     if (alert != null) {
-        alert.setAttribute('hidden', 'hidden');
+        alert.setAttribute(HIDDEN, HIDDEN);
     }
     if (loginForm.password.checkValidity() === true) {
-        addValidFeedback(passwordValidationMessage, locale[language]["valid"])
+        showValidationMessage(passwordValidMessage, passwordInvalidMessage);
     } else {
-        addInvalidFeedback(passwordValidationMessage, locale[language]["invalid.password"])
+        showValidationMessage(passwordInvalidMessage,passwordValidMessage);
     }
 });
 
@@ -76,14 +53,14 @@ loginForm.addEventListener(SUBMIT, (event) => {
     event.preventDefault();
     event.stopPropagation();
     if (loginForm.email.checkValidity() === true) {
-        addValidFeedback(emailValidationMessage, locale[language]["valid"])
+        showValidationMessage(emailValidMessage, emailInvalidMessage);
     } else {
-        addInvalidFeedback(emailValidationMessage, locale[language]["invalid.email"])
+        showValidationMessage(emailInvalidMessage, emailValidMessage);
     }
     if (loginForm.password.checkValidity() === true) {
-        addValidFeedback(passwordValidationMessage, locale[language]["valid"])
+        showValidationMessage(passwordValidMessage, passwordInvalidMessage);
     } else {
-        addInvalidFeedback(passwordValidationMessage, locale[language]["invalid.password"])
+        showValidationMessage(passwordInvalidMessage,passwordValidMessage);
     }
     loginForm.classList.add(WAS_VALIDATED);
     if (loginForm.checkValidity() === true) {
@@ -91,5 +68,3 @@ loginForm.addEventListener(SUBMIT, (event) => {
         loginForm.classList.remove(WAS_VALIDATED);
     }
 });
-
-

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css" type="text/css"/>
     <title><fmt:message key="login.title"/></title>
 </head>
-<body <%--onload="setLocale('${language}');"--%>>
+<body>
 <c:import url="fragment/header.jsp"/>
 <div class="login-container">
     <div class="login-item-wrapper bg-light">
@@ -29,7 +29,8 @@
                            placeholder="<fmt:message key="login.email.placeholder"/>" aria-describedby="emailHelp"
                            required
                            pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$">
-                    <div id="emailValidationMessage"></div>
+                    <div id="emailValidMessage" class="valid-feedback" hidden><fmt:message key="login.valid.message"/> </div>
+                    <div id="emailInvalidMessage" class="invalid-feedback" hidden><fmt:message key="login.email.invalid.message"/> </div>
                 </div>
                 <small id="emailHelp" class="form-text text-muted"><fmt:message key="login.email.help"/></small>
             </div>
@@ -43,7 +44,8 @@
                            placeholder="<fmt:message key="login.password.placeholder"/>" aria-describedby="passwordHelp"
                            required
                            pattern="[a-zA-Z0-9@#$%!]{8,40}">
-                    <div id="passwordValidationMessage"></div>
+                    <div id="passwordValidMessage" class="valid-feedback" hidden><fmt:message key="login.valid.message"/></div>
+                    <div id="passwordInvalidMessage" class="invalid-feedback" hidden><fmt:message key="login.password.invalid.message"/></div>
                 </div>
                 <small id="passwordHelp" class="form-text text-muted"><fmt:message key="login.password.help"/></small>
             </div>

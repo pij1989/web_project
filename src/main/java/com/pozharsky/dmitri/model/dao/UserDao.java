@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface UserDao extends BaseDao<User> {
     Optional<User> findUserByEmail(String email) throws DaoException;
+    String findPasswordByEmail(String email) throws DaoException;
 }

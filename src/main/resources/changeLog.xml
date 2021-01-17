@@ -4,15 +4,55 @@
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
+
     <changeSet id="1" author="Dmitri">
         <sql>
-            create table if not exists `user`(
-            `id` integer not null primary key auto_increment,
-            `first_name` varchar(255),
-            `last_name` varchar(255),
-            `email` varchar(255),
-            `password` varchar(255),
-            `role_type` varchar(255));
+            create table if not exists `roles`(
+            `id` int not null primary key auto_increment,
+            `role_name` varchar(32) not null);
+        </sql>
+    </changeSet>
+
+
+    <changeSet id="2" author="Dmitri">
+        <sql>
+            insert ignore into `roles` set `role_name`='ADMIN';
+            insert ignore into `roles` set `role_name`='USER';
+            insert ignore into `roles` set `role_name`='GUEST';
+        </sql>
+    </changeSet>
+
+    <changeSet id="3" author="Dmitri">
+        <sql>
+            create table if not exists `status`(
+            `id` int not null primary key auto_increment,
+            `status_name` varchar(32) not null);
+        </sql>
+    </changeSet>
+
+    <changeSet id="4" author="Dmitri">
+        <sql>
+            insert ignore into `status` set `status_name`='ACTIVE';
+            insert ignore into `status` set `status_name`='BLOCKED';
+            insert ignore into `status` set `status_name`='WAIT_ACTIVE';
+        </sql>
+    </changeSet>
+
+    <changeSet id="5" author="Dmitri">
+        <sql>
+            create table if not exists `users`(
+            `id` int not null primary key auto_increment,
+            `first_name` varchar(128) not null,
+            `last_name` varchar(128) not null,
+            `username` varchar(128) not null,
+            `email` varchar(128) not null,
+            `password` varchar(42)  not null,
+            `role_id` int not null,
+            `status_id` int not null,
+            constraint `users_roles_id_fk`
+            foreign key (`role_id`) references `roles` (`id`),
+            constraint `users_status_id_fk`
+            foreign key (`status_id`) references `status` (`id`));
         </sql>
     </changeSet>
 </databaseChangeLog>

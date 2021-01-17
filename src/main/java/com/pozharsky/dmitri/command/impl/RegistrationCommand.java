@@ -19,12 +19,13 @@ public class RegistrationCommand implements Command {
             UserServiceImpl userService = UserServiceImpl.INSTANCE;
             String firstName = request.getParameter(RequestParameter.FIRST_NAME);
             String lastName = request.getParameter(RequestParameter.LAST_NAME);
+            String username = request.getParameter(RequestParameter.USERNAME);
             String email = request.getParameter(RequestParameter.EMAIL);
             String password = request.getParameter(RequestParameter.PASSWORD);
             HttpSession session = request.getSession();
             List<String> errors = userService.checkEmailAndPassword(email, password);
             if (errors.isEmpty()) {
-                if (userService.registrationUser(firstName, lastName, email, password)) {
+                if (userService.registrationUser(firstName, lastName, username, email, password)) {
                     session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.LOGIN);
                     return new Router(PagePath.LOGIN, RouterType.REDIRECT);
                 } else {

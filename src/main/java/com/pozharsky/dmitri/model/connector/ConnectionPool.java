@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -14,17 +15,26 @@ public enum ConnectionPool {
 
     private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
     private static final int INITIAL_POOL_SIZE = 32;
-
     private final BlockingQueue<ProxyConnection> freeConnection;
     private final BlockingQueue<ProxyConnection> givenAwayConnection;
 
     ConnectionPool() {
         freeConnection = new ArrayBlockingQueue<>(INITIAL_POOL_SIZE);
         givenAwayConnection = new ArrayBlockingQueue<>(INITIAL_POOL_SIZE);
-        for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
-            Connection connection = ConnectionCreator.createConnection();
-            ProxyConnection proxyConnection = new ProxyConnection(connection);
-            freeConnection.offer(proxyConnection);
+        try {
+            Properties properties = ConnectionProperty.getProperties();
+            String driver = properties.getProperty(ConnectionParameter.DRIVER);
+            String url = properties.getProperty(ConnectionParameter.URL);
+            String username = properties.getProperty(ConnectionParameter.USERNAME);
+            String password = properties.getProperty(ConnectionParameter.PASSWORD);
+            Class.forName(driver);
+            for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
+                Connection connection = DriverManager.getConnection(url, username, password);
+                ProxyConnection proxyConnection = new ProxyConnection(connection);
+                freeConnection.offer(proxyConnection);
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new RuntimeException("Can not create connection pool: " + e);
         }
     }
 
@@ -32,7 +42,7 @@ public enum ConnectionPool {
         ProxyConnection connection = null;
         try {
             connection = freeConnection.take();
-            givenAwayConnection.offer(connection);
+            givenAwayConnection.put(connection);
         } catch (InterruptedException e) {
             logger.error(e);
         }
@@ -55,7 +65,7 @@ public enum ConnectionPool {
             for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
                 freeConnection.take().realyClose();
             }
-
+            deregisterDrivers();
         } catch (InterruptedException | SQLException e) {
             logger.error(e);
         }
@@ -66,7 +76,7 @@ public enum ConnectionPool {
             try {
                 DriverManager.deregisterDriver(e);
             } catch (SQLException ex) {
-                logger.error(ex);
+                logger.error("Can not deregister driver: " + ex);
             }
         });
     }

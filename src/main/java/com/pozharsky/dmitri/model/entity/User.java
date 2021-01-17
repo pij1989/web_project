@@ -4,19 +4,23 @@ public class User implements Entity {
     private long id;
     private String firstName;
     private String lastName;
+    private String username;
     private String email;
     private String password;
     private RoleType roleType;
+    private StatusType statusType;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, String password, RoleType roleType) {
+    public User(String firstName, String lastName, String username, String email, String password, RoleType roleType, StatusType statusType) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
         this.email = email;
         this.password = password;
         this.roleType = roleType;
+        this.statusType = statusType;
     }
 
     public long getId() {
@@ -43,6 +47,14 @@ public class User implements Entity {
         this.lastName = lastName;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -65,6 +77,14 @@ public class User implements Entity {
 
     public void setRoleType(RoleType roleType) {
         this.roleType = roleType;
+    }
+
+    public StatusType getStatusType() {
+        return statusType;
+    }
+
+    public void setStatusType(StatusType statusType) {
+        this.statusType = statusType;
     }
 
     @Override
@@ -99,9 +119,11 @@ public class User implements Entity {
         sb.append("id=").append(id);
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", username='").append(username).append('\'');
         sb.append(", email='").append(email).append('\'');
         sb.append(", password='").append(password).append('\'');
         sb.append(", roleType=").append(roleType);
+        sb.append(", statusType=").append(statusType);
         sb.append('}');
         return sb.toString();
     }
