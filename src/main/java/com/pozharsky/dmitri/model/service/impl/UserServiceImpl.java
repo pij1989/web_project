@@ -9,12 +9,11 @@ import com.pozharsky.dmitri.model.entity.RoleType;
 import com.pozharsky.dmitri.model.entity.StatusType;
 import com.pozharsky.dmitri.model.entity.User;
 import com.pozharsky.dmitri.model.service.UserService;
-import com.pozharsky.dmitri.util.PasswordEncryptor;
+import com.pozharsky.dmitri.util.PasswordEncrypter;
 import com.pozharsky.dmitri.validator.UserValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> checkEmailAndPassword(String email, String password) throws ServiceException {
+    public List<String> checkEmailAndPassword(String email, String password) {
         UserValidator validator = UserValidator.INSTANCE;
         List<String> errors = new ArrayList<>();
         if (!validator.isEmail(email) || !validator.isPassword(password)) {
@@ -39,15 +38,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean loginUser(String email, String password) throws ServiceException {
         try {
+            boolean isLogin = false;
             UserDao userDao = UserDaoImpl.getInstance();
             String findPassword = userDao.findPasswordByEmail(email);
             if (!findPassword.isBlank()) {
-                String hashPassword = PasswordEncryptor.encryptPassword(password);
-                return findPassword.equals(hashPassword);
-            } else {
-                return false;
+                String hashPassword = PasswordEncrypter.encryptPassword(password);
+                isLogin = PasswordEncrypter.checkPassword(password, hashPassword);
             }
-        } catch (DaoException | NoSuchAlgorithmException e) {
+            return isLogin;
+        } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
         }
@@ -59,13 +58,13 @@ public class UserServiceImpl implements UserService {
             UserDao userDao = UserDaoImpl.getInstance();
             Optional<User> optionalUser = userDao.findUserByEmail(email);
             if (optionalUser.isEmpty()) {
-                String hashPassword = PasswordEncryptor.encryptPassword(password);
-                User user = new User(firstName, lastName, username, email, hashPassword, RoleType.USER, StatusType.ACTIVE);
-                return userDao.create(user);
+                String hashPassword = PasswordEncrypter.encryptPassword(password);
+                User user = new User(firstName, lastName, username, email, RoleType.USER, StatusType.ACTIVE);
+                return userDao.create(user, hashPassword);
             } else {
                 return false;
             }
-        } catch (DaoException | NoSuchAlgorithmException e) {
+        } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
         }

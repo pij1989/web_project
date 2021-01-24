@@ -1,4 +1,6 @@
 package com.pozharsky.dmitri.model.entity;
 
-public interface Entity {
+import java.io.Serializable;
+
+abstract class Entity implements Serializable, Cloneable {
 }

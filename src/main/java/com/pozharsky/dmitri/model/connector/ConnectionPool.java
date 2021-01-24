@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -22,18 +21,12 @@ public enum ConnectionPool {
         freeConnection = new ArrayBlockingQueue<>(INITIAL_POOL_SIZE);
         givenAwayConnection = new ArrayBlockingQueue<>(INITIAL_POOL_SIZE);
         try {
-            Properties properties = ConnectionProperty.getProperties();
-            String driver = properties.getProperty(ConnectionParameter.DRIVER);
-            String url = properties.getProperty(ConnectionParameter.URL);
-            String username = properties.getProperty(ConnectionParameter.USERNAME);
-            String password = properties.getProperty(ConnectionParameter.PASSWORD);
-            Class.forName(driver);
             for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
-                Connection connection = DriverManager.getConnection(url, username, password);
+                Connection connection = ConnectionCreator.createConnection();
                 ProxyConnection proxyConnection = new ProxyConnection(connection);
                 freeConnection.offer(proxyConnection);
             }
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException("Can not create connection pool: " + e);
         }
     }

@@ -1,24 +1,27 @@
 package com.pozharsky.dmitri.model.entity;
 
-public class User implements Entity {
+public class User extends Entity {
     private long id;
     private String firstName;
     private String lastName;
     private String username;
     private String email;
-    private String password;
     private RoleType roleType;
     private StatusType statusType;
 
     public User() {
     }
 
-    public User(String firstName, String lastName, String username, String email, String password, RoleType roleType, StatusType statusType) {
+    public User(long id, String firstName, String lastName, String username, String email, RoleType roleType, StatusType statusType) {
+        this(firstName, lastName, username, email, roleType, statusType);
+        this.id = id;
+    }
+
+    public User(String firstName, String lastName, String username, String email, RoleType roleType, StatusType statusType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
-        this.password = password;
         this.roleType = roleType;
         this.statusType = statusType;
     }
@@ -63,14 +66,6 @@ public class User implements Entity {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public RoleType getRoleType() {
         return roleType;
     }
@@ -97,9 +92,10 @@ public class User implements Entity {
         if (id != user.id) return false;
         if (firstName != null ? !firstName.equals(user.firstName) : user.firstName != null) return false;
         if (lastName != null ? !lastName.equals(user.lastName) : user.lastName != null) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        return roleType == user.roleType;
+        if (roleType != user.roleType) return false;
+        return statusType == user.statusType;
     }
 
     @Override
@@ -107,9 +103,10 @@ public class User implements Entity {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (roleType != null ? roleType.hashCode() : 0);
+        result = 31 * result + (statusType != null ? statusType.hashCode() : 0);
         return result;
     }
 
@@ -121,7 +118,6 @@ public class User implements Entity {
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", username='").append(username).append('\'');
         sb.append(", email='").append(email).append('\'');
-        sb.append(", password='").append(password).append('\'');
         sb.append(", roleType=").append(roleType);
         sb.append(", statusType=").append(statusType);
         sb.append('}');

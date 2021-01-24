@@ -3,7 +3,6 @@ package com.pozharsky.dmitri.command.impl;
 import com.pozharsky.dmitri.command.Command;
 import com.pozharsky.dmitri.command.PagePath;
 import com.pozharsky.dmitri.command.Router;
-import com.pozharsky.dmitri.command.RouterType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -13,6 +12,6 @@ public class LogoutCommand implements Command {
     public Router execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();
-        return new Router(PagePath.INDEX, RouterType.REDIRECT);
+        return new Router(PagePath.INDEX, Router.Type.REDIRECT);
     }
 }

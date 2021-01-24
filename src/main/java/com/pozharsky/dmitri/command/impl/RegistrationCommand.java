@@ -27,7 +27,7 @@ public class RegistrationCommand implements Command {
             if (errors.isEmpty()) {
                 if (userService.registrationUser(firstName, lastName, username, email, password)) {
                     session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.LOGIN);
-                    return new Router(PagePath.LOGIN, RouterType.REDIRECT);
+                    return new Router(PagePath.LOGIN, Router.Type.REDIRECT);
                 } else {
                     logger.info("User with this email and password exist");
                     request.setAttribute(RequestAttribute.ERROR_USER, true);

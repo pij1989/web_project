@@ -2,7 +2,6 @@ package com.pozharsky.dmitri.controller;
 
 import com.pozharsky.dmitri.command.Command;
 import com.pozharsky.dmitri.command.Router;
-import com.pozharsky.dmitri.command.RouterType;
 import com.pozharsky.dmitri.command.factory.CommandFactory;
 import com.pozharsky.dmitri.model.connector.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
@@ -39,7 +38,7 @@ public class ControllerServlet extends HttpServlet {
             Command command = optionalCommand.get();
             Router router = command.execute(request);
             if (router != null) {
-                if (router.getType().equals(RouterType.FORWARD)) {
+                if (router.getType().equals(Router.Type.FORWARD)) {
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher(router.getPagePath());
                     requestDispatcher.forward(request, response);
                 } else {

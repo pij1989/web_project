@@ -30,6 +30,6 @@ public class ChangeLanguageCommand implements Command {
                 session.setAttribute(LANGUAGE, LANGUAGE_RU);
             }
         }
-        return new Router(pagePath, RouterType.REDIRECT);
+        return new Router(pagePath, Router.Type.REDIRECT);
     }
 }
