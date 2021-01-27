@@ -55,4 +55,17 @@
             foreign key (`status_id`) references `status` (`id`));
         </sql>
     </changeSet>
+
+    <changeSet id="6" author="Dmitri">
+        <sql>
+            create table if not exists `tokens`(
+            `id` int not null primary key auto_increment,
+            `token_value` varchar(128) not null,
+            `time_create` datetime not null,
+            `time_expire` datetime not null,
+            `user_id` int not null,
+            constraint `tokens_users_id_fk`
+            foreign key (`user_id`) references `users` (`id`));
+        </sql>
+    </changeSet>
 </databaseChangeLog>

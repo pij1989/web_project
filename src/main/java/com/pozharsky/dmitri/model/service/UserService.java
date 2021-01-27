@@ -10,4 +10,6 @@ public interface UserService {
     boolean loginUser(String email, String password) throws ServiceException;
 
     boolean registrationUser(String firstName, String lastName, String username, String email, String password) throws ServiceException;
+
+
 }

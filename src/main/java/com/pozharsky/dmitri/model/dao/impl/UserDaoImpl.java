@@ -6,14 +6,12 @@ import com.pozharsky.dmitri.model.dao.ColumnName;
 import com.pozharsky.dmitri.model.dao.UserDao;
 import com.pozharsky.dmitri.model.entity.RoleType;
 import com.pozharsky.dmitri.model.entity.StatusType;
+import com.pozharsky.dmitri.model.entity.Token;
 import com.pozharsky.dmitri.model.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +22,7 @@ public class UserDaoImpl implements UserDao {
     private static final String FIND_STATUS_ID_BY_NAME_SQL = "SELECT id FROM status WHERE status_name = ?;";
     private static final String FIND_USER_BY_EMAIL_SQL = "SELECT u.id,u.first_name,u.last_name,u.username,u.email,r.role_name,s.status_name FROM users AS u INNER JOIN roles AS r ON u.role_id = r.id INNER JOIN status AS s ON u.status_id = s.id WHERE u.email = ?";
     private static final String FIND_PASSWORD_BY_EMAIL_SQL = "SELECT password FROM users WHERE email = ?";
+    private static final String CREATE_TOKEN_SQL = "INSERT INTO tokens (token_value, time_create, time_expire, user_id) VALUES (?,?,?,?)";
 
     private static final UserDaoImpl instance = new UserDaoImpl();
 
@@ -38,9 +37,10 @@ public class UserDaoImpl implements UserDao {
     public boolean create(User user, String password) throws DaoException {
         Connection connection = ConnectionPool.INSTANCE.getConnection();
         boolean isCreateUser = false;
-        try (PreparedStatement userPreparedStatement = connection.prepareStatement(CREATE_USER_SQL);
+        try (PreparedStatement userPreparedStatement = connection.prepareStatement(CREATE_USER_SQL, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement rolePreparedStatement = connection.prepareStatement(FIND_ROLE_ID_BY_NAME_SQL);
-             PreparedStatement statusPreparedStatement = connection.prepareStatement(FIND_STATUS_ID_BY_NAME_SQL)) {
+             PreparedStatement statusPreparedStatement = connection.prepareStatement(FIND_STATUS_ID_BY_NAME_SQL);
+             PreparedStatement tokenPreparedStatement = connection.prepareStatement(CREATE_TOKEN_SQL)) {
             connection.setAutoCommit(false);
             rolePreparedStatement.setString(1, user.getRoleType().toString());
             statusPreparedStatement.setString(1, user.getStatusType().toString());
@@ -60,7 +60,17 @@ public class UserDaoImpl implements UserDao {
                 userPreparedStatement.setInt(7, statusId);
             }
             int resultCreateUser = userPreparedStatement.executeUpdate();
-            if (resultCreateUser == 1) {
+            ResultSet userKeys = userPreparedStatement.getGeneratedKeys();
+            userKeys.next();
+            int userId = userKeys.getInt(1);
+            logger.debug("USER_ID: " + userId);
+            Token token = user.getToken();
+            tokenPreparedStatement.setString(1, token.getTokenValue());
+            tokenPreparedStatement.setObject(2, token.getTimeCreate(), JDBCType.DATE);
+            tokenPreparedStatement.setObject(3, token.getTimeExpire(), JDBCType.DATE);
+            tokenPreparedStatement.setInt(4, userId);
+            int resultCreateToken = tokenPreparedStatement.executeUpdate();
+            if (resultCreateUser == 1 && resultCreateToken == 1) {
                 isCreateUser = true;
             }
             connection.commit();
