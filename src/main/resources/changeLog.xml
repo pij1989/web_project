@@ -68,4 +68,11 @@
             foreign key (`user_id`) references `users` (`id`));
         </sql>
     </changeSet>
+
+    <changeSet id="7" author="Dmitri">
+        <sql>
+            insert into `users`(`first_name`,`last_name`,`username`,`email`,`password`,`role_id`,`status_id`) values(
+            'Dmitri','Pozharsky','admin', 'admin@gmail.com','$2a$10$fD0kiEe4M8J52/kXXh8viuxMf4N7pf3fvOz6A646UNEZRYlgegpCm',1,1);
+        </sql>
+    </changeSet>
 </databaseChangeLog>

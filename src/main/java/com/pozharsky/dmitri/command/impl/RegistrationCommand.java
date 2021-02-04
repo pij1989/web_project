@@ -2,6 +2,9 @@ package com.pozharsky.dmitri.command.impl;
 
 import com.pozharsky.dmitri.command.*;
 import com.pozharsky.dmitri.exception.ServiceException;
+import com.pozharsky.dmitri.model.entity.Token;
+import com.pozharsky.dmitri.model.service.impl.EmailServiceImpl;
+import com.pozharsky.dmitri.model.service.impl.TokenServiceImpl;
 import com.pozharsky.dmitri.model.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
 public class RegistrationCommand implements Command {
     private static final Logger logger = LogManager.getLogger(RegistrationCommand.class);
@@ -16,7 +20,9 @@ public class RegistrationCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
         try {
-            UserServiceImpl userService = UserServiceImpl.INSTANCE;
+            UserServiceImpl userService = UserServiceImpl.getInstance();
+            EmailServiceImpl emailService = EmailServiceImpl.getInstance();
+            TokenServiceImpl tokenService = TokenServiceImpl.getInstance();
             String firstName = request.getParameter(RequestParameter.FIRST_NAME);
             String lastName = request.getParameter(RequestParameter.LAST_NAME);
             String username = request.getParameter(RequestParameter.USERNAME);
@@ -26,6 +32,13 @@ public class RegistrationCommand implements Command {
             List<String> errors = userService.checkEmailAndPassword(email, password);
             if (errors.isEmpty()) {
                 if (userService.registrationUser(firstName, lastName, username, email, password)) {
+                    Optional<Token> optionalToken = tokenService.findTokenByUserEmail(email);
+                    if (optionalToken.isPresent()) {
+                        Token token = optionalToken.get();
+                        String tokenValue = token.getTokenValue();
+                        emailService.sendActivationEmail(email, tokenValue);
+                    }
+                    //TODO: add jsp page, which should be say user go to his email and activate registration
                     session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.LOGIN);
                     return new Router(PagePath.LOGIN, Router.Type.REDIRECT);
                 } else {

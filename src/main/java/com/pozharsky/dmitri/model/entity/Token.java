@@ -7,6 +7,7 @@ public class Token extends Entity {
     private String tokenValue;
     private LocalDateTime timeCreate;
     private LocalDateTime timeExpire;
+    private long userId;
 
     public Token() {
     }
@@ -49,6 +50,14 @@ public class Token extends Entity {
         this.timeExpire = timeExpire;
     }
 
+    public long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,6 +66,7 @@ public class Token extends Entity {
         Token token = (Token) o;
 
         if (id != token.id) return false;
+        if (userId != token.userId) return false;
         if (tokenValue != null ? !tokenValue.equals(token.tokenValue) : token.tokenValue != null) return false;
         if (timeCreate != null ? !timeCreate.equals(token.timeCreate) : token.timeCreate != null) return false;
         return timeExpire != null ? timeExpire.equals(token.timeExpire) : token.timeExpire == null;
@@ -68,6 +78,7 @@ public class Token extends Entity {
         result = 31 * result + (tokenValue != null ? tokenValue.hashCode() : 0);
         result = 31 * result + (timeCreate != null ? timeCreate.hashCode() : 0);
         result = 31 * result + (timeExpire != null ? timeExpire.hashCode() : 0);
+        result = 31 * result + (int) (userId ^ (userId >>> 32));
         return result;
     }
 
@@ -78,6 +89,7 @@ public class Token extends Entity {
         sb.append(", tokenValue='").append(tokenValue).append('\'');
         sb.append(", timeCreate=").append(timeCreate);
         sb.append(", timeExpire=").append(timeExpire);
+        sb.append(", userId=").append(userId);
         sb.append('}');
         return sb.toString();
     }

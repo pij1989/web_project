@@ -8,13 +8,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.Optional;
 
 public interface BaseDao<T> {
-    T findById(long id) throws DaoException;
+    Optional<T> findById(long id) throws DaoException;
 
     List<T> findAll() throws DaoException;
 
-    T update(T entity) throws DaoException;
+    Optional<T> update(T entity) throws DaoException;
 
     boolean delete(T entity) throws DaoException;
 

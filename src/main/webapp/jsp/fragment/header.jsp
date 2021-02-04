@@ -5,7 +5,8 @@
 <fmt:setBundle basename="property.text"/>
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#"><span><i class="fas fa-store"></i></span> <fmt:message key="header.brand"/> </a>
+        <a class="navbar-brand" href="#"><span><i class="fas fa-store"></i></span> <fmt:message key="header.brand"/>
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -14,7 +15,8 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <c:if test="${role eq 'USER'}">
                 <div style="display: flex; flex-grow: inherit;">
-                    <form class="form-inline my-2 my-lg-0 mx-lg-5" action="${pageContext.request.contextPath}/controller">
+                    <form class="form-inline my-2 my-lg-0 mx-lg-5"
+                          action="${pageContext.request.contextPath}/controller">
                         <input type="hidden" name="command" value="search">
                         <input class="form-control mr-sm-2" type="search" placeholder="Search"
                                aria-label="Search" size="30">
@@ -25,6 +27,11 @@
                 </div>
             </c:if>
             <div style="display: flex; flex-grow: inherit; justify-content: flex-end">
+                <c:if test="${role eq 'USER' or role eq 'ADMIN'}">
+                    <div style="color: white; padding-top: 5px; padding-right: 15px">
+                        <span><i class="far fa-user"></i> ${username}</span>
+                    </div>
+                </c:if>
                 <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller"
                       method="post">
                     <input type="hidden" name="command" value="change_language"/>
@@ -40,8 +47,22 @@
                         </div>
                     </div>
                 </form>
+                <c:if test="${role eq 'ADMIN'}">
+                    <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller">
+                        <input type="hidden" name="command" value="to_upload_page_command">
+                        <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
+                            Upload
+                        </button>
+                    </form>
+                    <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller">
+                        <input type="hidden" name="command" value="to_users_page_command">
+                        <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
+                            Users
+                        </button>
+                    </form>
+                </c:if>
                 <c:choose>
-                    <c:when test="${role eq 'USER'}">
+                    <c:when test="${role eq 'USER' or role eq 'ADMIN'}">
                         <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller">
                             <input type="hidden" name="command" value="logout">
                             <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
@@ -58,12 +79,14 @@
                         </form>
                     </c:when>
                 </c:choose>
-                <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="command" value="to_register_page_command">
-                    <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
-                        <fmt:message key="header.button.signup"/>
-                    </button>
-                </form>
+                <c:if test="${role eq 'GUEST' or role eq 'USER'}">
+                    <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller">
+                        <input type="hidden" name="command" value="to_register_page_command">
+                        <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
+                            <fmt:message key="header.button.signup"/>
+                        </button>
+                    </form>
+                </c:if>
             </div>
         </div>
     </nav>

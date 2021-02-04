@@ -8,16 +8,20 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-public enum ConnectionPool {
-    INSTANCE;
-
+public class ConnectionPool {
     private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
     private static final int INITIAL_POOL_SIZE = 32;
+    private static final AtomicBoolean isInstance = new AtomicBoolean(false);
+    private static final Lock lock = new ReentrantLock();
+    private static ConnectionPool instance;
     private final BlockingQueue<ProxyConnection> freeConnection;
     private final BlockingQueue<ProxyConnection> givenAwayConnection;
 
-    ConnectionPool() {
+    private ConnectionPool() {
         freeConnection = new ArrayBlockingQueue<>(INITIAL_POOL_SIZE);
         givenAwayConnection = new ArrayBlockingQueue<>(INITIAL_POOL_SIZE);
         try {
@@ -29,6 +33,21 @@ public enum ConnectionPool {
         } catch (SQLException e) {
             throw new RuntimeException("Can not create connection pool: " + e);
         }
+    }
+
+    public static ConnectionPool getInstance() {
+        if (!isInstance.get()) {
+            lock.lock();
+            try {
+                if (!isInstance.get()) {
+                    isInstance.set(true);
+                    instance = new ConnectionPool();
+                }
+            } finally {
+                lock.unlock();
+            }
+        }
+        return instance;
     }
 
     public Connection getConnection() {
