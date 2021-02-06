@@ -37,10 +37,14 @@ public class RegistrationCommand implements Command {
                         Token token = optionalToken.get();
                         String tokenValue = token.getTokenValue();
                         emailService.sendActivationEmail(email, tokenValue);
+                        session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.ACTIVATE_REGISTRATION);
+                        return new Router(PagePath.ACTIVATE_REGISTRATION);
+                    } else {
+                        logger.info("Impossible activate registration");
+                        request.setAttribute(RequestAttribute.ERROR_ACTIVATE_REGISTRATION, true);
+                        session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.REGISTRATION);
+                        return new Router(PagePath.REGISTRATION);
                     }
-                    //TODO: add jsp page, which should be say user go to his email and activate registration
-                    session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.LOGIN);
-                    return new Router(PagePath.LOGIN, Router.Type.REDIRECT);
                 } else {
                     logger.info("User with this email and password exist");
                     request.setAttribute(RequestAttribute.ERROR_USER, true);

@@ -8,6 +8,7 @@ public final class PagePath {
     public static final String ADMIN = "/jsp/admin/admin.jsp";
     public static final String USERS = "/jsp/admin/users.jsp";
     public static final String UPLOAD = "/jsp/admin/upload.jsp";
+    public static final String ACTIVATE_REGISTRATION = "/jsp/activate_registration.jsp";
 
     private PagePath() {
     }

@@ -116,6 +116,11 @@
                 <fmt:message key="registration.error.user"/>
             </div>
         </c:if>
+        <c:if test="${errorActivateRegistration}">
+            <div class="alert alert-danger" role="alert">
+                <fmt:message key="registration.error.activateregistration"/>
+            </div>
+        </c:if>
     </div>
 </div>
 <c:import url="fragment/bootstrap_script.jsp"/>
