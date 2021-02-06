@@ -8,8 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class CommandFactory {
-    public Optional<Command> defineCommand(HttpServletRequest request) {
+public final class CommandFactory {
+
+    private CommandFactory() {
+    }
+
+    public static Optional<Command> defineCommand(HttpServletRequest request) {
         String command = request.getParameter(RequestParameter.COMMAND);
         if (command != null && !command.isBlank()) {
             return Stream.of(CommandType.values())

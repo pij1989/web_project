@@ -1,11 +1,26 @@
 const STATUS_SELECT = ".statusSelect";
 const SUCCESS_CHANGE_STATUS = "successChangeStatus";
+const ERROR_CHANGE_STATUS = "errorChangeStatus";
 const CHANGE = 'change';
 const STATUS = 'status';
 const USER_ID = 'userId';
 const URL = 'http://localhost:8080/web_project_war/changestatus';
 
 const statusSelect = document.querySelectorAll(STATUS_SELECT);
+
+const successAlert = () => {
+    document.getElementById(SUCCESS_CHANGE_STATUS).hidden = false;
+    setTimeout(() => {
+        document.getElementById(SUCCESS_CHANGE_STATUS).hidden = true;
+    }, 1000);
+};
+
+const errorAlert = () => {
+    document.getElementById(ERROR_CHANGE_STATUS).hidden = false;
+    setTimeout(() => {
+        document.getElementById(ERROR_CHANGE_STATUS).hidden = true;
+    }, 1000);
+};
 
 const send = (url, urlSearchParams) => {
     fetch(url, {
@@ -18,15 +33,17 @@ const send = (url, urlSearchParams) => {
         .then((response) => {
             let status = response.status;
             if (status === 204) {
-                document.getElementById(SUCCESS_CHANGE_STATUS).hidden = false;
-                setTimeout(() => {
-                    document.getElementById(SUCCESS_CHANGE_STATUS).hidden = true;
-                }, 1000);
+                successAlert();
                 return status;
+            } else {
+                errorAlert();
             }
         })
         .then(value => console.log('Success:', value))
-        .catch(err => console.log('Error:', err));
+        .catch(err => {
+            console.log('Error:', err);
+            errorAlert();
+        });
 };
 
 statusSelect.forEach(element => {

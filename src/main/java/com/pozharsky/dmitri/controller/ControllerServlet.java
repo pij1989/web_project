@@ -31,9 +31,8 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.info("We received request from URI: " + request.getRequestURI() + " content type: " + request.getContentType() + " method: " + request.getMethod());
-        CommandFactory commandFactory = new CommandFactory();
-        Optional<Command> optionalCommand = commandFactory.defineCommand(request);
+        logger.debug("We received request from URI: " + request.getRequestURI() + " content type: " + request.getContentType() + " method: " + request.getMethod());
+        Optional<Command> optionalCommand = CommandFactory.defineCommand(request);
         if (optionalCommand.isPresent()) {
             Command command = optionalCommand.get();
             Router router = command.execute(request);

@@ -47,20 +47,6 @@
                         </div>
                     </div>
                 </form>
-                <c:if test="${role eq 'ADMIN'}">
-                    <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller">
-                        <input type="hidden" name="command" value="to_upload_page_command">
-                        <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
-                            Upload
-                        </button>
-                    </form>
-                    <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller">
-                        <input type="hidden" name="command" value="to_users_page_command">
-                        <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
-                            Users
-                        </button>
-                    </form>
-                </c:if>
                 <c:choose>
                     <c:when test="${role eq 'USER' or role eq 'ADMIN'}">
                         <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller">
