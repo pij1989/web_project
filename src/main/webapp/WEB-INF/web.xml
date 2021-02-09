@@ -16,7 +16,13 @@
         <location>/jsp/errors/error404.jsp</location>
     </error-page>
     <error-page>
-        <exception-type>java.lang.Exception</exception-type>
+        <error-code>500</error-code>
         <location>/jsp/errors/error500.jsp</location>
     </error-page>
+    <jsp-config>
+        <taglib>
+            <taglib-uri>custom_tag</taglib-uri>
+            <taglib-location>/WEB-INF/tag/custom_tag.tld</taglib-location>
+        </taglib>
+    </jsp-config>
 </web-app>

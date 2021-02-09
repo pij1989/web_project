@@ -12,7 +12,7 @@
     <form method="post" action="${pageContext.request.contextPath}/upload" enctype="multipart/form-data">
         <div class="form-group">
             <label for="uploadfile">Choose a file</label>
-            <input type="file" class="form-control-file" value="Choose file" name="Choose file" id="uploadfile">
+            <input type="file" name="image" class="form-control-file" id="uploadfile">
         </div>
         <button type="submit" class="btn btn-primary">Upload</button>
     </form>

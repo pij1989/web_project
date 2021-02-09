@@ -13,6 +13,12 @@ public final class ColumnName {
     public static final String TOKEN_VALUE = "token_value";
     public static final String TIME_CREATE = "time_create";
     public static final String TIME_EXPIRE = "time_expire";
+    public static final String CATEGORY_ID = "category_id";
+    public static final String PRODUCT_NAME = "product_name";
+    public static final String PRICE = "price";
+    public static final String DESCRIPTION = "description";
+    public static final String STATUS = "status";
+    public static final String IMAGE = "image";
 
     private ColumnName() {
     }

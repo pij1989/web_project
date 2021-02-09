@@ -14,22 +14,27 @@
 <c:import url="../fragment/header.jsp"/>
 <div class="container-fluid">
     <div class="row flex-xl-nowrap">
-        <c:import url="sidebar.jsp"/>
+        <c:import url="fragment/sidebar.jsp"/>
         <main class="col-md-10 col-xl-10" role="main">
             <div style="display: flex; flex-grow: inherit; justify-content: flex-end">
                 <form class="form-inline my-3 my-lg-3" action="${pageContext.request.contextPath}/controller">
                     <input type="hidden" name="command" value="to_register_page_command">
                     <button class="btn btn-outline-primary mx-2 my-2 my-sm-0" type="submit">
-                        <span><i class="fas fa-plus"></i> <fmt:message key="users.button.create"/></span>
+                        <span><i class="fas fa-plus"></i> <fmt:message key="admin.button.create"/></span>
                     </button>
                 </form>
             </div>
-            <div class="alert alert-success" id="successChangeStatus" hidden role="alert">
-                <fmt:message key="users.alert.success"/>
-            </div>
-            <div class="alert alert-danger" id="errorChangeStatus" hidden role="alert">
-                <fmt:message key="users.alert.error"/>
-            </div>
+            <c:if test="${changeStatus eq 'Success'}">
+                <div class="alert alert-success" id="successChangeStatus" role="alert">
+                    <fmt:message key="users.alert.success"/>
+                </div>
+            </c:if>
+            <c:if test="${changeStatus eq 'Error'}">
+                <div class="alert alert-danger" id="errorChangeStatus" hidden role="alert">
+                    <fmt:message key="users.alert.error"/>
+                </div>
+            </c:if>
+            <c:remove var="changeStatus" scope="session"/>
             <c:choose>
                 <c:when test="${not empty users}">
                     <div style="display: flex;justify-content: center">
@@ -48,14 +53,38 @@
                             <tbody>
                             <c:forEach var="user" items="${users}">
                                 <tr>
-                                    <th scope="row">${user.id}</th>
-                                    <td>${user.firstName}</td>
-                                    <td>${user.lastName}</td>
-                                    <td>${user.username}</td>
-                                    <td>${user.email}</td>
-                                    <td>${user.roleType}</td>
+                                    <th scope="row"><c:out value="${user.id}"/></th>
+                                    <td><c:out value="${user.firstName}"/></td>
+                                    <td><c:out value="${user.lastName}"/></td>
+                                    <td><c:out value="${user.username}"/></td>
+                                    <td><c:out value="${user.email}"/></td>
+                                    <td><c:out value="${user.roleType}"/></td>
                                     <td>
-                                        <select name="status" class="form-control statusSelect" id="${user.id}"
+                                        <form method="post" action="${pageContext.request.contextPath}/controller" class="statusSelect">
+                                            <div class="form-group">
+                                                <input type="hidden" name="command" value="change_user_status">
+                                                <input type="hidden" name="userId" value="<c:out value="${user.id}"/>">
+                                                <select name="status" class="form-control"
+                                                        style="width: 143px;">
+                                                    <option
+                                                            <c:if test="${user.statusType eq 'ACTIVE'}">selected</c:if>
+                                                            value="ACTIVE">
+                                                        ACTIVE
+                                                    </option>
+                                                    <option
+                                                            <c:if test="${user.statusType eq 'BLOCKED'}">selected</c:if>
+                                                            value="BLOCKED">
+                                                        BLOCKED
+                                                    </option>
+                                                    <option
+                                                            <c:if test="${user.statusType eq 'WAIT_ACTIVE'}">selected</c:if>
+                                                            value="WAIT_ACTIVE">
+                                                        WAIT_ACTIVE
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                       <%-- <select name="status" class="form-control statusSelect" id="${user.id}"
                                                 style="width: 143px;">
                                             <option
                                                     <c:if test="${user.statusType eq 'ACTIVE'}">selected</c:if>
@@ -72,7 +101,7 @@
                                                     value="WAIT_ACTIVE">
                                                 WAIT_ACTIVE
                                             </option>
-                                        </select>
+                                        </select>--%>
                                     </td>
                                         <%-- <td>
                                              <button style="padding-top: 0px; padding-bottom: 0px" type="button"

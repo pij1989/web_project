@@ -46,7 +46,7 @@ const send = (url, urlSearchParams) => {
         });
 };
 
-statusSelect.forEach(element => {
+/*statusSelect.forEach(element => {
     element.addEventListener(CHANGE, event => {
         const target = event.target;
         const status = target.value;
@@ -58,4 +58,24 @@ statusSelect.forEach(element => {
         urlSearchParams.append(STATUS, status);
         send(URL, urlSearchParams);
     })
+});*/
+statusSelect.forEach(element => {
+    element.addEventListener(CHANGE, event => {
+        const currentTarget = event.currentTarget;
+        HTMLFormElement.prototype.submit.call(currentTarget);
+    })
 });
+
+setTimeout(() => {
+    let successChangeStatus = document.getElementById(SUCCESS_CHANGE_STATUS);
+    if(successChangeStatus != null){
+        successChangeStatus.hidden = true;
+    }
+}, 1000);
+
+setTimeout(() => {
+    let errorChangeStatus = document.getElementById(ERROR_CHANGE_STATUS);
+    if(errorChangeStatus != null){
+        errorChangeStatus.hidden = true;
+    }
+}, 1000);

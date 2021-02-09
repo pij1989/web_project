@@ -6,28 +6,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 public class ChangeLanguageCommand implements Command {
-    private static final String RU = "ru";
-    private static final String EN = "en";
-    private static final String LANGUAGE = "language";
-    private static final String LANGUAGE_RU = "ru";
-    private static final String LANGUAGE_EN = "en";
 
     @Override
     public Router execute(HttpServletRequest request) {
         String value = request.getParameter(RequestParameter.LANGUAGE);
         HttpSession session = request.getSession();
         String pagePath = (String) session.getAttribute(SessionAttribute.CURRENT_PAGE);
-        switch (value) {
+        LanguageType languageType = LanguageType.valueOf(value.toUpperCase());
+        switch (languageType) {
             case RU: {
-                session.setAttribute(LANGUAGE, LANGUAGE_RU);
+                session.setAttribute(SessionAttribute.LANGUAGE, LanguageType.RU.getLanguage());
                 break;
             }
             case EN: {
-                session.setAttribute(LANGUAGE, LANGUAGE_EN);
+                session.setAttribute(SessionAttribute.LANGUAGE, LanguageType.EN.getLanguage());
                 break;
             }
             default: {
-                session.setAttribute(LANGUAGE, LANGUAGE_RU);
+                session.setAttribute(SessionAttribute.LANGUAGE, LanguageType.RU.getLanguage());
             }
         }
         return new Router(pagePath, Router.Type.REDIRECT);

@@ -14,7 +14,7 @@
 <c:import url="../fragment/header.jsp"/>
 <div class="container-fluid">
     <div class="row flex-xl-nowrap">
-        <c:import url="sidebar.jsp"/>
+        <c:import url="fragment/sidebar.jsp"/>
         <main class="col-md-10 col-xl-10" role="main">
             <div style="text-align: center;padding-top: 15px">
                 <h1><fmt:message key="admin.message"/></h1>

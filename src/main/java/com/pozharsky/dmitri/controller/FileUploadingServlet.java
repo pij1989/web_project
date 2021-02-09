@@ -25,7 +25,7 @@ public class FileUploadingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String applicationDir = req.getServletContext().getRealPath("");
-        logger.debug("Application dir: " + applicationDir);
+        logger.debug("Application dir: " + applicationDir + " Content type: " + req.getContentType());
         String uploadFileDir = applicationDir + File.separator + UPLOAD_DIR + File.separator;
         File fileSaveDir = new File(uploadFileDir);
         if (!fileSaveDir.exists()) {

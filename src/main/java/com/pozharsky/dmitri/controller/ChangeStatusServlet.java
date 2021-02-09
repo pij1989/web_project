@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = "/changestatus")
 public class ChangeStatusServlet extends HttpServlet {
-    private static final Logger logger = LogManager.getLogger(ChangeStatusServlet.class);
+  /*  private static final Logger logger = LogManager.getLogger(ChangeStatusServlet.class);
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -54,5 +54,5 @@ public class ChangeStatusServlet extends HttpServlet {
                     }
                 })
                 .collect(Collectors.toList());
-    }
+    }*/
 }

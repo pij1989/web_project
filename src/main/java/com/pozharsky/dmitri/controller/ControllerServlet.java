@@ -2,6 +2,7 @@ package com.pozharsky.dmitri.controller;
 
 import com.pozharsky.dmitri.command.Command;
 import com.pozharsky.dmitri.command.Router;
+import com.pozharsky.dmitri.command.SessionAttribute;
 import com.pozharsky.dmitri.command.factory.CommandFactory;
 import com.pozharsky.dmitri.model.connector.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
@@ -9,14 +10,17 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
 @WebServlet("/controller")
+@MultipartConfig
 public class ControllerServlet extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(ControllerServlet.class);
 
@@ -41,6 +45,8 @@ public class ControllerServlet extends HttpServlet {
                     RequestDispatcher requestDispatcher = request.getRequestDispatcher(router.getPagePath());
                     requestDispatcher.forward(request, response);
                 } else {
+                    HttpSession session = request.getSession();
+                    session.setAttribute(SessionAttribute.ROUTER, Router.Type.REDIRECT.toString());
                     response.sendRedirect(request.getContextPath() + router.getPagePath());
                 }
             } else {
