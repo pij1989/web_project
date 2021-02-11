@@ -3,7 +3,7 @@ package com.pozharsky.dmitri.model.service.impl;
 import com.pozharsky.dmitri.exception.DaoException;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.dao.TokenDao;
-import com.pozharsky.dmitri.model.dao.impl.TokenDaoImpl;
+import com.pozharsky.dmitri.model.dao.TransactionManager;
 import com.pozharsky.dmitri.model.entity.Token;
 import com.pozharsky.dmitri.model.service.TokenService;
 import org.apache.logging.log4j.LogManager;
@@ -22,8 +22,10 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public Optional<Token> confirmToken(String tokenValue) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
         try {
-            TokenDao tokenDao = TokenDaoImpl.getInstance();
+            TokenDao tokenDao = TokenDao.getInstance();
+            transactionManager.init(tokenDao);
             Optional<Token> optionalToken = tokenDao.findTokenByValue(tokenValue);
             if (optionalToken.isPresent()) {
                 Token token = optionalToken.get();
@@ -36,28 +38,38 @@ public class TokenServiceImpl implements TokenService {
         } catch (DaoException e) {
             logger.error("Can not confirm token: " + e);
             throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
         }
     }
 
     @Override
     public Optional<Token> findTokenByValue(String tokenValue) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
         try {
-            TokenDao tokenDao = TokenDaoImpl.getInstance();
+            TokenDao tokenDao = TokenDao.getInstance();
+            transactionManager.init(tokenDao);
             return tokenDao.findTokenByValue(tokenValue);
         } catch (DaoException e) {
             logger.error("Can not find token:" + e);
             throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
         }
     }
 
     @Override
     public Optional<Token> findTokenByUserEmail(String email) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
         try {
-            TokenDao tokenDao = TokenDaoImpl.getInstance();
+            TokenDao tokenDao = TokenDao.getInstance();
+            transactionManager.init(tokenDao);
             return tokenDao.findTokenByUserEmail(email);
         } catch (DaoException e) {
             logger.error("Can not find token by user email:" + e);
             throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
         }
     }
 }

@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 @WebServlet("/controller")
-@MultipartConfig
+@MultipartConfig(fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 1024 * 1024 * 5,
+        maxRequestSize = 1024 * 1024 * 5 * 5)
 public class ControllerServlet extends HttpServlet {
     private static final Logger logger = LogManager.getLogger(ControllerServlet.class);
 

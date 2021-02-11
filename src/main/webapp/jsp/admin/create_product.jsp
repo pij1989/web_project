@@ -57,7 +57,7 @@
                         </div>
 
                         <div class="form-group form-check">
-                            <input type="checkbox" name="isActiveProduct" class="form-check-input" id="activeCheck">
+                            <input type="checkbox" name="isActiveProduct" value="true" class="form-check-input" id="activeCheck">
                             <label class="form-check-label" for="activeCheck"><fmt:message
                                     key="product.activecheck.label"/></label>
                         </div>
@@ -65,6 +65,11 @@
                         <div class="form-group">
                             <label for="description"><fmt:message key="product.description.label"/></label>
                             <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="creatingTime"><fmt:message key="product.createdate.label"/></label>
+                            <input type="datetime-local" id="creatingTime" name="creatingTime">
                         </div>
 
                         <div class="form-group">

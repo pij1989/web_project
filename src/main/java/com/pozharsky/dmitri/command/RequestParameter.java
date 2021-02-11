@@ -17,6 +17,9 @@ public final class RequestParameter {
     public static final String IS_ACTIVE_PRODUCT = "isActiveProduct";
     public static final String DESCRIPTION = "description";
     public static final String IMAGE = "image";
+    public static final String TIME_CREATE = "creatingTime";
+    public static final String PER_PAGE = "perPage";
+    public static final String PAGE = "page";
 
     private RequestParameter() {
     }

@@ -29,8 +29,9 @@
                 <div class="row">
                     <c:forEach var="product" items="${products}">
                         <div class="col-md-4">
-                            <div class="card mb-4 shadow-sm" >
-                                <img src="data:image/jpg;base64,<ctg:encodeBytes bytes="${product.image}"/>" class="card-img-top" alt=""/>
+                            <div class="card mb-4 shadow-sm">
+                                <img src="data:image/jpg;base64,<ctg:encodeBytes bytes="${product.image}"/>"
+                                     class="card-img-top" alt=""/>
                                 <div class="card-body">
                                     <h5 class="card-title"><c:out value="${product.name}"/></h5>
                                     <p class="card-text"><c:out value="${product.description}"/></p>
@@ -40,10 +41,35 @@
                         </div>
                     </c:forEach>
                 </div>
+
+                <form class="form-inline" method="post" action="${pageContext.request.contextPath}/controller" id="paginationForm">
+                    <input type="hidden" name="command" value="get_products">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="rowsPerPage">Rows per page: </label>
+                            <select name="perPage" class="form-control" id="rowsPerPage">
+                                <option <c:if test="${perPage eq '5'}">selected</c:if>>5</option>
+                                <option <c:if test="${perPage eq '10'}">selected</c:if>>10</option>
+                                <option <c:if test="${perPage eq '20'}">selected</c:if>>20</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="padding-top: 16px; padding-left: 16px">
+                            <nav>
+                                <ul class="pagination">
+                                    <input type="hidden" name="page" value="" id="page">
+                                    <c:forEach var="i" begin="1" end="${amountPage}">
+                                        <li class="page-item"><input class="page-link" name="button" type="button" value="<c:out value="${i}"/>"></li>
+                                    </c:forEach>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </form>
             </div>
         </main>
     </div>
 </div>
 <c:import url="../fragment/bootstrap_script.jsp"/>
+<script src="${pageContext.request.contextPath}/js/admin/products.js"></script>
 </body>
 </html>

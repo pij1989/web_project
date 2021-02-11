@@ -28,11 +28,12 @@ public class CreateProductCommand implements Command {
             String price = request.getParameter(RequestParameter.PRICE);
             String isActive = request.getParameter(RequestParameter.IS_ACTIVE_PRODUCT);
             String description = request.getParameter(RequestParameter.DESCRIPTION);
+            String creatingTime = request.getParameter(RequestParameter.TIME_CREATE);
             String applicationDir = request.getServletContext().getRealPath(EMPTY);
             HttpSession session = request.getSession();
             logger.debug("Application dir: " + applicationDir);
             logger.debug("Product name: " + productName + " Category: " + category + " Price: " + price +
-                    " isActive: " + isActive + " Description: " + description);
+                    " isActive: " + isActive + " Description: " + description + " Creating time: " + creatingTime);
             String uploadFileDir = applicationDir + File.separator + UPLOAD_DIR + File.separator;
             File fileSaveDir = new File(uploadFileDir);
             if (!fileSaveDir.exists()) {
@@ -45,7 +46,7 @@ public class CreateProductCommand implements Command {
             String filePath = uploadFileDir + randFilename;
             byte[] image = part.getInputStream().readAllBytes();
             ProductService productService = ProductServiceImpl.getInstance();
-            boolean result = productService.createProduct(productName, category, price, isActive, description, image);
+            boolean result = productService.createProduct(productName, category, price, isActive, description, image, creatingTime);
             if (result) {
                 session.setAttribute(SessionAttribute.CREATE_PRODUCT, "Success");
             } else {

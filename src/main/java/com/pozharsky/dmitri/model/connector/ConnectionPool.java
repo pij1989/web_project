@@ -40,8 +40,8 @@ public class ConnectionPool {
             lock.lock();
             try {
                 if (!isInstance.get()) {
-                    isInstance.set(true);
                     instance = new ConnectionPool();
+                    isInstance.set(true);
                 }
             } finally {
                 lock.unlock();

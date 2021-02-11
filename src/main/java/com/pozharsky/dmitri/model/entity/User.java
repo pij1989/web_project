@@ -8,24 +8,22 @@ public class User extends Entity {
     private String email;
     private RoleType roleType;
     private StatusType statusType;
-    private Token token;
 
     public User() {
     }
 
-    public User(long id, String firstName, String lastName, String username, String email, RoleType roleType, StatusType statusType, Token token) {
-        this(firstName, lastName, username, email, roleType, statusType, token);
+    public User(long id, String firstName, String lastName, String username, String email, RoleType roleType, StatusType statusType) {
+        this(firstName, lastName, username, email, roleType, statusType);
         this.id = id;
     }
 
-    public User(String firstName, String lastName, String username, String email, RoleType roleType, StatusType statusType, Token token) {
+    public User(String firstName, String lastName, String username, String email, RoleType roleType, StatusType statusType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.roleType = roleType;
         this.statusType = statusType;
-        this.token = token;
     }
 
     public long getId() {
@@ -84,14 +82,6 @@ public class User extends Entity {
         this.statusType = statusType;
     }
 
-    public Token getToken() {
-        return token;
-    }
-
-    public void setToken(Token token) {
-        this.token = token;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -105,8 +95,7 @@ public class User extends Entity {
         if (username != null ? !username.equals(user.username) : user.username != null) return false;
         if (email != null ? !email.equals(user.email) : user.email != null) return false;
         if (roleType != user.roleType) return false;
-        if (statusType != user.statusType) return false;
-        return token != null ? token.equals(user.token) : user.token == null;
+        return statusType == user.statusType;
     }
 
     @Override
@@ -118,7 +107,6 @@ public class User extends Entity {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (roleType != null ? roleType.hashCode() : 0);
         result = 31 * result + (statusType != null ? statusType.hashCode() : 0);
-        result = 31 * result + (token != null ? token.hashCode() : 0);
         return result;
     }
 
@@ -132,7 +120,6 @@ public class User extends Entity {
         sb.append(", email='").append(email).append('\'');
         sb.append(", roleType=").append(roleType);
         sb.append(", statusType=").append(statusType);
-        sb.append(", token=").append(token);
         sb.append('}');
         return sb.toString();
     }

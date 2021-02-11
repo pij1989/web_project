@@ -1,9 +1,6 @@
 package com.pozharsky.dmitri.command.impl;
 
-import com.pozharsky.dmitri.command.Command;
-import com.pozharsky.dmitri.command.PagePath;
-import com.pozharsky.dmitri.command.Router;
-import com.pozharsky.dmitri.command.SessionAttribute;
+import com.pozharsky.dmitri.command.*;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.entity.Product;
 import com.pozharsky.dmitri.model.service.ProductService;
@@ -21,11 +18,18 @@ public class GetProductsCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
         try {
+            String page = request.getParameter(RequestParameter.PAGE);
+            String perPage = request.getParameter(RequestParameter.PER_PAGE);
+            logger.debug("Page: " + page + " perPage: " + perPage);
             ProductService productService = ProductServiceImpl.getInstance();
-            List<Product> products = productService.findAllProducts();
+            int amountPage = productService.defineAmountProductPage(perPage);
+//            List<Product> products = productService.findAllProducts();
+            List<Product> products = productService.findProductsByPerPage(page,perPage);
             HttpSession session = request.getSession();
             session.setAttribute(SessionAttribute.PRODUCTS, products);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.PRODUCTS);
+            request.setAttribute(RequestAttribute.AMOUNT_PAGE, amountPage);
+            request.setAttribute(RequestAttribute.PER_PAGE, perPage);
             return new Router(PagePath.PRODUCTS);
         } catch (ServiceException e) {
             logger.error(e);

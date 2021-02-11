@@ -4,8 +4,9 @@ import com.pozharsky.dmitri.command.RequestAttribute;
 import com.pozharsky.dmitri.creator.VerificationTokenCreator;
 import com.pozharsky.dmitri.exception.DaoException;
 import com.pozharsky.dmitri.exception.ServiceException;
+import com.pozharsky.dmitri.model.dao.TokenDao;
+import com.pozharsky.dmitri.model.dao.TransactionManager;
 import com.pozharsky.dmitri.model.dao.UserDao;
-import com.pozharsky.dmitri.model.dao.impl.UserDaoImpl;
 import com.pozharsky.dmitri.model.entity.RoleType;
 import com.pozharsky.dmitri.model.entity.StatusType;
 import com.pozharsky.dmitri.model.entity.Token;
@@ -43,8 +44,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> loginUser(String email, String password) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
         try {
-            UserDao userDao = UserDaoImpl.getInstance();
+            UserDao userDao = UserDao.getInstance();
+            transactionManager.init(userDao);
             String findPassword = userDao.findPasswordByEmail(email);
             if (!findPassword.isBlank()) {
                 String hashPassword = PasswordEncrypter.encryptPassword(password);
@@ -56,58 +59,87 @@ public class UserServiceImpl implements UserService {
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
         }
     }
 
     @Override
     public boolean registrationUser(String firstName, String lastName, String username, String email, String password) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
         try {
-            UserDao userDao = UserDaoImpl.getInstance();
+            boolean isCreate = false;
+            UserDao userDao = UserDao.getInstance();
+            TokenDao tokenDao = TokenDao.getInstance();
+            transactionManager.initTransaction(userDao, tokenDao);
             Optional<User> optionalUser = userDao.findUserByEmail(email);
             if (optionalUser.isEmpty()) {
                 String hashPassword = PasswordEncrypter.encryptPassword(password);
-                Token token = VerificationTokenCreator.createVerificationToken();
-                User user = new User(firstName, lastName, username, email, RoleType.USER, StatusType.WAIT_ACTIVE, token);
-                return userDao.create(user, hashPassword);
-            } else {
-                return false;
+                User user = new User(firstName, lastName, username, email, RoleType.USER, StatusType.WAIT_ACTIVE);
+                Optional<Long> optionalId = userDao.create(user, hashPassword);
+                if (optionalId.isPresent()) {
+                    long userId = optionalId.get();
+                    Token token = VerificationTokenCreator.createVerificationToken();
+                    tokenDao.create(token, userId);
+                    isCreate = true;
+                }
             }
+            transactionManager.commit();
+            return isCreate;
         } catch (DaoException e) {
             logger.error(e);
+            transactionManager.rollback();
             throw new ServiceException(e);
+        } finally {
+            transactionManager.endTransaction();
         }
     }
 
     @Override
     public boolean changeUserStatus(long id, StatusType statusType) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
         try {
-            UserDao userDao = UserDaoImpl.getInstance();
-            return userDao.updateUserStatusById(id, statusType);
+            UserDao userDao = UserDao.getInstance();
+            transactionManager.initTransaction(userDao);
+            boolean isChange = userDao.updateUserStatusById(id, statusType);
+            transactionManager.commit();
+            return isChange;
         } catch (DaoException e) {
             logger.error(e);
+            transactionManager.rollback();
             throw new ServiceException(e);
+        } finally {
+            transactionManager.endTransaction();
         }
     }
 
     @Override
     public Optional<User> findUserByEmail(String email) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
         try {
-            UserDao userDao = UserDaoImpl.getInstance();
+            UserDao userDao = UserDao.getInstance();
+            transactionManager.init(userDao);
             return userDao.findUserByEmail(email);
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
         }
     }
 
     @Override
     public List<User> findAllUsers() throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
         try {
-            UserDao userDao = UserDaoImpl.getInstance();
+            UserDao userDao = UserDao.getInstance();
+            transactionManager.init(userDao);
             return userDao.findAll();
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
         }
     }
 }

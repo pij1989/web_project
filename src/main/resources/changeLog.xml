@@ -93,7 +93,8 @@
             `description` text,
             `price` double not null,
             `status` tinyint(1),
-            `image` blob,
+            `image` mediumblob,
+            `time_create` datetime not null,
             `category_id` int not null,
             constraint `products_categories_id_fk`
             foreign key (`category_id`) references `categories` (`id`));
