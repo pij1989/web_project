@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     public Optional<User> loginUser(String email, String password) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
-            UserDao userDao = UserDao.getInstance();
+            UserDao userDao = new UserDao();
             transactionManager.init(userDao);
             String findPassword = userDao.findPasswordByEmail(email);
             if (!findPassword.isBlank()) {
@@ -69,8 +69,8 @@ public class UserServiceImpl implements UserService {
         TransactionManager transactionManager = new TransactionManager();
         try {
             boolean isCreate = false;
-            UserDao userDao = UserDao.getInstance();
-            TokenDao tokenDao = TokenDao.getInstance();
+            UserDao userDao = new UserDao();
+            TokenDao tokenDao = new TokenDao();
             transactionManager.initTransaction(userDao, tokenDao);
             Optional<User> optionalUser = userDao.findUserByEmail(email);
             if (optionalUser.isEmpty()) {
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
     public boolean changeUserStatus(long id, StatusType statusType) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
-            UserDao userDao = UserDao.getInstance();
+            UserDao userDao = new UserDao();
             transactionManager.initTransaction(userDao);
             boolean isChange = userDao.updateUserStatusById(id, statusType);
             transactionManager.commit();
@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findUserByEmail(String email) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
-            UserDao userDao = UserDao.getInstance();
+            UserDao userDao = new UserDao();
             transactionManager.init(userDao);
             return userDao.findUserByEmail(email);
         } catch (DaoException e) {
@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
     public List<User> findAllUsers() throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
-            UserDao userDao = UserDao.getInstance();
+            UserDao userDao = new UserDao();
             transactionManager.init(userDao);
             return userDao.findAll();
         } catch (DaoException e) {

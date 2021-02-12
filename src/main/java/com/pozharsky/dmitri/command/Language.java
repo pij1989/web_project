@@ -1,12 +1,12 @@
 package com.pozharsky.dmitri.command;
 
-public enum LanguageType {
+public enum Language {
     RU("ru"),
     EN("en");
 
     private String language;
 
-    LanguageType(String language) {
+    Language(String language) {
         this.language = language;
     }
 

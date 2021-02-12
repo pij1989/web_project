@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<fmt:setLocale value="${language}"/>
+<fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="property.text"/>
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -42,8 +42,8 @@
                             <fmt:message key="header.button.language"/>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="change_language">
-                            <button class="dropdown-item" type="submit" name="language" value="en">EN</button>
-                            <button class="dropdown-item" type="submit" name="language" value="ru">RU</button>
+                            <button class="dropdown-item" type="submit" name="language" value="en"><fmt:message key="header.language.english"/></button>
+                            <button class="dropdown-item" type="submit" name="language" value="ru"><fmt:message key="header.language.russian"/></button>
                         </div>
                     </div>
                 </form>

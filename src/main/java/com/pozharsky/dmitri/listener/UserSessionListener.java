@@ -21,7 +21,7 @@ public class UserSessionListener implements HttpSessionListener {
         HttpSession session = sessionEvent.getSession();
         String defaultLanguage = Locale.getDefault().getLanguage();
         session.setAttribute(SessionAttribute.ROLE, RoleType.GUEST.toString());
-        session.setAttribute(SessionAttribute.LANGUAGE, defaultLanguage);
+        session.setAttribute(SessionAttribute.LOCALE, Locale.getDefault());
         session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.INDEX);
         logger.info("Session create");
     }

@@ -16,25 +16,15 @@ import java.util.Optional;
 public class ProductDao extends AbstractDao<Product> {
     private static final Logger logger = LogManager.getLogger(ProductDao.class);
     private static final String CREATE_PRODUCT_SQL = "INSERT INTO products (product_name, description, price, status, image, time_create, category_id) VALUES (?,?,?,?,?,?,?);";
-    private static final String FIND_ALL_PRODUCT_SQL = "SELECT id,product_name,price,description,status,image,category_id FROM products;";
-    private static final String FIND_PRODUCT_BY_LIMIT_AND_OFFSET_SQL = "SELECT id,product_name,price,description,status,image,category_id FROM products LIMIT ? OFFSET ?;";
+    private static final String FIND_ALL_PRODUCT_SQL = "SELECT id,product_name,price,description,status,image,time_create,category_id FROM products;";
+    private static final String FIND_PRODUCT_BY_LIMIT_AND_OFFSET_SQL = "SELECT id, product_name, price, description, status, image, time_create, category_id FROM products LIMIT ? OFFSET ?;";
     private static final String COUNT_ALL_PRODUCT_SQL = "SELECT count(*) FROM products";
-
-
-    private static final ProductDao instance = new ProductDao();
-
-    private ProductDao() {
-    }
-
-    public static ProductDao getInstance() {
-        return instance;
-    }
 
     public boolean create(Product product) throws DaoException {
         try (PreparedStatement productPreparedStatement = connection.prepareStatement(CREATE_PRODUCT_SQL)) {
             productPreparedStatement.setString(1, product.getName());
             productPreparedStatement.setString(2, product.getDescription());
-            productPreparedStatement.setDouble(3, product.getPrice());
+            productPreparedStatement.setBigDecimal(3, product.getPrice());
             productPreparedStatement.setBoolean(4, product.isStatus());
             productPreparedStatement.setBytes(5, product.getImage());
             productPreparedStatement.setTimestamp(6, Timestamp.valueOf(product.getCreatingTime()));
@@ -111,10 +101,11 @@ public class ProductDao extends AbstractDao<Product> {
         Product product = new Product();
         product.setId(resultSet.getLong(ColumnName.ID));
         product.setName(resultSet.getString(ColumnName.PRODUCT_NAME));
-        product.setPrice(resultSet.getDouble(ColumnName.PRICE));
+        product.setPrice(resultSet.getBigDecimal(ColumnName.PRICE));
         product.setDescription(resultSet.getString(ColumnName.DESCRIPTION));
         product.setStatus(resultSet.getBoolean(ColumnName.STATUS));
         product.setImage(resultSet.getBytes(ColumnName.IMAGE));
+        product.setCreatingTime(resultSet.getTimestamp(ColumnName.TIME_CREATE).toLocalDateTime());
         product.setCategoryId(resultSet.getLong(ColumnName.CATEGORY_ID));
         return product;
     }

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<fmt:setLocale value="${language}"/>
+<fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="property.text"/>
 <!DOCTYPE html>
 <html>
@@ -84,30 +84,7 @@
                                                 </select>
                                             </div>
                                         </form>
-                                       <%-- <select name="status" class="form-control statusSelect" id="${user.id}"
-                                                style="width: 143px;">
-                                            <option
-                                                    <c:if test="${user.statusType eq 'ACTIVE'}">selected</c:if>
-                                                    value="ACTIVE">
-                                                ACTIVE
-                                            </option>
-                                            <option
-                                                    <c:if test="${user.statusType eq 'BLOCKED'}">selected</c:if>
-                                                    value="BLOCKED">
-                                                BLOCKED
-                                            </option>
-                                            <option
-                                                    <c:if test="${user.statusType eq 'WAIT_ACTIVE'}">selected</c:if>
-                                                    value="WAIT_ACTIVE">
-                                                WAIT_ACTIVE
-                                            </option>
-                                        </select>--%>
                                     </td>
-                                        <%-- <td>
-                                             <button style="padding-top: 0px; padding-bottom: 0px" type="button"
-                                                     class="btn btn-link"><span><i class="far fa-edit"></i> Edit</span>
-                                             </button>
-                                         </td>--%>
                                 </tr>
                             </c:forEach>
                             </tbody>

@@ -15,12 +15,6 @@ public class TokenDao extends AbstractDao<Token> {
     private static final String FIND_TOKEN_BY_VALUE_SQL = "SELECT id, token_value, time_create, time_expire,user_id FROM tokens WHERE token_value = ?";
     private static final String FIND_TOKEN_BY_USER_EMAIL_SQL = "SELECT t.id,t.token_value,t.time_create,t.time_expire,t.user_id FROM tokens AS t INNER JOIN users AS u ON u.id = t.user_id WHERE u.email = ?";
 
-    private static final TokenDao instance = new TokenDao();
-
-    public static TokenDao getInstance() {
-        return instance;
-    }
-
     public boolean create(Token token, long userId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TOKEN_SQL);) {
             preparedStatement.setString(1, token.getTokenValue());

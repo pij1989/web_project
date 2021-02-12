@@ -1,12 +1,13 @@
 package com.pozharsky.dmitri.model.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class Product extends Entity {
     private long id;
     private String name;
-    private double price;
+    private BigDecimal price;
     private boolean status;
     private String description;
     private byte[] image;
@@ -16,7 +17,7 @@ public class Product extends Entity {
     public Product() {
     }
 
-    public Product(String name, double price, boolean status, String description, byte[] image, LocalDateTime creatingTime, long categoryId) {
+    public Product(String name, BigDecimal price, boolean status, String description, byte[] image, LocalDateTime creatingTime, long categoryId) {
         this.name = name;
         this.price = price;
         this.status = status;
@@ -42,11 +43,11 @@ public class Product extends Entity {
         this.name = name;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -98,10 +99,10 @@ public class Product extends Entity {
         Product product = (Product) o;
 
         if (id != product.id) return false;
-        if (Double.compare(product.price, price) != 0) return false;
         if (status != product.status) return false;
         if (categoryId != product.categoryId) return false;
         if (name != null ? !name.equals(product.name) : product.name != null) return false;
+        if (price != null ? !price.equals(product.price) : product.price != null) return false;
         if (description != null ? !description.equals(product.description) : product.description != null) return false;
         if (!Arrays.equals(image, product.image)) return false;
         return creatingTime != null ? creatingTime.equals(product.creatingTime) : product.creatingTime == null;
@@ -109,12 +110,9 @@ public class Product extends Entity {
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = (int) (id ^ (id >>> 32));
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        temp = Double.doubleToLongBits(price);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (price != null ? price.hashCode() : 0);
         result = 31 * result + (status ? 1 : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + Arrays.hashCode(image);

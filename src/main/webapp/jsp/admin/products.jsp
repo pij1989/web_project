@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="custom_tag" prefix="ctg" %>
-<fmt:setLocale value="${language}"/>
+<fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="property.text"/>
 <!DOCTYPE html>
 <html>
@@ -35,36 +35,38 @@
                                 <div class="card-body">
                                     <h5 class="card-title"><c:out value="${product.name}"/></h5>
                                     <p class="card-text"><c:out value="${product.description}"/></p>
-                                    <h5 class="card-title"><c:out value="${product.price}"/></h5>
+                                    <h5 class="card-title"><ctg:formatCurrency value="${product.price}" locale="${locale}"/></h5>
+                                    <p><small><fmt:message key="products.createtime"/> <ctg:formatLocalDateTime date="${product.creatingTime}" locale="${locale}"/></small></p>
                                 </div>
                             </div>
                         </div>
                     </c:forEach>
                 </div>
-
-                <form class="form-inline" method="post" action="${pageContext.request.contextPath}/controller" id="paginationForm">
-                    <input type="hidden" name="command" value="get_products">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="rowsPerPage">Rows per page: </label>
-                            <select name="perPage" class="form-control" id="rowsPerPage">
-                                <option <c:if test="${perPage eq '5'}">selected</c:if>>5</option>
-                                <option <c:if test="${perPage eq '10'}">selected</c:if>>10</option>
-                                <option <c:if test="${perPage eq '20'}">selected</c:if>>20</option>
-                            </select>
+                <c:if test="${not empty products}">
+                    <form class="form-inline" action="${pageContext.request.contextPath}/controller" id="paginationForm">
+                        <input type="hidden" name="command" value="get_products">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="rowsPerPage">Rows per page: </label>
+                                <select name="perPage" class="form-control" id="rowsPerPage">
+                                    <option <c:if test="${perPage eq '5'}">selected</c:if>>5</option>
+                                    <option <c:if test="${perPage eq '10'}">selected</c:if>>10</option>
+                                    <option <c:if test="${perPage eq '20'}">selected</c:if>>20</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="padding-top: 16px; padding-left: 16px">
+                                <nav>
+                                    <ul class="pagination">
+                                        <input type="hidden" name="page" value="" id="page">
+                                        <c:forEach var="i" begin="1" end="${amountPage}">
+                                            <li class="page-item"><input class="page-link" name="button" type="button" value="<c:out value="${i}"/>"></li>
+                                        </c:forEach>
+                                    </ul>
+                                </nav>
+                            </div>
                         </div>
-                        <div class="form-group" style="padding-top: 16px; padding-left: 16px">
-                            <nav>
-                                <ul class="pagination">
-                                    <input type="hidden" name="page" value="" id="page">
-                                    <c:forEach var="i" begin="1" end="${amountPage}">
-                                        <li class="page-item"><input class="page-link" name="button" type="button" value="<c:out value="${i}"/>"></li>
-                                    </c:forEach>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </c:if>
             </div>
         </main>
     </div>

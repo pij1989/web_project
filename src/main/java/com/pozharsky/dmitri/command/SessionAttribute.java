@@ -10,6 +10,7 @@ public final class SessionAttribute {
     public static final String CHANGE_STATUS = "changeStatus";
     public static final String CREATE_PRODUCT = "createProduct";
     public static final String ROUTER = "router";
+    public static final String LOCALE = "locale";
 
     private SessionAttribute() {
     }

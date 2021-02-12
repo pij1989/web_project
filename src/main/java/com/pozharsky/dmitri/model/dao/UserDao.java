@@ -27,15 +27,6 @@ public class UserDao extends AbstractDao<User> {
     private static final String UPDATE_USER_SQL = "UPDATE users SET first_name = ?,last_name = ?,username = ?,email = ?,role_id = ?,status_id = ? WHERE id = ?";
     private static final String UPDATE_USER_STATUS_BY_ID_SQL = "UPDATE users SET status_id = ? WHERE id = ?";
 
-    private static final UserDao instance = new UserDao();
-
-    private UserDao() {
-    }
-
-    public static UserDao getInstance() {
-        return instance;
-    }
-
     public Optional<Long> create(User user, String password) throws DaoException {
         try (PreparedStatement userPreparedStatement = connection.prepareStatement(CREATE_USER_SQL, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement rolePreparedStatement = connection.prepareStatement(FIND_ROLE_ID_BY_NAME_SQL);

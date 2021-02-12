@@ -24,7 +24,7 @@ public class TokenServiceImpl implements TokenService {
     public Optional<Token> confirmToken(String tokenValue) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
-            TokenDao tokenDao = TokenDao.getInstance();
+            TokenDao tokenDao = new TokenDao();
             transactionManager.init(tokenDao);
             Optional<Token> optionalToken = tokenDao.findTokenByValue(tokenValue);
             if (optionalToken.isPresent()) {
@@ -47,7 +47,7 @@ public class TokenServiceImpl implements TokenService {
     public Optional<Token> findTokenByValue(String tokenValue) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
-            TokenDao tokenDao = TokenDao.getInstance();
+            TokenDao tokenDao = new TokenDao();
             transactionManager.init(tokenDao);
             return tokenDao.findTokenByValue(tokenValue);
         } catch (DaoException e) {
@@ -62,7 +62,7 @@ public class TokenServiceImpl implements TokenService {
     public Optional<Token> findTokenByUserEmail(String email) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
-            TokenDao tokenDao = TokenDao.getInstance();
+            TokenDao tokenDao = new TokenDao();
             transactionManager.init(tokenDao);
             return tokenDao.findTokenByUserEmail(email);
         } catch (DaoException e) {

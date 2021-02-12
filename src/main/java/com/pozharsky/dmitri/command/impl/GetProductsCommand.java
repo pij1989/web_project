@@ -28,8 +28,8 @@ public class GetProductsCommand implements Command {
             HttpSession session = request.getSession();
             session.setAttribute(SessionAttribute.PRODUCTS, products);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.PRODUCTS);
-            request.setAttribute(RequestAttribute.AMOUNT_PAGE, amountPage);
-            request.setAttribute(RequestAttribute.PER_PAGE, perPage);
+            session.setAttribute(RequestAttribute.AMOUNT_PAGE, amountPage);
+            session.setAttribute(RequestAttribute.PER_PAGE, perPage);
             return new Router(PagePath.PRODUCTS);
         } catch (ServiceException e) {
             logger.error(e);

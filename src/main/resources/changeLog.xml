@@ -91,10 +91,10 @@
             `id` int not null primary key auto_increment,
             `product_name` varchar(255) not null,
             `description` text,
-            `price` double not null,
+            `price` decimal(5,2) not null,
             `status` tinyint(1),
             `image` mediumblob,
-            `time_create` datetime not null,
+            `time_create` datetime,
             `category_id` int not null,
             constraint `products_categories_id_fk`
             foreign key (`category_id`) references `categories` (`id`));

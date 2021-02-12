@@ -17,12 +17,6 @@ public class CategoryDao extends AbstractDao<Category> {
     private static final String CREATE_CATEGORY_SQL = "INSERT INTO categories (category_name) VALUES (?);";
     private static final String FIND_CATEGORY_BY_NAME = "SELECT id, category_name FROM categories WHERE category_name = ?;";
 
-    private static final CategoryDao instance = new CategoryDao();
-
-    public static CategoryDao getInstance() {
-        return instance;
-    }
-
     public Optional<Long> create(Category category) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_CATEGORY_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, category.getName());

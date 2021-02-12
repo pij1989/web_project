@@ -12,6 +12,7 @@ import com.pozharsky.dmitri.util.PaginationUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +34,8 @@ public class ProductServiceImpl implements ProductService {
         TransactionManager transactionManager = new TransactionManager();
         try {
             boolean isCreate = false;
-            ProductDao productDao = ProductDao.getInstance();
-            CategoryDao categoryDao = CategoryDao.getInstance();
+            ProductDao productDao = new ProductDao();
+            CategoryDao categoryDao = new CategoryDao();
             transactionManager.initTransaction(productDao, categoryDao);
             Optional<Category> optionalCategory = categoryDao.findCategoryByName(categoryName);
             Optional<Long> optionalCategoryId;
@@ -47,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
             if (optionalCategoryId.isPresent()) {
                 long categoryId = optionalCategoryId.get();
                 boolean status = Boolean.parseBoolean(isActive);
-                double productPrice = Double.parseDouble(price);
+                BigDecimal productPrice = BigDecimal.valueOf(Double.parseDouble(price));
                 LocalDateTime productCreatingTime = LocalDateTime.parse(creatingTime);
                 Product product = new Product(productName, productPrice, status, description, image, productCreatingTime, categoryId);
                 isCreate = productDao.create(product);
@@ -67,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findAllProducts() throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
-            ProductDao productDao = ProductDao.getInstance();
+            ProductDao productDao = new ProductDao();
             transactionManager.init(productDao);
             return productDao.findAll();
         } catch (DaoException e) {
@@ -82,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
     public int defineAmountProductPage(String perPage) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
-            ProductDao productDao = ProductDao.getInstance();
+            ProductDao productDao = new ProductDao();
             transactionManager.init(productDao);
             int count = productDao.countAllProduct();
             return PaginationUtil.defineAmountPage(count,Integer.parseInt(perPage));
@@ -98,7 +99,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findProductsByPerPage(String page, String perPage) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
-            ProductDao productDao = ProductDao.getInstance();
+            ProductDao productDao = new ProductDao();
             transactionManager.init(productDao);
             int limit = Integer.parseInt(perPage);
             int offset = (Integer.parseInt(page) - 1) * limit;
