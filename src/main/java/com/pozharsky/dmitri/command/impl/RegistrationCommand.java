@@ -1,8 +1,13 @@
 package com.pozharsky.dmitri.command.impl;
 
-import com.pozharsky.dmitri.command.*;
+import com.pozharsky.dmitri.command.Command;
+import com.pozharsky.dmitri.command.PagePath;
+import com.pozharsky.dmitri.command.Router;
+import com.pozharsky.dmitri.command.SessionAttribute;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.entity.Token;
+import com.pozharsky.dmitri.model.error.ApplicationError;
+import com.pozharsky.dmitri.model.error.ErrorType;
 import com.pozharsky.dmitri.model.service.impl.EmailServiceImpl;
 import com.pozharsky.dmitri.model.service.impl.TokenServiceImpl;
 import com.pozharsky.dmitri.model.service.impl.UserServiceImpl;
@@ -11,8 +16,11 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+
+import static com.pozharsky.dmitri.command.RequestParameter.*;
 
 public class RegistrationCommand implements Command {
     private static final Logger logger = LogManager.getLogger(RegistrationCommand.class);
@@ -23,39 +31,46 @@ public class RegistrationCommand implements Command {
             UserServiceImpl userService = UserServiceImpl.getInstance();
             EmailServiceImpl emailService = EmailServiceImpl.getInstance();
             TokenServiceImpl tokenService = TokenServiceImpl.getInstance();
-            String firstName = request.getParameter(RequestParameter.FIRST_NAME);
-            String lastName = request.getParameter(RequestParameter.LAST_NAME);
-            String username = request.getParameter(RequestParameter.USERNAME);
-            String email = request.getParameter(RequestParameter.EMAIL);
-            String password = request.getParameter(RequestParameter.PASSWORD);
+            String firstName = request.getParameter(FIRST_NAME);
+            String lastName = request.getParameter(LAST_NAME);
+            String username = request.getParameter(USERNAME);
+            String email = request.getParameter(EMAIL);
+            String password = request.getParameter(PASSWORD);
+            String confirmPassword = request.getParameter(CONFIRM_PASSWORD);
+            Map<String, String> userForm = new HashMap<>();
+            userForm.put(FIRST_NAME, firstName);
+            userForm.put(LAST_NAME, lastName);
+            userForm.put(USERNAME, username);
+            userForm.put(EMAIL, email);
+            userForm.put(PASSWORD, password);
+            userForm.put(CONFIRM_PASSWORD, confirmPassword);
             HttpSession session = request.getSession();
-            List<String> errors = userService.checkEmailAndPassword(email, password);
-            if (errors.isEmpty()) {
-                if (userService.registrationUser(firstName, lastName, username, email, password)) {
-                    Optional<Token> optionalToken = tokenService.findTokenByUserEmail(email);
-                    if (optionalToken.isPresent()) {
-                        Token token = optionalToken.get();
-                        String tokenValue = token.getTokenValue();
-                        emailService.sendActivationEmail(email, tokenValue);
-                        session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.ACTIVATE_REGISTRATION);
-                        return new Router(PagePath.ACTIVATE_REGISTRATION);
-                    } else {
-                        logger.info("Impossible activate registration");
-                        request.setAttribute(RequestAttribute.ERROR_ACTIVATE_REGISTRATION, true);
-                        session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.REGISTRATION);
-                        return new Router(PagePath.REGISTRATION);
-                    }
+            if (userService.registrationUser(userForm)) {
+                Optional<Token> optionalToken = tokenService.findTokenByUserEmail(email);
+                if (optionalToken.isPresent()) {
+                    Token token = optionalToken.get();
+                    String tokenValue = token.getTokenValue();
+                    emailService.sendActivationEmail(email, tokenValue);
+                    session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.ACTIVATE_REGISTRATION);
+                    return new Router(PagePath.ACTIVATE_REGISTRATION);
                 } else {
-                    logger.info("User with this email and password exist");
-                    request.setAttribute(RequestAttribute.ERROR_USER, true);
+                    logger.info("Impossible activate registration");
+                    session.setAttribute(SessionAttribute.ERROR_ACTIVATE_REGISTRATION, true);
                     session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.REGISTRATION);
-                    return new Router(PagePath.REGISTRATION);
+                    return new Router(PagePath.REGISTRATION, Router.Type.REDIRECT);
                 }
             } else {
-                logger.info("Invalid email or password");
-                request.setAttribute(RequestAttribute.ERROR_EMAIL_OR_PASSWORD, true);
+                ApplicationError applicationError = ApplicationError.getInstance();
+                if (applicationError.getErrors().contains(ErrorType.ERROR_USER_EXIST)) {
+                    logger.info("User with this email exist");
+                    session.setAttribute(SessionAttribute.EMAIL, email);
+                    session.setAttribute(SessionAttribute.ERROR_USER, true);
+                    userForm.put(EMAIL, null);
+                }
                 session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.REGISTRATION);
-                return new Router(PagePath.REGISTRATION);
+                session.setAttribute(SessionAttribute.REGISTRATION_FORM, userForm);
+                applicationError.clearErrors();
+                return new Router(PagePath.REGISTRATION, Router.Type.REDIRECT);
             }
         } catch (ServiceException e) {
             logger.error(e);

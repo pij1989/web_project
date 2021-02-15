@@ -14,22 +14,22 @@ let emailInvalidMessage = document.getElementById(EMAIL_INVALID_MESSAGE);
 let passwordValidMessage = document.getElementById(PASSWORD_VALID_MESSAGE);
 let passwordInvalidMessage = document.getElementById(PASSWORD_INVALID_MESSAGE);
 
-let alert = document.querySelector('.alert');
+let alerts = document.querySelectorAll('.alert');
 
 const showValidationMessage = (element1, element2) => {
-    if(element1.getAttribute(HIDDEN) != null){
+    if (element1.getAttribute(HIDDEN) != null) {
         element1.removeAttribute(HIDDEN);
     }
-    if(element2.getAttribute(HIDDEN) == null){
-        element2.setAttribute(HIDDEN,HIDDEN);
+    if (element2.getAttribute(HIDDEN) == null) {
+        element2.setAttribute(HIDDEN, HIDDEN);
     }
 };
 
 loginForm.email.addEventListener(CHANGE, () => {
     console.log("Email change...");
-    if (alert != null) {
+    alerts.forEach(alert => {
         alert.setAttribute(HIDDEN, HIDDEN);
-    }
+    });
     if (loginForm.email.checkValidity() === true) {
         showValidationMessage(emailValidMessage, emailInvalidMessage);
     } else {
@@ -39,13 +39,13 @@ loginForm.email.addEventListener(CHANGE, () => {
 
 loginForm.password.addEventListener(CHANGE, () => {
     console.log("Password change...");
-    if (alert != null) {
+    alerts.forEach(alert => {
         alert.setAttribute(HIDDEN, HIDDEN);
-    }
+    });
     if (loginForm.password.checkValidity() === true) {
         showValidationMessage(passwordValidMessage, passwordInvalidMessage);
     } else {
-        showValidationMessage(passwordInvalidMessage,passwordValidMessage);
+        showValidationMessage(passwordInvalidMessage, passwordValidMessage);
     }
 });
 
@@ -60,7 +60,7 @@ loginForm.addEventListener(SUBMIT, (event) => {
     if (loginForm.password.checkValidity() === true) {
         showValidationMessage(passwordValidMessage, passwordInvalidMessage);
     } else {
-        showValidationMessage(passwordInvalidMessage,passwordValidMessage);
+        showValidationMessage(passwordInvalidMessage, passwordValidMessage);
     }
     loginForm.classList.add(WAS_VALIDATED);
     if (loginForm.checkValidity() === true) {

@@ -26,6 +26,7 @@ public class UserDao extends AbstractDao<User> {
     private static final String FIND_ALL_USERS_SQL = "SELECT u.id,u.first_name,u.last_name,u.username,u.email,r.role_name,s.status_name FROM users AS u INNER JOIN roles AS r ON u.role_id = r.id INNER JOIN status AS s ON u.status_id = s.id";
     private static final String UPDATE_USER_SQL = "UPDATE users SET first_name = ?,last_name = ?,username = ?,email = ?,role_id = ?,status_id = ? WHERE id = ?";
     private static final String UPDATE_USER_STATUS_BY_ID_SQL = "UPDATE users SET status_id = ? WHERE id = ?";
+    private static final String UPDATE_PASSWORD_BY_EMAIL_SQL = "UPDATE users SET password = ? WHERE email = ?";
 
     public Optional<Long> create(User user, String password) throws DaoException {
         try (PreparedStatement userPreparedStatement = connection.prepareStatement(CREATE_USER_SQL, Statement.RETURN_GENERATED_KEYS);
@@ -96,6 +97,18 @@ public class UserDao extends AbstractDao<User> {
             return resultUpdateStatus == 1;
         } catch (SQLException e) {
             logger.error("Impossible update user status: " + e);
+            throw new DaoException(e);
+        }
+    }
+
+    public boolean updatePasswordByEmail(String email, String password) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PASSWORD_BY_EMAIL_SQL)) {
+            preparedStatement.setString(1, password);
+            preparedStatement.setString(2, email);
+            int resultUpdatePassword = preparedStatement.executeUpdate();
+            return resultUpdatePassword == 1;
+        } catch (SQLException e) {
+            logger.error("Impossible update user password: " + e);
             throw new DaoException(e);
         }
     }

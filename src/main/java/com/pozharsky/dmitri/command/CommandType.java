@@ -1,6 +1,7 @@
 package com.pozharsky.dmitri.command;
 
 import com.pozharsky.dmitri.command.impl.*;
+import com.pozharsky.dmitri.command.impl.pagecommand.ToChangePasswordPageCommand;
 import com.pozharsky.dmitri.command.impl.pagecommand.ToCreatProductPage;
 import com.pozharsky.dmitri.command.impl.pagecommand.ToLoginPageCommand;
 import com.pozharsky.dmitri.command.impl.pagecommand.ToRegistrationPageCommand;
@@ -15,9 +16,11 @@ public enum CommandType {
     CREATE_PRODUCT(new CreateProductCommand()),
     GET_USERS(new GetUsersCommand()),
     GET_PRODUCTS(new GetProductsCommand()),
+    CHANGE_PASSWORD(new ChangePasswordCommand()),
     TO_CREATE_PRODUCT_PAGE(new ToCreatProductPage()),
     TO_LOGIN_PAGE_COMMAND(new ToLoginPageCommand()),
-    TO_REGISTER_PAGE_COMMAND(new ToRegistrationPageCommand());
+    TO_REGISTER_PAGE_COMMAND(new ToRegistrationPageCommand()),
+    TO_CHANGE_PASSWORD_PAGE_COMMAND(new ToChangePasswordPageCommand());
 
     CommandType(Command command) {
         this.command = command;

@@ -29,8 +29,10 @@
                            placeholder="<fmt:message key="login.email.placeholder"/>" aria-describedby="emailHelp"
                            required
                            pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$">
-                    <div id="emailValidMessage" class="valid-feedback" hidden><fmt:message key="login.valid.message"/> </div>
-                    <div id="emailInvalidMessage" class="invalid-feedback" hidden><fmt:message key="login.email.invalid.message"/> </div>
+                    <div id="emailValidMessage" class="valid-feedback" hidden><fmt:message
+                            key="login.valid.message"/></div>
+                    <div id="emailInvalidMessage" class="invalid-feedback" hidden><fmt:message
+                            key="login.email.invalid.message"/></div>
                 </div>
                 <small id="emailHelp" class="form-text text-muted"><fmt:message key="login.email.help"/></small>
             </div>
@@ -44,25 +46,53 @@
                            placeholder="<fmt:message key="login.password.placeholder"/>" aria-describedby="passwordHelp"
                            required
                            pattern="[a-zA-Z0-9@#$%!]{8,40}">
-                    <div id="passwordValidMessage" class="valid-feedback" hidden><fmt:message key="login.valid.message"/></div>
-                    <div id="passwordInvalidMessage" class="invalid-feedback" hidden><fmt:message key="login.password.invalid.message"/></div>
+                    <div id="passwordValidMessage" class="valid-feedback" hidden><fmt:message
+                            key="login.valid.message"/></div>
+                    <div id="passwordInvalidMessage" class="invalid-feedback" hidden><fmt:message
+                            key="login.password.invalid.message"/></div>
                 </div>
                 <small id="passwordHelp" class="form-text text-muted"><fmt:message key="login.password.help"/></small>
             </div>
             <div class="login-item">
                 <button type="submit" id="submit" class="btn btn-primary"><fmt:message key="login.submit"/></button>
+                <a class="nav-link"
+                   href="${pageContext.request.contextPath}/controller?command=to_register_page_command">
+                    <fmt:message key="login.link.registration"/></a>
+                <a class="nav-link"
+                   href="${pageContext.request.contextPath}/controller?command=to_change_password_page_command">
+                    <fmt:message key="login.link.changepassword"/></a>
             </div>
         </form>
         <br/>
-        <c:if test="${errorEmailOrPassword}">
+        <c:forEach var="error" items="${errors}">
+            <c:if test="${error eq 'ERROR_USER_EMAIL'}">
+                <div class="alert alert-danger" role="alert">
+                    <fmt:message key="login.error.email"/>
+                </div>
+            </c:if>
+            <c:if test="${error eq 'ERROR_USER_PASSWORD'}">
+                <div class="alert alert-danger" role="alert">
+                    <fmt:message key="login.error.password"/>
+                </div>
+            </c:if>
+            <c:if test="${error eq 'ERROR_USER_NOT_EXIST'}">
+                <div class="alert alert-danger" role="alert">
+                    <fmt:message key="login.error.user"/>
+                </div>
+            </c:if>
+        </c:forEach>
+        <c:remove var="errors" scope="session"/>
+        <c:if test="${mismatchedPassword}">
             <div class="alert alert-danger" role="alert">
-                <fmt:message key="login.error.emailorpassword"/>
+                <fmt:message key="login.mismatchedpassword"/><c:out value="${blockingCount}"/>
             </div>
+            <c:remove var="mismatchedPassword" scope="session"/>
         </c:if>
-        <c:if test="${errorUser}">
+        <c:if test="${blockedUser}">
             <div class="alert alert-danger" role="alert">
-                <fmt:message key="login.error.user"/>
+                <fmt:message key="login.blockeduser"/>
             </div>
+            <c:remove var="blockedUser" scope="session"/>
         </c:if>
     </div>
 </div>

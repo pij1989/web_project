@@ -9,7 +9,8 @@
         <sql>
             create table if not exists `roles`(
             `id` int not null primary key auto_increment,
-            `role_name` varchar(32) not null);
+            `role_name` varchar(32) not null)
+            default character set = utf8;
         </sql>
     </changeSet>
 
@@ -26,7 +27,8 @@
         <sql>
             create table if not exists `status`(
             `id` int not null primary key auto_increment,
-            `status_name` varchar(32) not null);
+            `status_name` varchar(32) not null)
+            default character set = utf8;
         </sql>
     </changeSet>
 
@@ -52,7 +54,8 @@
             constraint `users_roles_id_fk`
             foreign key (`role_id`) references `roles` (`id`),
             constraint `users_status_id_fk`
-            foreign key (`status_id`) references `status` (`id`));
+            foreign key (`status_id`) references `status` (`id`))
+            default character set = utf8;
         </sql>
     </changeSet>
 
@@ -65,7 +68,8 @@
             `time_expire` datetime not null,
             `user_id` int not null,
             constraint `tokens_users_id_fk`
-            foreign key (`user_id`) references `users` (`id`));
+            foreign key (`user_id`) references `users` (`id`))
+            default character set = utf8;
         </sql>
     </changeSet>
 
@@ -81,7 +85,8 @@
         <sql>
             create table if not exists `categories`(
             `id` int not null primary key auto_increment,
-            `category_name` varchar(128) not null);
+            `category_name` varchar(128) not null)
+            default character set = utf8;
         </sql>
     </changeSet>
 
@@ -97,7 +102,14 @@
             `time_create` datetime,
             `category_id` int not null,
             constraint `products_categories_id_fk`
-            foreign key (`category_id`) references `categories` (`id`));
+            foreign key (`category_id`) references `categories` (`id`))
+            default character set = utf8;
+        </sql>
+    </changeSet>
+
+    <changeSet id="10" author="Dmitri">
+        <sql>
+            alter schema `web_project_database` default character set utf8;
         </sql>
     </changeSet>
 </databaseChangeLog>

@@ -1,4 +1,4 @@
-package com.pozharsky.dmitri.creator;
+package com.pozharsky.dmitri.model.creator;
 
 import com.pozharsky.dmitri.model.entity.Token;
 

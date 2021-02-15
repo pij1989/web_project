@@ -15,27 +15,27 @@
 <div class="register-container">
     <div class="register-item-wrapper bg-light">
         <h2><fmt:message key="registration.message"/></h2>
-        <form id="registrationForm" class="needs-validation" action="${pageContext.request.contextPath}/controller"
-              onsubmit="return false" method="post"
-              novalidate>
+        <form id="registrationForm" class="needs-validation <c:if test="${not empty registrationForm}">was-validated</c:if>" action="${pageContext.request.contextPath}/controller" method="post" novalidate>
             <input type="hidden" name="command" value="register">
 
             <div class="form-group">
                 <label for="firstName"><fmt:message key="registration.firstname.label"/> </label>
-                <input type="text" name="firstName" value="" class="form-control" id="firstName"
+                <input type="text" name="firstName" value="<c:out value="${registrationForm['firstName']}"/>" class="form-control" id="firstName"
                        placeholder="<fmt:message key="registration.firstname.placeholder"/>" required
                        pattern="[a-zA-Zа-яА-Я]+"/>
                 <div id="firstNameValidMessage" class="valid-feedback" hidden><fmt:message key="registration.valid.message"/> </div>
                 <div id="firstNameInvalidMessage" class="invalid-feedback" hidden><fmt:message key="registration.firstname.invalid.message"/> </div>
+                <small id="firstNameHelp" class="form-text text-muted"><fmt:message key="registration.firstname.help"/></small>
             </div>
 
             <div class="form-group">
                 <label for="lastName"><fmt:message key="registration.lastname.label"/></label>
-                <input type="text" name="lastName" value="" class="form-control" id="lastName"
+                <input type="text" name="lastName" value="<c:out value="${registrationForm['lastName']}"/>" class="form-control" id="lastName"
                        placeholder="<fmt:message key="registration.lastname.placeholder"/>" required
                        pattern="[a-zA-Zа-яА-Я]+"/>
                 <div id="lastNameValidMessage" class="valid-feedback" hidden><fmt:message key="registration.valid.message"/> </div>
                 <div id="lastNameInvalidMessage" class="invalid-feedback" hidden><fmt:message key="registration.lastname.invalid.message"/> </div>
+                <small id="lastNameHelp" class="form-text text-muted"><fmt:message key="registration.lastname.help"/></small>
             </div>
 
             <div class="form-group">
@@ -44,12 +44,13 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text bg-white"><i class="fas fa-user"></i></span>
                     </div>
-                    <input type="text" name="username" value="" class="form-control" id="username"
+                    <input type="text" name="username" value="<c:out value="${registrationForm['username']}"/>" class="form-control" id="username"
                            placeholder="<fmt:message key="registration.username.placeholder"/>" required
                            pattern="\w+"/>
                     <div id="usernameValidMessage" class="valid-feedback" hidden><fmt:message key="registration.valid.message"/> </div>
                     <div id="usernameInvalidMessage" class="invalid-feedback" hidden><fmt:message key="registration.username.invalid.message"/> </div>
                 </div>
+                <small id="usernameHelp" class="form-text text-muted"><fmt:message key="registration.username.help"/></small>
             </div>
 
             <div class="form-group">
@@ -58,10 +59,9 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text bg-white"><i class="fas fa-envelope"></i></span>
                     </div>
-                    <input type="email" name="email" value="" class="form-control" id="email"
-                           placeholder="<fmt:message key="registration.email.placeholder"/>" aria-describedby="emailHelp"
-                           required
-                           pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$">
+                    <input type="email" name="email" value="<c:out value="${registrationForm['email']}"/>" class="form-control" id="email"
+                           placeholder="<fmt:message key="registration.email.placeholder"/>" aria-describedby="emailHelp" required
+                           pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"/>
                     <div id="emailValidMessage" class="valid-feedback" hidden><fmt:message key="registration.valid.message"/> </div>
                     <div id="emailInvalidMessage" class="invalid-feedback" hidden><fmt:message key="registration.username.invalid.message"/> </div>
                 </div>
@@ -73,9 +73,8 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
                     </div>
-                    <input type="password" name="password" value="" class="form-control" id="password"
-                           placeholder="<fmt:message key="registration.password.placeholder"/>" aria-describedby="passwordHelp"
-                           required
+                    <input type="password" name="password" value="<c:out value="${registrationForm['password']}"/>" class="form-control" id="password"
+                           placeholder="<fmt:message key="registration.password.placeholder"/>" aria-describedby="passwordHelp" required
                            pattern="[a-zA-Z0-9@#$%!]{8,40}">
                     <div id="passwordValidMessage" class="valid-feedback" hidden><fmt:message key="registration.valid.message"/></div>
                     <div id="passwordInvalidMessage" class="invalid-feedback" hidden><fmt:message key="registration.password.invalid.message"/></div>
@@ -89,7 +88,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
                     </div>
-                    <input type="password" name="confirmPassword" value="" class="form-control" id="confirmPassword"
+                    <input type="password" name="confirmPassword" value="<c:out value="${registrationForm['confirmPassword']}"/>" class="form-control" id="confirmPassword"
                            placeholder="<fmt:message key="registration.confirmpassword.placeholder"/>"
                            aria-describedby="passwordHelp" required
                            pattern="[a-zA-Z0-9@#$%!]{8,40}">
@@ -99,6 +98,7 @@
                 </div>
                 <small id="confirmPasswordHelp" class="form-text text-muted"><fmt:message key="registration.confirmpassword.help"/></small>
             </div>
+            <c:remove var="registrationForm" scope="session"/>
 
             <div class="register-item">
                 <button type="submit" id="submit" class="btn btn-primary"><fmt:message
@@ -106,20 +106,18 @@
             </div>
         </form>
         <br/>
-        <c:if test="${errorEmailOrPassword}">
-            <div class="alert alert-danger" role="alert">
-                <fmt:message key="registration.error.emailorpassword"/>
-            </div>
-        </c:if>
         <c:if test="${errorUser}">
             <div class="alert alert-danger" role="alert">
-                <fmt:message key="registration.error.user"/>
+                <fmt:message key="registration.error.user"/> <c:out value="${email}"/>
             </div>
+            <c:remove var="errorUser" scope="session"/>
+            <c:remove var="email" scope="session"/>
         </c:if>
         <c:if test="${errorActivateRegistration}">
             <div class="alert alert-danger" role="alert">
                 <fmt:message key="registration.error.activateregistration"/>
             </div>
+            <c:remove var="errorActivateRegistration" scope="session"/>
         </c:if>
     </div>
 </div>
