@@ -19,7 +19,7 @@
         <main class="col-md-10 col-xl-10" role="main">
             <div style="display: flex; flex-grow: inherit; justify-content: flex-end">
                 <form class="form-inline my-3 my-lg-3" action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="command" value="to_create_product_page">
+                    <input type="hidden" name="command" value="to_create_product_page_command">
                     <button class="btn btn-outline-primary mx-2 my-2 my-sm-0" type="submit">
                         <span><i class="fas fa-plus"></i> <fmt:message key="admin.button.create"/></span>
                     </button>

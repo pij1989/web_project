@@ -1,9 +1,10 @@
 package com.pozharsky.dmitri.controller;
 
-import com.pozharsky.dmitri.command.Command;
-import com.pozharsky.dmitri.command.Router;
-import com.pozharsky.dmitri.command.SessionAttribute;
-import com.pozharsky.dmitri.command.factory.CommandFactory;
+import com.pozharsky.dmitri.controller.command.Command;
+import com.pozharsky.dmitri.controller.command.Router;
+import com.pozharsky.dmitri.controller.command.SessionAttribute;
+import com.pozharsky.dmitri.controller.command.factory.CommandFactory;
+import com.pozharsky.dmitri.exception.CommandException;
 import com.pozharsky.dmitri.model.connector.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,25 +38,30 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.debug("We received request from URI: " + request.getRequestURI() + " content type: " + request.getContentType() + " method: " + request.getMethod());
-        Optional<Command> optionalCommand = CommandFactory.defineCommand(request);
-        if (optionalCommand.isPresent()) {
-            Command command = optionalCommand.get();
-            Router router = command.execute(request);
-            if (router != null) {
-                if (router.getType().equals(Router.Type.FORWARD)) {
-                    RequestDispatcher requestDispatcher = request.getRequestDispatcher(router.getPagePath());
-                    requestDispatcher.forward(request, response);
+        try {
+            logger.debug("We received request from URI: " + request.getRequestURI() + " content type: " + request.getContentType() + " method: " + request.getMethod());
+            Optional<Command> optionalCommand = CommandFactory.defineCommand(request);
+            if (optionalCommand.isPresent()) {
+                Command command = optionalCommand.get();
+                Router router = command.execute(request);
+                if (router != null) {
+                    if (router.getType().equals(Router.Type.FORWARD)) {
+                        RequestDispatcher requestDispatcher = request.getRequestDispatcher(router.getPagePath());
+                        requestDispatcher.forward(request, response);
+                    } else {
+                        HttpSession session = request.getSession();
+                        session.setAttribute(SessionAttribute.ROUTER, Router.Type.REDIRECT.toString());
+                        response.sendRedirect(request.getContextPath() + router.getPagePath());
+                    }
                 } else {
-                    HttpSession session = request.getSession();
-                    session.setAttribute(SessionAttribute.ROUTER, Router.Type.REDIRECT.toString());
-                    response.sendRedirect(request.getContextPath() + router.getPagePath());
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 }
             } else {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        } catch (CommandException e) {
+            logger.error("Redirect to the error page", e);
+            throw new ServletException(e);
         }
     }
 

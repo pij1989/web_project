@@ -6,7 +6,7 @@ import com.pozharsky.dmitri.model.entity.User;
 
 import java.util.Map;
 
-import static com.pozharsky.dmitri.command.RequestParameter.*;
+import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
 public final class UserCreator {
 

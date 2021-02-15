@@ -1,6 +1,6 @@
 package com.pozharsky.dmitri.util;
 
-import com.pozharsky.dmitri.command.Country;
+import com.pozharsky.dmitri.controller.command.Country;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

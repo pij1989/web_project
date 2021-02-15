@@ -51,9 +51,10 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <c:set var="i" value="1"/>
                             <c:forEach var="user" items="${users}">
                                 <tr>
-                                    <th scope="row"><c:out value="${user.id}"/></th>
+                                    <th scope="row"><c:out value="${i}"/></th>
                                     <td><c:out value="${user.firstName}"/></td>
                                     <td><c:out value="${user.lastName}"/></td>
                                     <td><c:out value="${user.username}"/></td>
@@ -69,23 +70,24 @@
                                                     <option
                                                             <c:if test="${user.statusType eq 'ACTIVE'}">selected</c:if>
                                                             value="ACTIVE">
-                                                        ACTIVE
+                                                        <fmt:message key="users.status.active"/>
                                                     </option>
                                                     <option
                                                             <c:if test="${user.statusType eq 'BLOCKED'}">selected</c:if>
                                                             value="BLOCKED">
-                                                        BLOCKED
+                                                        <fmt:message key="users.status.blocked"/>
                                                     </option>
                                                     <option
                                                             <c:if test="${user.statusType eq 'WAIT_ACTIVE'}">selected</c:if>
                                                             value="WAIT_ACTIVE">
-                                                        WAIT_ACTIVE
+                                                        <fmt:message key="users.status.waitactive"/>
                                                     </option>
                                                 </select>
                                             </div>
                                         </form>
                                     </td>
                                 </tr>
+                                <c:set var="i" value="${i+1}"/>
                             </c:forEach>
                             </tbody>
                         </table>

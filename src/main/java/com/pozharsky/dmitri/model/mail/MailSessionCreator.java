@@ -5,7 +5,7 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.util.Properties;
 
-class MailSessionCreator {
+final class MailSessionCreator {
     private static final String USERNAME = "mail.user.name";
     private static final String PASSWORD = "mail.user.password";
 

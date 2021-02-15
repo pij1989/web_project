@@ -4,12 +4,12 @@ import com.pozharsky.dmitri.util.FormatCurrencyUtil;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
+import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Locale;
 
-public class FormatCurrencyTag extends SimpleTagSupport {
+public class FormatCurrencyTag extends TagSupport {
     private BigDecimal value;
     private Locale locale;
     private static final BigDecimal COURSE = BigDecimal.valueOf(2.6);
@@ -23,9 +23,14 @@ public class FormatCurrencyTag extends SimpleTagSupport {
     }
 
     @Override
-    public void doTag() throws JspException, IOException {
-        String result = FormatCurrencyUtil.formatCurrency(value, locale);
-        JspWriter jspWriter = getJspContext().getOut();
-        jspWriter.println(result);
+    public int doStartTag() throws JspException {
+        try {
+            String result = FormatCurrencyUtil.formatCurrency(value, locale);
+            JspWriter jspWriter = pageContext.getOut();
+            jspWriter.println(result);
+        } catch (IOException e) {
+            throw new JspException(e);
+        }
+        return SKIP_BODY;
     }
 }

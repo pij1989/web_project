@@ -1,6 +1,6 @@
 package com.pozharsky.dmitri.model.service.impl;
 
-import com.pozharsky.dmitri.command.RequestParameter;
+import com.pozharsky.dmitri.controller.command.RequestParameter;
 import com.pozharsky.dmitri.exception.DaoException;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.creator.UserCreator;

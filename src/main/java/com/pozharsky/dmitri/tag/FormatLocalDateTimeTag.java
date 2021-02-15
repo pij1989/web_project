@@ -4,12 +4,12 @@ import com.pozharsky.dmitri.util.FormatLocalDateTimeUtil;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
+import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
-public class FormatLocalDateTimeTag extends SimpleTagSupport {
+public class FormatLocalDateTimeTag extends TagSupport {
     private LocalDateTime date;
     private Locale locale;
 
@@ -22,9 +22,14 @@ public class FormatLocalDateTimeTag extends SimpleTagSupport {
     }
 
     @Override
-    public void doTag() throws JspException, IOException {
-        String result = FormatLocalDateTimeUtil.formatLocaleDateTime(date, locale);
-        JspWriter jspWriter = getJspContext().getOut();
-        jspWriter.println(result);
+    public int doStartTag() throws JspException {
+        try {
+            String result = FormatLocalDateTimeUtil.formatLocaleDateTime(date, locale);
+            JspWriter jspWriter = pageContext.getOut();
+            jspWriter.println(result);
+        } catch (IOException e) {
+            throw new JspException(e);
+        }
+        return SKIP_BODY;
     }
 }

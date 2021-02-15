@@ -1,6 +1,6 @@
 package com.pozharsky.dmitri.validator;
 
-import com.pozharsky.dmitri.command.RequestParameter;
+import com.pozharsky.dmitri.controller.command.RequestParameter;
 
 import java.util.Map;
 
