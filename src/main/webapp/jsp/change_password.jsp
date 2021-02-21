@@ -26,10 +26,6 @@
                            placeholder="<fmt:message key="login.email.placeholder"/>" aria-describedby="emailHelp"
                            required
                            pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$">
-                    <div id="emailValidMessage" class="valid-feedback" hidden>
-                        <fmt:message key="login.valid.message"/></div>
-                    <div id="emailInvalidMessage" class="invalid-feedback" hidden>
-                        <fmt:message key="login.email.invalid.message"/></div>
                 </div>
                 <small id="emailHelp" class="form-text text-muted"><fmt:message key="login.email.help"/></small>
             </div>
@@ -43,10 +39,6 @@
                            placeholder="<fmt:message key="login.password.placeholder"/>" aria-describedby="oldPasswordHelp"
                            required
                            pattern="[a-zA-Z0-9@#$%!]{8,40}">
-                    <div id="oldPasswordValidMessage" class="valid-feedback" hidden><fmt:message
-                            key="login.valid.message"/></div>
-                    <div id="oldPasswordInvalidMessage" class="invalid-feedback" hidden><fmt:message
-                            key="login.password.invalid.message"/></div>
                 </div>
                 <small id="oldPasswordHelp" class="form-text text-muted"><fmt:message key="login.password.help"/></small>
             </div>
@@ -61,10 +53,6 @@
                            placeholder="<fmt:message key="login.password.placeholder"/>" aria-describedby="newPasswordHelp"
                            required
                            pattern="[a-zA-Z0-9@#$%!]{8,40}">
-                    <div id="newPasswordValidMessage" class="valid-feedback" hidden><fmt:message
-                            key="login.valid.message"/></div>
-                    <div id="newPasswordInvalidMessage" class="invalid-feedback" hidden><fmt:message
-                            key="login.password.invalid.message"/></div>
                 </div>
                 <small id="newPasswordHelp" class="form-text text-muted"><fmt:message key="login.password.help"/></small>
             </div>
@@ -74,13 +62,13 @@
         </form>
         <br/>
         <c:if test="${changePasswordSuccess}">
-            <div class="alert alert-success" role="alert" id="successCreateProduct">
+            <div class="alert alert-success" role="alert" id="changePasswordSuccess">
                 <fmt:message key="changepassword.successchange"/>
             </div>
             <c:remove var="changePasswordSuccess" scope="session"/>
         </c:if>
         <c:if test="${changePasswordError}">
-            <div class="alert alert-danger" role="alert" id="errorCreateProduct">
+            <div class="alert alert-danger" role="alert" id="changePasswordError">
                 <fmt:message key="changepassword.errorchange"/>
             </div>
             <c:remove var="changePasswordError" scope="session"/>

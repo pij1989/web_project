@@ -1,7 +1,5 @@
 package com.pozharsky.dmitri.util;
 
-import com.pozharsky.dmitri.model.locale.Country;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
@@ -14,7 +12,7 @@ public final class FormatCurrencyUtil {
     }
 
     public static String formatCurrency(BigDecimal value, Locale locale) {
-        if (locale.getCountry().equals(Country.US.getCountry())) {
+        if (locale.equals(Locale.US)) {
             value = value.divide(new BigDecimal(COURSE), RoundingMode.HALF_UP);
         }
         NumberFormat numberFormat = NumberFormat.getCurrencyInstance(locale);

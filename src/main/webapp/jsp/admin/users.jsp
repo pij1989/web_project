@@ -24,17 +24,18 @@
                     </button>
                 </form>
             </div>
-            <c:if test="${changeStatus eq 'Success'}">
+            <c:if test="${changeStatusSuccess}">
                 <div class="alert alert-success" id="successChangeStatus" role="alert">
                     <fmt:message key="users.alert.success"/>
                 </div>
+                <c:remove var="changeStatusSuccess" scope="session"/>
             </c:if>
-            <c:if test="${changeStatus eq 'Error'}">
+            <c:if test="${changeStatusError}">
                 <div class="alert alert-danger" id="errorChangeStatus" hidden role="alert">
                     <fmt:message key="users.alert.error"/>
                 </div>
+                <c:remove var="changeStatusError" scope="session"/>
             </c:if>
-            <c:remove var="changeStatus" scope="session"/>
             <c:choose>
                 <c:when test="${not empty users}">
                     <div style="display: flex;justify-content: center">

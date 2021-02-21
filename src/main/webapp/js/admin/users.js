@@ -13,15 +13,12 @@ statusSelect.forEach(element => {
 });
 
 setTimeout(() => {
-    let successChangeStatus = document.getElementById(SUCCESS_CHANGE_STATUS);
-    if (successChangeStatus != null) {
-        successChangeStatus.hidden = true;
+    let successCreateProduct = document.getElementById(SUCCESS_CHANGE_STATUS);
+    let errorCreateProduct = document.getElementById(ERROR_CHANGE_STATUS);
+    if (successCreateProduct != null) {
+        successCreateProduct.hidden = true;
     }
-}, 1000);
-
-setTimeout(() => {
-    let errorChangeStatus = document.getElementById(ERROR_CHANGE_STATUS);
-    if (errorChangeStatus != null) {
-        errorChangeStatus.hidden = true;
+    if (errorCreateProduct != null) {
+        errorCreateProduct.hidden = true;
     }
 }, 1000);

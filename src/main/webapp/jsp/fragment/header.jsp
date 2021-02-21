@@ -34,16 +34,16 @@
                 </c:if>
                 <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller"
                       method="post">
-                    <input type="hidden" name="command" value="change_language"/>
+                    <input type="hidden" name="command" value="change_locale"/>
                     <div class="dropdown">
                         <button class="btn btn-success dropdown-toggle mx-2" type="button" id="language"
                                 data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false">
                             <fmt:message key="header.button.language"/>
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="change_language">
-                            <button class="dropdown-item" type="submit" name="language" value="en"><fmt:message key="header.language.english"/></button>
-                            <button class="dropdown-item" type="submit" name="language" value="ru"><fmt:message key="header.language.russian"/></button>
+                        <div class="dropdown-menu" aria-labelledby="change_locale">
+                            <button class="dropdown-item" type="submit" name="language" value="en-US"><fmt:message key="header.language.english"/></button>
+                            <button class="dropdown-item" type="submit" name="language" value="ru-RU"><fmt:message key="header.language.russian"/></button>
                         </div>
                     </div>
                 </form>
@@ -51,7 +51,7 @@
                     <c:when test="${role eq 'USER' or role eq 'ADMIN'}">
                         <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller">
                             <input type="hidden" name="command" value="logout">
-                            <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
+                            <button id="logout" class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
                                 <fmt:message key="header.button.signout"/>
                             </button>
                         </form>

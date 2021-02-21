@@ -17,17 +17,18 @@
         <c:import url="fragment/sidebar.jsp"/>
         <main class="col-md-10 col-xl-10" role="main">
             <br/>
-            <c:if test="${createProduct eq 'Success'}">
+            <c:if test="${createProductSuccess}">
                 <div class="alert alert-success" role="alert" id="successCreateProduct">
                     <fmt:message key="product.successcreate"/>
                 </div>
+                <c:remove var="createProductSuccess" scope="session"/>
             </c:if>
-            <c:if test="${createProduct eq 'Error'}">
+            <c:if test="${createProductError}">
                 <div class="alert alert-danger" role="alert" id="errorCreateProduct">
                     <fmt:message key="product.errorcreate"/>
                 </div>
+                <c:remove var="createProductError" scope="session"/>
             </c:if>
-            <c:remove var="createProduct" scope="session"/>
             <br/>
             <div class="create-product-container">
                 <div class="create-product-item-wrapper bg-light">
@@ -44,10 +45,21 @@
 
                         <div class="form-group">
                             <label for="category"><fmt:message key="product.category.label"/></label>
+                            <select name="category" class="form-control" id="category">
+                                <c:forEach var="category" items="${categories}">
+                                    <option value="<c:out value="${category.name}"/>">
+                                        <c:out value="${category.name}"/>
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <%--<div class="form-group">
+                            <label for="category"><fmt:message key="product.category.label"/></label>
                             <input type="text" name="category" value="" class="form-control" id="category"
                                    placeholder="<fmt:message key="product.category.placeholder"/>" required
                                    pattern="[\-\s\w]+"/>
-                        </div>
+                        </div>--%>
 
                         <div class="form-group">
                             <label for="price"><fmt:message key="product.price.label"/></label>

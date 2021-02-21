@@ -46,7 +46,8 @@
                     <form class="form-inline" action="${pageContext.request.contextPath}/controller" id="paginationForm">
                         <input type="hidden" name="command" value="get_products">
                         <div class="form-row">
-                            <div class="form-group">
+                            <ctg:pagination amountItem="${amountProduct}"/>
+                            <%--<div class="form-group">
                                 <label for="rowsPerPage">Rows per page: </label>
                                 <select name="perPage" class="form-control" id="rowsPerPage">
                                     <option <c:if test="${perPage eq '5'}">selected</c:if>>5</option>
@@ -63,7 +64,7 @@
                                         </c:forEach>
                                     </ul>
                                 </nav>
-                            </div>
+                            </div>--%>
                         </div>
                     </form>
                 </c:if>
