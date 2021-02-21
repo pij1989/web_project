@@ -29,7 +29,7 @@ public class FormatCurrencyTag extends TagSupport {
             JspWriter jspWriter = pageContext.getOut();
             jspWriter.println(result);
         } catch (IOException e) {
-            throw new JspException(e);
+            throw new JspException(e.getMessage());
         }
         return SKIP_BODY;
     }
