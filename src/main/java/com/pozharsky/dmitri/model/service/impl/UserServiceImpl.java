@@ -70,8 +70,7 @@ public class UserServiceImpl implements UserService {
         TransactionManager transactionManager = new TransactionManager();
         try {
             boolean isCreate = false;
-            UserValidator userValidator = UserValidator.getInstance();
-            if (userValidator.isValidRegistrationForm(userForm)) {
+            if (UserValidator.isValidRegistrationForm(userForm)) {
                 UserDao userDao = new UserDao();
                 TokenDao tokenDao = new TokenDao();
                 transactionManager.initTransaction(userDao, tokenDao);
@@ -209,13 +208,12 @@ public class UserServiceImpl implements UserService {
 
     private boolean checkEmailAndPassword(String email, String password) {
         boolean isValid = true;
-        UserValidator validator = UserValidator.getInstance();
         ApplicationError applicationError = ApplicationError.getInstance();
-        if (!validator.isEmail(email)) {
+        if (!UserValidator.isEmail(email)) {
             applicationError.addError(ErrorType.ERROR_USER_EMAIL);
             isValid = false;
         }
-        if (!validator.isPassword(password)) {
+        if (!UserValidator.isPassword(password)) {
             applicationError.addError(ErrorType.ERROR_USER_PASSWORD);
             isValid = false;
         }
