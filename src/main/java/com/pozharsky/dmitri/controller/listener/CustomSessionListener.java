@@ -1,6 +1,7 @@
 package com.pozharsky.dmitri.controller.listener;
 
 import com.pozharsky.dmitri.controller.command.PagePath;
+import com.pozharsky.dmitri.controller.command.Router;
 import com.pozharsky.dmitri.controller.command.SessionAttribute;
 import com.pozharsky.dmitri.model.entity.RoleType;
 import org.apache.logging.log4j.LogManager;
@@ -21,9 +22,9 @@ public class CustomSessionListener implements HttpSessionListener {
     @Override
     public void sessionCreated(HttpSessionEvent sessionEvent) {
         HttpSession session = sessionEvent.getSession();
-        session.setAttribute(SessionAttribute.ROLE, RoleType.GUEST.toString());
+        session.setAttribute(SessionAttribute.ROLE, RoleType.GUEST);
         session.setAttribute(SessionAttribute.LOCALE, Locale.getDefault());
-        session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.INDEX);
+        session.setAttribute(SessionAttribute.CURRENT_PAGE, new Router(PagePath.INDEX, Router.Type.REDIRECT));
         session.setAttribute(SessionAttribute.BLOCKING_COUNT, new AtomicInteger(COUNT));
         logger.info("Session create");
     }

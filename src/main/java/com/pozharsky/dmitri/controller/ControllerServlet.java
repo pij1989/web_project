@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/controller")
+@WebServlet(urlPatterns = {"/controller"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024,
         maxFileSize = 1024 * 1024 * 5,
         maxRequestSize = 1024 * 1024 * 5 * 5)
@@ -50,7 +50,7 @@ public class ControllerServlet extends HttpServlet {
                         requestDispatcher.forward(request, response);
                     } else {
                         HttpSession session = request.getSession();
-                        session.setAttribute(SessionAttribute.ROUTER, Router.Type.REDIRECT.toString());
+                        session.setAttribute(SessionAttribute.IS_REDIRECT, true);
                         response.sendRedirect(request.getContextPath() + router.getPagePath());
                     }
                 } else {
