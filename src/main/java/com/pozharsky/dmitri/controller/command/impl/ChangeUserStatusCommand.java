@@ -37,14 +37,14 @@ public class ChangeUserStatusCommand implements Command {
                             }
                         })
                         .collect(Collectors.toList());
-                session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.USERS);
                 session.setAttribute(SessionAttribute.USERS, updateUsers);
-                session.setAttribute(SessionAttribute.CHANGE_STATUS, "Success");
-                return new Router(PagePath.USERS, Router.Type.REDIRECT);
+                session.setAttribute(SessionAttribute.CHANGE_STATUS_SUCCESS, true);
             } else {
-                session.setAttribute(SessionAttribute.CHANGE_STATUS, "Error");
-                return new Router(PagePath.USERS, Router.Type.REDIRECT);
+                session.setAttribute(SessionAttribute.CHANGE_STATUS_ERROR, true);
             }
+            Router router = new Router(PagePath.USERS, Router.Type.REDIRECT);
+            session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+            return router;
         } catch (ServiceException e) {
             logger.error(e);
             throw new CommandException(e);

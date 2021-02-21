@@ -32,11 +32,13 @@ public class ActivateRegistrationCommand implements Command {
                 Token token = optionalToken.get();
                 long userId = token.getUserId();
                 userService.changeUserStatus(userId, StatusType.ACTIVE);
-                session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.LOGIN);
-                return new Router(PagePath.LOGIN, Router.Type.REDIRECT);
+                Router router = new Router(PagePath.LOGIN, Router.Type.REDIRECT);
+                session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+                return router;
             } else {
-                session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.REGISTRATION);
-                return new Router(PagePath.REGISTRATION, Router.Type.REDIRECT);
+                Router router = new Router(PagePath.REGISTRATION, Router.Type.REDIRECT);
+                session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+                return router;
             }
         } catch (ServiceException e) {
             logger.error(e);

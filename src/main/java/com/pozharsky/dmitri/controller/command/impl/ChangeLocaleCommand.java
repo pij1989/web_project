@@ -1,34 +1,27 @@
 package com.pozharsky.dmitri.controller.command.impl;
 
-import com.pozharsky.dmitri.controller.command.*;
-import com.pozharsky.dmitri.model.locale.Country;
-import com.pozharsky.dmitri.model.locale.Language;
+import com.pozharsky.dmitri.controller.command.Command;
+import com.pozharsky.dmitri.controller.command.RequestParameter;
+import com.pozharsky.dmitri.controller.command.Router;
+import com.pozharsky.dmitri.controller.command.SessionAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
-public class ChangeLanguageCommand implements Command {
+public class ChangeLocaleCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) {
-        String value = request.getParameter(RequestParameter.LANGUAGE);
+        String languageTag = request.getParameter(RequestParameter.LANGUAGE);
         HttpSession session = request.getSession();
-        String pagePath = (String) session.getAttribute(SessionAttribute.CURRENT_PAGE);
-        Language language = Language.valueOf(value.toUpperCase());
-        switch (language) {
-            case RU: {
-                session.setAttribute(SessionAttribute.LOCALE, new Locale(Language.RU.getLanguage(), Country.RU.getCountry()));
-                break;
-            }
-            case EN: {
-                session.setAttribute(SessionAttribute.LOCALE, new Locale(Language.EN.getLanguage(), Country.US.getCountry()));
-                break;
-            }
-            default: {
-                session.setAttribute(SessionAttribute.LOCALE, new Locale(Language.RU.getLanguage(), Country.RU.getCountry()));
-            }
+        Router router = (Router) session.getAttribute(SessionAttribute.CURRENT_PAGE);
+        if (languageTag != null) {
+            Locale locale = Locale.forLanguageTag(languageTag);
+            session.setAttribute(SessionAttribute.LOCALE, locale);
+        } else {
+            session.setAttribute(SessionAttribute.LOCALE, Locale.getDefault());
         }
-        return new Router(pagePath, Router.Type.REDIRECT);
+        return router;
     }
 }

@@ -27,8 +27,9 @@ public class ChangePasswordCommand implements Command {
             } else {
                 session.setAttribute(SessionAttribute.CHANGE_PASSWORD_ERROR, true);
             }
-            session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.CHANGE_PASSWORD);
-            return new Router(PagePath.CHANGE_PASSWORD, Router.Type.REDIRECT);
+            Router router = new Router(PagePath.CHANGE_PASSWORD, Router.Type.REDIRECT);
+            session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+            return router;
         } catch (ServiceException e) {
             logger.error(e);
             throw new CommandException(e);

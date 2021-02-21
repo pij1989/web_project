@@ -52,13 +52,12 @@ public class RegistrationCommand implements Command {
                     Token token = optionalToken.get();
                     String tokenValue = token.getTokenValue();
                     emailService.sendActivationEmail(email, tokenValue);
-                    session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.ACTIVATE_REGISTRATION);
-                    return new Router(PagePath.ACTIVATE_REGISTRATION);
+                    Router router = new Router(PagePath.ACTIVATE_REGISTRATION);
+                    session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+                    return router;
                 } else {
                     logger.info("Impossible activate registration");
                     session.setAttribute(SessionAttribute.ERROR_ACTIVATE_REGISTRATION, true);
-                    session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.REGISTRATION);
-                    return new Router(PagePath.REGISTRATION, Router.Type.REDIRECT);
                 }
             } else {
                 ApplicationError applicationError = ApplicationError.getInstance();
@@ -68,11 +67,12 @@ public class RegistrationCommand implements Command {
                     session.setAttribute(SessionAttribute.ERROR_USER, true);
                     userForm.put(EMAIL, null);
                 }
-                session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.REGISTRATION);
                 session.setAttribute(SessionAttribute.REGISTRATION_FORM, userForm);
                 applicationError.clearErrors();
-                return new Router(PagePath.REGISTRATION, Router.Type.REDIRECT);
             }
+            Router router = new Router(PagePath.REGISTRATION, Router.Type.REDIRECT);
+            session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+            return router;
         } catch (ServiceException e) {
             logger.error(e);
             throw new CommandException(e);

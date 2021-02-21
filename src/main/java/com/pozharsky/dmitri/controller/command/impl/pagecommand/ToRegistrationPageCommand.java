@@ -12,7 +12,7 @@ public class ToRegistrationPageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.REGISTRATION);
+        session.setAttribute(SessionAttribute.CURRENT_PAGE, new Router(PagePath.REGISTRATION, Router.Type.REDIRECT));
         return new Router(PagePath.REGISTRATION);
     }
 }

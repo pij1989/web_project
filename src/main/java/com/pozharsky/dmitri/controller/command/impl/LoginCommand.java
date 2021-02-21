@@ -39,18 +39,18 @@ public class LoginCommand implements Command {
                     session.setAttribute(SessionAttribute.USERNAME, user.getUsername());
                     session.setAttribute(SessionAttribute.ROLE, user.getRoleType());
                     if (roleType.equals(RoleType.ADMIN)) {
-                        session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.ADMIN);
-                        return new Router(PagePath.ADMIN);
+                        Router router = new Router(PagePath.ADMIN, Router.Type.REDIRECT);
+                        session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+                        return router;
                     } else {
-                        session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.MAIN);
-                        return new Router(PagePath.MAIN);
+                        Router router = new Router(PagePath.MAIN, Router.Type.REDIRECT);
+                        session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+                        return router;
                     }
                 } else {
                     if (status.equals(StatusType.BLOCKED)) {
                         session.setAttribute(SessionAttribute.BLOCKED_USER, true);
                     }
-                    session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.LOGIN);
-                    return new Router(PagePath.LOGIN, Router.Type.REDIRECT);
                 }
             } else {
                 ApplicationError applicationError = ApplicationError.getInstance();
@@ -65,9 +65,10 @@ public class LoginCommand implements Command {
                         session.setAttribute(SessionAttribute.BLOCKED_USER, true);
                     }
                 }
-                session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.LOGIN);
-                return new Router(PagePath.LOGIN, Router.Type.REDIRECT);
             }
+            Router router = new Router(PagePath.LOGIN, Router.Type.REDIRECT);
+            session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+            return router;
         } catch (ServiceException e) {
             logger.error(e);
             throw new CommandException(e);

@@ -5,10 +5,9 @@ public final class SessionAttribute {
     public static final String USERNAME = "username";
     public static final String CURRENT_PAGE = "currentPage";
     public static final String USERS = "users";
-    public static final String PRODUCTS = "products";
-    public static final String CHANGE_STATUS = "changeStatus";
-    public static final String CREATE_PRODUCT = "createProduct";
-    public static final String ROUTER = "router";
+    public static final String CHANGE_STATUS_SUCCESS = "changeStatusSuccess";
+    public static final String CHANGE_STATUS_ERROR = "changeStatusError";
+    public static final String IS_REDIRECT = "isRedirect";
     public static final String LOCALE = "locale";
     public static final String EMAIL = "email";
     public static final String BLOCKING_COUNT = "blockingCount";
@@ -20,6 +19,16 @@ public final class SessionAttribute {
     public static final String BLOCKED_USER = "blockedUser";
     public static final String CHANGE_PASSWORD_SUCCESS = "changePasswordSuccess";
     public static final String CHANGE_PASSWORD_ERROR = "changePasswordError";
+    public static final String AMOUNT_PRODUCT = "amountProduct";
+    public static final String PRODUCTS = "products";
+    public static final String CATEGORIES = "categories";
+    public static final String CREATE_PRODUCT_ERROR = "createProductError";
+    public static final String CREATE_PRODUCT_SUCCESS = "createProductSuccess";
+    public static final String CREATE_CATEGORY_SUCCESS = "createCategorySuccess";
+    public static final String CREATE_CATEGORY_ERROR = "createCategoryError";
+    public static final String CATEGORY = "category";
+    public static final String UPDATE_CATEGORY_SUCCESS = "updateCategorySuccess";
+    public static final String UPDATE_CATEGORY_ERROR = "updateCategoryError";
 
     private SessionAttribute() {
     }

@@ -12,7 +12,7 @@ public class ToCreatProductPageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        session.setAttribute(SessionAttribute.CURRENT_PAGE, PagePath.CREATE_PRODUCT);
+        session.setAttribute(SessionAttribute.CURRENT_PAGE, new Router(PagePath.CREATE_PRODUCT, Router.Type.REDIRECT));
         return new Router(PagePath.CREATE_PRODUCT);
     }
 }

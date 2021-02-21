@@ -1,13 +1,10 @@
 package com.pozharsky.dmitri.controller.command;
 
 import com.pozharsky.dmitri.controller.command.impl.*;
-import com.pozharsky.dmitri.controller.command.impl.pagecommand.ToChangePasswordPageCommand;
-import com.pozharsky.dmitri.controller.command.impl.pagecommand.ToCreatProductPageCommand;
-import com.pozharsky.dmitri.controller.command.impl.pagecommand.ToLoginPageCommand;
-import com.pozharsky.dmitri.controller.command.impl.pagecommand.ToRegistrationPageCommand;
+import com.pozharsky.dmitri.controller.command.impl.pagecommand.*;
 
 public enum CommandType {
-    CHANGE_LANGUAGE(new ChangeLanguageCommand()),
+    CHANGE_LOCALE(new ChangeLocaleCommand()),
     LOGIN(new LoginCommand()),
     REGISTER(new RegistrationCommand()),
     ACTIVATE_REGISTRATION(new ActivateRegistrationCommand()),
@@ -16,6 +13,11 @@ public enum CommandType {
     CREATE_PRODUCT(new CreateProductCommand()),
     GET_USERS(new GetUsersCommand()),
     GET_PRODUCTS(new GetProductsCommand()),
+    GET_CATEGORIES(new GetCategoriesCommand()),
+    DELETE_CATEGORY(new DeleteCategoryCommand()),
+    CREATE_CATEGORY(new CreateCategoryCommand()),
+    EDIT_CATEGORY(new EditCategoryCommand()),
+    UPDATE_CATEGORY(new UpdateCategoryCommand()),
     CHANGE_PASSWORD(new ChangePasswordCommand()),
     TO_CREATE_PRODUCT_PAGE_COMMAND(new ToCreatProductPageCommand()),
     TO_LOGIN_PAGE_COMMAND(new ToLoginPageCommand()),

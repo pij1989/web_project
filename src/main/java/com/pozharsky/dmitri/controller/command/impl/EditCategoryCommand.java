@@ -15,28 +15,28 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Optional;
 
-public class GetProductsCommand implements Command {
-    private static final Logger logger = LogManager.getLogger(GetProductsCommand.class);
+
+public class EditCategoryCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(EditCategoryCommand.class);
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         try {
-            String page = request.getParameter(RequestParameter.PAGE);
-            String perPage = request.getParameter(RequestParameter.PER_PAGE);
-            logger.debug("Page: " + page + " perPage: " + perPage);
-            ProductService productService = ProductServiceImpl.getInstance();
-            int amountProduct = productService.defineAmountProduct();
-            List<Product> products = productService.findProductsByPerPage(page, perPage);
+            String categoryId = request.getParameter(RequestParameter.CATEGORY_ID);
+            logger.debug("CategoryId: " + categoryId);
+            CategoryService categoryService = CategoryServiceImpl.getInstance();
+            Optional<Category> optionalCategory = categoryService.findCategoryById(categoryId);
             HttpSession session = request.getSession();
-            if (session.getAttribute(SessionAttribute.CATEGORIES) == null) {
-                CategoryService categoryService = CategoryServiceImpl.getInstance();
-                List<Category> categories = categoryService.findAllCategory();
-                session.setAttribute(SessionAttribute.CATEGORIES, categories);
+            if (optionalCategory.isPresent()) {
+                Category category = optionalCategory.get();
+                ProductService productService = ProductServiceImpl.getInstance();
+                List<Product> products = productService.findProductByCategory(categoryId);
+                session.setAttribute(SessionAttribute.CATEGORY, category);
+                session.setAttribute(SessionAttribute.PRODUCTS, products);
             }
-            session.setAttribute(SessionAttribute.PRODUCTS, products);
-            session.setAttribute(SessionAttribute.AMOUNT_PRODUCT, amountProduct);
-            Router router = new Router(PagePath.PRODUCTS);
+            Router router = new Router(PagePath.EDIT_CATEGORY, Router.Type.REDIRECT);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;
         } catch (ServiceException e) {
