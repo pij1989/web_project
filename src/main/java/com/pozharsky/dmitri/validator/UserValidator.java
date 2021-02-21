@@ -4,30 +4,25 @@ import com.pozharsky.dmitri.controller.command.RequestParameter;
 
 import java.util.Map;
 
-public class UserValidator {
+public final class UserValidator {
     private static final String EMPTY = "";
     private static final String NAME_REGEX = "[a-zA-Zа-яА-Я]+";
     private static final String USERNAME_REGEX = "\\w+";
     private static final String EMAIL_REGEX = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$";
     private static final String PASSWORD_REGEX = "[a-zA-Z0-9@#$%!]{8,40}";
-    private static final UserValidator instance = new UserValidator();
 
     private UserValidator() {
     }
 
-    public static UserValidator getInstance() {
-        return instance;
-    }
-
-    public boolean isEmail(String email) {
+    public static boolean isEmail(String email) {
         return email.matches(EMAIL_REGEX);
     }
 
-    public boolean isPassword(String password) {
+    public static boolean isPassword(String password) {
         return password.matches(PASSWORD_REGEX);
     }
 
-    public boolean isValidRegistrationForm(Map<String, String> form) {
+    public static boolean isValidRegistrationForm(Map<String, String> form) {
         boolean isValid = true;
         String firstName = form.get(RequestParameter.FIRST_NAME);
         if (!firstName.matches(NAME_REGEX)) {
