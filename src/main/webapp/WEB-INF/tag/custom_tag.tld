@@ -46,4 +46,14 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <name>pagination</name>
+        <tag-class>com.pozharsky.dmitri.tag.PaginationTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>amountItem</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>
