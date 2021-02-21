@@ -1,6 +1,8 @@
 package com.pozharsky.dmitri.controller.filter;
 
+import com.pozharsky.dmitri.controller.command.Router;
 import com.pozharsky.dmitri.controller.command.SessionAttribute;
+import com.pozharsky.dmitri.model.entity.RoleType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,18 +26,25 @@ public class PageRedirectSecurityFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        logger.debug("Start filter...");
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpSession session = httpServletRequest.getSession();
-        String sessionAttribute = (String) session.getAttribute(SessionAttribute.ROUTER);
-        if (sessionAttribute != null) {
-            session.removeAttribute(SessionAttribute.ROUTER);
-            logger.debug("Do chain...");
+        Boolean isRedirect = (Boolean) session.getAttribute(SessionAttribute.IS_REDIRECT);
+        if (isRedirect != null && isRedirect) {
+            logger.debug("Redirect: " + ((HttpServletRequest) request).getRequestURI());
+            session.setAttribute(SessionAttribute.IS_REDIRECT, false);
             chain.doFilter(request, response);
         } else {
-            logger.debug("Send redirect...");
-            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + indexPath);
+            Router router = (Router) session.getAttribute(SessionAttribute.CURRENT_PAGE);
+            RoleType role = (RoleType) session.getAttribute(SessionAttribute.ROLE);
+            if (role == null || role.equals(RoleType.GUEST)) {
+                httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + indexPath);
+                logger.debug("Redirect to index: " + role);
+                return;
+            }
+            logger.debug("Redirect: " + role);
+            session.setAttribute(SessionAttribute.IS_REDIRECT, true);
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + router.getPagePath());
         }
     }
 
