@@ -54,13 +54,6 @@
                             </select>
                         </div>
 
-                        <%--<div class="form-group">
-                            <label for="category"><fmt:message key="product.category.label"/></label>
-                            <input type="text" name="category" value="" class="form-control" id="category"
-                                   placeholder="<fmt:message key="product.category.placeholder"/>" required
-                                   pattern="[\-\s\w]+"/>
-                        </div>--%>
-
                         <div class="form-group">
                             <label for="price"><fmt:message key="product.price.label"/></label>
                             <input type="text" name="price" value="" class="form-control" id="price"
@@ -76,17 +69,17 @@
 
                         <div class="form-group">
                             <label for="description"><fmt:message key="product.description.label"/></label>
-                            <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                            <textarea class="form-control" name="description" id="description" rows="3" required></textarea>
                         </div>
 
                         <div class="form-group">
                             <label for="creatingTime"><fmt:message key="product.createdate.label"/></label>
-                            <input type="datetime-local" id="creatingTime" name="creatingTime">
+                            <input type="datetime-local" id="creatingTime" name="creatingTime" required>
                         </div>
 
                         <div class="form-group">
                             <label for="uploadImage"><fmt:message key="product.uploadimage.label"/></label>
-                            <input type="file" name="image" class="form-control-file" id="uploadImage">
+                            <input type="file" name="image" class="form-control-file" id="uploadImage" required>
                         </div>
 
                         <div class="create-product-item">

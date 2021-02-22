@@ -3,10 +3,12 @@ package com.pozharsky.dmitri.model.service;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.entity.Product;
 
+import javax.servlet.http.Part;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
-    boolean createProduct(String productName, String category, String price, String isActive, String description, byte[] image, String creatingTime) throws ServiceException;
+    boolean createProduct(Map<String, String> productForm, Part part) throws ServiceException;
 
     List<Product> findProductByCategory(String categoryId) throws ServiceException;
 

@@ -1,19 +1,22 @@
 package com.pozharsky.dmitri.model.service.impl;
 
+import com.pozharsky.dmitri.controller.command.RequestParameter;
 import com.pozharsky.dmitri.exception.DaoException;
 import com.pozharsky.dmitri.exception.ServiceException;
+import com.pozharsky.dmitri.model.creator.ProductCreator;
 import com.pozharsky.dmitri.model.dao.CategoryDao;
 import com.pozharsky.dmitri.model.dao.ProductDao;
 import com.pozharsky.dmitri.model.dao.TransactionManager;
 import com.pozharsky.dmitri.model.entity.Category;
 import com.pozharsky.dmitri.model.entity.Product;
 import com.pozharsky.dmitri.model.service.ProductService;
+import com.pozharsky.dmitri.validator.ProductValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import javax.servlet.http.Part;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class ProductServiceImpl implements ProductService {
@@ -30,31 +33,30 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean createProduct(String productName, String categoryName, String price, String isActive,
-                                 String description, byte[] image, String creatingTime) throws ServiceException {
+    public boolean createProduct(Map<String, String> productForm, Part part) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             boolean isCreate = false;
-            ProductDao productDao = new ProductDao();
-            CategoryDao categoryDao = new CategoryDao();
-            transactionManager.initTransaction(productDao, categoryDao);
-            Optional<Category> optionalCategory = categoryDao.findCategoryByName(categoryName);
-            Optional<Long> optionalCategoryId;
-            if (optionalCategory.isPresent()) {
-                optionalCategoryId = optionalCategory.map(Category::getId);
-            } else {
-                Category categoryInstance = new Category(categoryName);
-                optionalCategoryId = categoryDao.create(categoryInstance);
+            if (ProductValidator.isValidProductForm(productForm)) {
+                ProductDao productDao = new ProductDao();
+                CategoryDao categoryDao = new CategoryDao();
+                transactionManager.initTransaction(productDao, categoryDao);
+                String categoryName = productForm.get(RequestParameter.CATEGORY);
+                Optional<Category> optionalCategory = categoryDao.findCategoryByName(categoryName);
+                Optional<Long> optionalCategoryId;
+                if (optionalCategory.isPresent()) {
+                    optionalCategoryId = optionalCategory.map(Category::getId);
+                } else {
+                    Category categoryInstance = new Category(categoryName);
+                    optionalCategoryId = categoryDao.create(categoryInstance);
+                }
+                if (optionalCategoryId.isPresent()) {
+                    long categoryId = optionalCategoryId.get();
+                    Product product = ProductCreator.createProduct(productForm, part, categoryId);
+                    isCreate = productDao.create(product);
+                }
+                transactionManager.commit();
             }
-            if (optionalCategoryId.isPresent()) {
-                long categoryId = optionalCategoryId.get();
-                boolean status = Boolean.parseBoolean(isActive);
-                BigDecimal productPrice = BigDecimal.valueOf(Double.parseDouble(price));
-                LocalDateTime productCreatingTime = LocalDateTime.parse(creatingTime);
-                Product product = new Product(productName, productPrice, status, description, image, productCreatingTime, categoryId);
-                isCreate = productDao.create(product);
-            }
-            transactionManager.commit();
             return isCreate;
         } catch (DaoException e) {
             logger.error(e);

@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateProductCommand implements Command {
     private static final Logger logger = LogManager.getLogger(CreateProductCommand.class);
@@ -26,13 +28,19 @@ public class CreateProductCommand implements Command {
             String isActive = request.getParameter(RequestParameter.IS_ACTIVE_PRODUCT);
             String description = request.getParameter(RequestParameter.DESCRIPTION);
             String creatingTime = request.getParameter(RequestParameter.TIME_CREATE);
-            HttpSession session = request.getSession();
+            Part part = request.getPart(RequestParameter.IMAGE);
             logger.debug("Product name: " + productName + " Category: " + category + " Price: " + price +
                     " isActive: " + isActive + " Description: " + description + " Creating time: " + creatingTime);
-            Part part = request.getPart(RequestParameter.IMAGE);
-            byte[] image = part.getInputStream().readAllBytes();
+            Map<String, String> productForm = new HashMap<>();
+            productForm.put(RequestParameter.PRODUCT_NAME, productName);
+            productForm.put(RequestParameter.CATEGORY, category);
+            productForm.put(RequestParameter.PRICE, price);
+            productForm.put(RequestParameter.IS_ACTIVE_PRODUCT, isActive);
+            productForm.put(RequestParameter.DESCRIPTION, description);
+            productForm.put(RequestParameter.TIME_CREATE, creatingTime);
             ProductService productService = ProductServiceImpl.getInstance();
-            boolean result = productService.createProduct(productName, category, price, isActive, description, image, creatingTime);
+            boolean result = productService.createProduct(productForm, part);
+            HttpSession session = request.getSession();
             if (result) {
                 session.setAttribute(SessionAttribute.CREATE_PRODUCT_SUCCESS, true);
             } else {
