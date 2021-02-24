@@ -35,23 +35,24 @@
                                 <div class="card-body">
                                     <h5 class="card-title"><c:out value="${product.name}"/></h5>
                                     <p class="card-text"><c:out value="${product.description}"/></p>
+                                    <h5 class="card-title"><ctg:formatCurrency value="${product.price}"
+                                                                               locale="${locale}"/></h5>
                                     <c:choose>
                                         <c:when test="${product.status}">
-                                            <span class="badge badge-success">Active</span>
+                                            <p><span class="badge badge-success"><fmt:message key="products.active"/></span></p>
                                         </c:when>
                                         <c:otherwise>
-                                            <span class="badge badge-danger">Not active</span>
+                                            <p><span class="badge badge-danger"><fmt:message key="products.notactive"/></span></p>
                                         </c:otherwise>
                                     </c:choose>
-                                    <h5 class="card-title"><ctg:formatCurrency value="${product.price}" locale="${locale}"/></h5>
                                     <p><small><fmt:message key="products.createtime"/> <ctg:formatLocalDateTime
                                             date="${product.creatingTime}" locale="${locale}"/></small></p>
                                     <form method="post" action="${pageContext.request.contextPath}/controller">
                                         <input type="hidden" name="command" value="edit_product">
-                                        <input type="hidden" name="categoryId"
+                                        <input type="hidden" name="productId"
                                                value="<c:out value="${product.id}"/>">
                                         <button class="btn btn-outline-primary mx-2 my-2 my-sm-0" type="submit">
-                                            <span><i class="fas fa-edit"></i> Edit</span>
+                                            <span><i class="fas fa-edit"></i> <fmt:message key="products.edit"/></span>
                                         </button>
                                     </form>
                                 </div>

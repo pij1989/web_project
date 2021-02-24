@@ -17,6 +17,7 @@ public class RequestParameter {
     public static final String USER_ID = "userId";
     public static final String CATEGORY_ID = "categoryId";
     public static final String PRODUCT_NAME = "productName";
+    public static final String PRODUCT_ID = "productId";
     public static final String CATEGORY_NAME = "categoryName";
     public static final String CATEGORY = "category";
     public static final String PRICE = "price";

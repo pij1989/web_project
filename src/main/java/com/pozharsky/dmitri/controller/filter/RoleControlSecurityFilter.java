@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 @WebFilter(urlPatterns = {"/controller"}, initParams = @WebInitParam(name = "INDEX_PATH", value = "/index.jsp"))
-public class RoleControllerSecurityFilter implements Filter {
-    private static final Logger logger = LogManager.getLogger(RoleControllerSecurityFilter.class);
+public class RoleControlSecurityFilter implements Filter {
+    private static final Logger logger = LogManager.getLogger(RoleControlSecurityFilter.class);
     private static final String GET_METHOD = "GET";
     private static final String POST_METHOD = "POST";
     private static final Map<CommandType, List<RoleType>> getCommandMap = new EnumMap<>(CommandType.class);
@@ -49,6 +49,7 @@ public class RoleControllerSecurityFilter implements Filter {
         postCommandMap.put(CommandType.REGISTER, List.of(RoleType.ADMIN, RoleType.USER, RoleType.GUEST));
         postCommandMap.put(CommandType.CREATE_CATEGORY, List.of(RoleType.ADMIN));
         postCommandMap.put(CommandType.UPDATE_CATEGORY, List.of(RoleType.ADMIN));
+        postCommandMap.put(CommandType.EDIT_PRODUCT, List.of(RoleType.ADMIN));
     }
 
     @Override

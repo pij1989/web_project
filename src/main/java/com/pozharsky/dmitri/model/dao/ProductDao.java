@@ -19,6 +19,7 @@ public class ProductDao extends AbstractDao<Product> {
     private static final String FIND_ALL_PRODUCT_SQL = "SELECT id,product_name,price,description,status,image,time_create,category_id FROM products;";
     private static final String FIND_PRODUCT_BY_CATEGORY_SQL = "SELECT id,product_name,price,description,status,image,time_create,category_id FROM products WHERE category_id = ?;";
     private static final String FIND_PRODUCT_BY_LIMIT_AND_OFFSET_SQL = "SELECT id, product_name, price, description, status, image, time_create, category_id FROM products LIMIT ? OFFSET ?;";
+    private static final String FIND_PRODUCT_BY_ID = "SELECT id, product_name, price, description, status, image, time_create, category_id FROM products WHERE id = ?";
     private static final String COUNT_ALL_PRODUCT_SQL = "SELECT count(*) FROM products";
     private static final String DELETE_PRODUCT_BY_CATEGORY_SQL = "DELETE FROM products WHERE category_id = ?";
 
@@ -74,7 +75,18 @@ public class ProductDao extends AbstractDao<Product> {
 
     @Override
     public Optional<Product> findById(long id) throws DaoException {
-        return Optional.empty();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_ID)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Product product = createProductFromResultSet(resultSet);
+                return Optional.of(product);
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
     }
 
     @Override

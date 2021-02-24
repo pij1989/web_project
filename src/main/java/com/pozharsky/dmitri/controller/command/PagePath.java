@@ -13,6 +13,7 @@ public class PagePath {
     public static final String CHANGE_PASSWORD = "/jsp/change_password.jsp";
     public static final String CATEGORIES = "/jsp/admin/categories.jsp";
     public static final String EDIT_CATEGORY = "/jsp/admin/edit_category.jsp";
+    public static final String EDIT_PRODUCT = "/jsp/admin/edit_product.jsp";
 
     private PagePath() {
     }

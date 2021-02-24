@@ -11,6 +11,7 @@ public enum CommandType {
     LOGOUT(new LogoutCommand()),
     CHANGE_USER_STATUS(new ChangeUserStatusCommand()),
     CREATE_PRODUCT(new CreateProductCommand()),
+    EDIT_PRODUCT(new EditProductCommand()),
     GET_USERS(new GetUsersCommand()),
     GET_PRODUCTS(new GetProductsCommand()),
     GET_CATEGORIES(new GetCategoriesCommand()),

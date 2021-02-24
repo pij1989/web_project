@@ -30,6 +30,7 @@ public class SessionAttribute {
     public static final String CATEGORY = "category";
     public static final String UPDATE_CATEGORY_SUCCESS = "updateCategorySuccess";
     public static final String UPDATE_CATEGORY_ERROR = "updateCategoryError";
+    public static final String PRODUCT = "product";
 
     private SessionAttribute() {
     }

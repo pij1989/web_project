@@ -4,7 +4,6 @@ import com.pozharsky.dmitri.controller.command.RequestParameter;
 import com.pozharsky.dmitri.exception.DaoException;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.creator.ProductCreator;
-import com.pozharsky.dmitri.model.dao.CategoryDao;
 import com.pozharsky.dmitri.model.dao.ProductDao;
 import com.pozharsky.dmitri.model.dao.TransactionManager;
 import com.pozharsky.dmitri.model.entity.Category;
@@ -39,31 +38,16 @@ public class ProductServiceImpl implements ProductService {
             boolean isCreate = false;
             if (ProductValidator.isValidProductForm(productForm)) {
                 ProductDao productDao = new ProductDao();
-                CategoryDao categoryDao = new CategoryDao();
-                transactionManager.initTransaction(productDao, categoryDao);
-                String categoryName = productForm.get(RequestParameter.CATEGORY);
-                Optional<Category> optionalCategory = categoryDao.findCategoryByName(categoryName);
-                Optional<Long> optionalCategoryId;
-                if (optionalCategory.isPresent()) {
-                    optionalCategoryId = optionalCategory.map(Category::getId);
-                } else {
-                    Category categoryInstance = new Category(categoryName);
-                    optionalCategoryId = categoryDao.create(categoryInstance);
-                }
-                if (optionalCategoryId.isPresent()) {
-                    long categoryId = optionalCategoryId.get();
-                    Product product = ProductCreator.createProduct(productForm, part, categoryId);
-                    isCreate = productDao.create(product);
-                }
-                transactionManager.commit();
+                transactionManager.init(productDao);
+                Product product = ProductCreator.createProduct(productForm, part);
+                isCreate = productDao.create(product);
             }
             return isCreate;
         } catch (DaoException e) {
             logger.error(e);
-            transactionManager.rollback();
             throw new ServiceException(e);
         } finally {
-            transactionManager.endTransaction();
+            transactionManager.end();
         }
     }
 
@@ -75,6 +59,22 @@ public class ProductServiceImpl implements ProductService {
             transactionManager.init(productDao);
             long id = Long.parseLong(categoryId);
             return productDao.findByCategory(id);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
+    public Optional<Product> findProductById(String productId) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            ProductDao productDao = new ProductDao();
+            transactionManager.init(productDao);
+            long id = Long.parseLong(productId);
+            return productDao.findById(id);
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
