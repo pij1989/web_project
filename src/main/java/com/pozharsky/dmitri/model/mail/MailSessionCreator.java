@@ -5,9 +5,12 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import java.util.Properties;
 
-final class MailSessionCreator {
+class MailSessionCreator {
     private static final String USERNAME = "mail.user.name";
     private static final String PASSWORD = "mail.user.password";
+
+    private MailSessionCreator(){
+    }
 
     static Session createSession(Properties configProperties) {
         String username = configProperties.getProperty(USERNAME);

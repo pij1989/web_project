@@ -59,15 +59,19 @@ public class RoleControllerSecurityFilter implements Filter {
         HttpSession session = httpServletRequest.getSession();
         String command = httpServletRequest.getParameter(RequestParameter.COMMAND);
         RoleType role = (RoleType) session.getAttribute(SessionAttribute.ROLE);
-        CommandType commandType = null;
-        try {
-            commandType = CommandType.valueOf(command.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            logger.error("This command '" + command + "'doesn't exist", e);
-        }
-        if (!hasPermission(commandType, role, method)) {
-            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + indexPath);
-            return;
+        if (command != null) {
+            CommandType commandType;
+            try {
+                commandType = CommandType.valueOf(command.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                logger.error("This command '" + command + "'doesn't exist", e);
+                httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+            if (!hasPermission(commandType, role, method)) {
+                httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + indexPath);
+                return;
+            }
         }
         chain.doFilter(request, response);
     }

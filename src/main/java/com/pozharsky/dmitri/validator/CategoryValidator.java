@@ -1,6 +1,6 @@
 package com.pozharsky.dmitri.validator;
 
-public final class CategoryValidator {
+public class CategoryValidator {
     private static final String NAME_REGEX = "[\\-\\s\\w]+";
 
     private CategoryValidator() {

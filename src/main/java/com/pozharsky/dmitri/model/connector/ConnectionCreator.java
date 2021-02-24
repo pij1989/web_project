@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-final class ConnectionCreator {
+class ConnectionCreator {
     private static final Logger logger = LogManager.getLogger(ConnectionCreator.class);
     private static final String DATABASE_PROPERTIES = "database.properties";
     private static final String URL = "url";
@@ -25,7 +25,7 @@ final class ConnectionCreator {
             String driver = properties.getProperty(DRIVER);
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
-            logger.error("Impossible registration driver: " + e);
+            logger.fatal("Impossible registration driver", e);
             throw new RuntimeException(e);
         }
     }

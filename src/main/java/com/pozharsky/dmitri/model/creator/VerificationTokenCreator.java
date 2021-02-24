@@ -5,7 +5,7 @@ import com.pozharsky.dmitri.model.entity.Token;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public final class VerificationTokenCreator {
+public class VerificationTokenCreator {
     private static final long EXPIRE_TIME = 15L;
 
     private VerificationTokenCreator() {

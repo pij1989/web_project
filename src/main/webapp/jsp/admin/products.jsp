@@ -35,36 +35,36 @@
                                 <div class="card-body">
                                     <h5 class="card-title"><c:out value="${product.name}"/></h5>
                                     <p class="card-text"><c:out value="${product.description}"/></p>
+                                    <c:choose>
+                                        <c:when test="${product.status}">
+                                            <span class="badge badge-success">Active</span>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <span class="badge badge-danger">Not active</span>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <h5 class="card-title"><ctg:formatCurrency value="${product.price}" locale="${locale}"/></h5>
-                                    <p><small><fmt:message key="products.createtime"/> <ctg:formatLocalDateTime date="${product.creatingTime}" locale="${locale}"/></small></p>
+                                    <p><small><fmt:message key="products.createtime"/> <ctg:formatLocalDateTime
+                                            date="${product.creatingTime}" locale="${locale}"/></small></p>
+                                    <form method="post" action="${pageContext.request.contextPath}/controller">
+                                        <input type="hidden" name="command" value="edit_product">
+                                        <input type="hidden" name="categoryId"
+                                               value="<c:out value="${product.id}"/>">
+                                        <button class="btn btn-outline-primary mx-2 my-2 my-sm-0" type="submit">
+                                            <span><i class="fas fa-edit"></i> Edit</span>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </c:forEach>
                 </div>
                 <c:if test="${not empty products}">
-                    <form class="form-inline" action="${pageContext.request.contextPath}/controller" id="paginationForm">
+                    <form class="form-inline" action="${pageContext.request.contextPath}/controller"
+                          id="paginationForm">
                         <input type="hidden" name="command" value="get_products">
                         <div class="form-row">
                             <ctg:pagination amountItem="${amountProduct}"/>
-                            <%--<div class="form-group">
-                                <label for="rowsPerPage">Rows per page: </label>
-                                <select name="perPage" class="form-control" id="rowsPerPage">
-                                    <option <c:if test="${perPage eq '5'}">selected</c:if>>5</option>
-                                    <option <c:if test="${perPage eq '10'}">selected</c:if>>10</option>
-                                    <option <c:if test="${perPage eq '20'}">selected</c:if>>20</option>
-                                </select>
-                            </div>
-                            <div class="form-group" style="padding-top: 16px; padding-left: 16px">
-                                <nav>
-                                    <ul class="pagination">
-                                        <input type="hidden" name="page" value="" id="page">
-                                        <c:forEach var="i" begin="1" end="${amountPage}">
-                                            <li class="page-item"><input class="page-link" name="button" type="button" value="<c:out value="${i}"/>"></li>
-                                        </c:forEach>
-                                    </ul>
-                                </nav>
-                            </div>--%>
                         </div>
                     </form>
                 </c:if>

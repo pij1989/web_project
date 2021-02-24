@@ -31,7 +31,8 @@ public class ConnectionPool {
                 freeConnection.offer(proxyConnection);
             }
         } catch (SQLException e) {
-            throw new RuntimeException("Can not create connection pool: " + e);
+            logger.fatal("Can not create connection pool", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -61,7 +62,7 @@ public class ConnectionPool {
         return connection;
     }
 
-    public void releaseConnection(Connection connection) {
+    void releaseConnection(Connection connection) {
         try {
             if (connection.getClass() == ProxyConnection.class) {
                 givenAwayConnection.remove(connection);
@@ -83,7 +84,7 @@ public class ConnectionPool {
         }
     }
 
-    public void deregisterDrivers() {
+    private void deregisterDrivers() {
         DriverManager.getDrivers().asIterator().forEachRemaining(e -> {
             try {
                 DriverManager.deregisterDriver(e);

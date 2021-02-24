@@ -1,6 +1,6 @@
 package com.pozharsky.dmitri.controller.command;
 
-public final class RequestParameter {
+public class RequestParameter {
     public static final String COMMAND = "command";
     public static final String LANGUAGE = "language";
     public static final String FIRST_NAME = "firstName";

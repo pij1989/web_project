@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public final class FormatLocalDateTimeUtil {
-    private static final String PATTERN = "dd-MMMM-yyyy HH:mm:ss";
+    private static final String PATTERN = "dd-MMMM-yyyy HH:mm";
 
     private FormatLocalDateTimeUtil() {
     }

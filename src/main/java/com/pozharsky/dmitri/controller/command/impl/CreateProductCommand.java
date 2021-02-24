@@ -28,9 +28,16 @@ public class CreateProductCommand implements Command {
             String isActive = request.getParameter(RequestParameter.IS_ACTIVE_PRODUCT);
             String description = request.getParameter(RequestParameter.DESCRIPTION);
             String creatingTime = request.getParameter(RequestParameter.TIME_CREATE);
-            Part part = request.getPart(RequestParameter.IMAGE);
             logger.debug("Product name: " + productName + " Category: " + category + " Price: " + price +
                     " isActive: " + isActive + " Description: " + description + " Creating time: " + creatingTime);
+            Part part;
+            try {
+                part = request.getPart(RequestParameter.IMAGE);
+                logger.debug("Image name: " + part.getSubmittedFileName());
+            } catch (IOException | ServletException e) {
+                logger.fatal("Impossible receive part of form", e);
+                throw new RuntimeException(e);
+            }
             Map<String, String> productForm = new HashMap<>();
             productForm.put(RequestParameter.PRODUCT_NAME, productName);
             productForm.put(RequestParameter.CATEGORY, category);
@@ -44,12 +51,13 @@ public class CreateProductCommand implements Command {
             if (result) {
                 session.setAttribute(SessionAttribute.CREATE_PRODUCT_SUCCESS, true);
             } else {
+                session.setAttribute(SessionAttribute.PRODUCT_FORM, productForm);
                 session.setAttribute(SessionAttribute.CREATE_PRODUCT_ERROR, true);
             }
             Router router = new Router(PagePath.CREATE_PRODUCT);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;
-        } catch (ServiceException | ServletException | IOException e) {
+        } catch (ServiceException e) {
             logger.error(e);
             throw new CommandException(e);
         }

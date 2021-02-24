@@ -8,7 +8,7 @@ import java.util.Map;
 
 import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
-public final class UserCreator {
+public class UserCreator {
 
     private UserCreator() {
     }

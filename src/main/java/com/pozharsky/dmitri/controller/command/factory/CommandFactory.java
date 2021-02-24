@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public final class CommandFactory {
+public class CommandFactory {
 
     private CommandFactory() {
     }

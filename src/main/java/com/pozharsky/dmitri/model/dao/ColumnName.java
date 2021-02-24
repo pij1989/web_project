@@ -1,6 +1,6 @@
 package com.pozharsky.dmitri.model.dao;
 
-final class ColumnName {
+class ColumnName {
     static final String ID = "id";
     static final String USER_ID = "user_id";
     static final String FIRST_NAME = "first_name";

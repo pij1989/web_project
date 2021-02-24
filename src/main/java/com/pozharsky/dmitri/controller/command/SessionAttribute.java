@@ -1,6 +1,6 @@
 package com.pozharsky.dmitri.controller.command;
 
-public final class SessionAttribute {
+public class SessionAttribute {
     public static final String ROLE = "role";
     public static final String USERNAME = "username";
     public static final String CURRENT_PAGE = "currentPage";
@@ -21,6 +21,7 @@ public final class SessionAttribute {
     public static final String CHANGE_PASSWORD_ERROR = "changePasswordError";
     public static final String AMOUNT_PRODUCT = "amountProduct";
     public static final String PRODUCTS = "products";
+    public static final String PRODUCT_FORM = "productForm";
     public static final String CATEGORIES = "categories";
     public static final String CREATE_PRODUCT_ERROR = "createProductError";
     public static final String CREATE_PRODUCT_SUCCESS = "createProductSuccess";

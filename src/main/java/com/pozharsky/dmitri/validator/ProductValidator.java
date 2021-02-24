@@ -12,7 +12,7 @@ public class ProductValidator {
     private static final Logger logger = LogManager.getLogger(ProductValidator.class);
     private static final String EMPTY = "";
     private static final String NAME_REGEX = "[\\-\\s\\w]+";
-    private static final String PRICE_REGEX = "^[0-9]+.[0-9]+$";
+    private static final String PRICE_REGEX = "^[0-9]+\\.[0-9]+$";
 
     public static boolean isValidProductForm(Map<String, String> form) {
         boolean isValid = true;

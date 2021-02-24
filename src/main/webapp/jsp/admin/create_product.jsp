@@ -33,12 +33,15 @@
             <div class="create-product-container">
                 <div class="create-product-item-wrapper bg-light">
                     <h2><fmt:message key="product.message"/></h2>
-                    <form id="createProductForm" class="needs-validation" method="post" novalidate
+                    <form id="createProductForm"
+                          class="needs-validation <c:if test="${not empty productForm}">was-validated</c:if>"
+                          method="post" novalidate
                           action="${pageContext.request.contextPath}/controller" enctype="multipart/form-data">
                         <input type="hidden" name="command" value="create_product">
                         <div class="form-group">
                             <label for="productName"><fmt:message key="product.productname.label"/></label>
-                            <input type="text" name="productName" value="" class="form-control" id="productName"
+                            <input type="text" name="productName" value="<c:out value="${productForm['productName']}"/>"
+                                   class="form-control" id="productName"
                                    placeholder="<fmt:message key="product.productname.placeholder"/>" required
                                    pattern="[\-\s\w]+"/>
                         </div>
@@ -47,7 +50,8 @@
                             <label for="category"><fmt:message key="product.category.label"/></label>
                             <select name="category" class="form-control" id="category">
                                 <c:forEach var="category" items="${categories}">
-                                    <option value="<c:out value="${category.name}"/>">
+                                    <option value="<c:out value="${category.name}"/>"
+                                            <c:if test="${productForm['category'] eq category.name}">selected</c:if>>
                                         <c:out value="${category.name}"/>
                                     </option>
                                 </c:forEach>
@@ -56,31 +60,38 @@
 
                         <div class="form-group">
                             <label for="price"><fmt:message key="product.price.label"/></label>
-                            <input type="text" name="price" value="" class="form-control" id="price"
+                            <input type="text" name="price" value="<c:out value="${productForm['price']}"/>"
+                                   class="form-control" id="price"
                                    placeholder="<fmt:message key="product.price.placeholder"/>" required
-                                   pattern="^[0-9]+.[0-9]+$"/>
+                                   pattern="^[0-9]+\.[0-9]+$"
+                            />
                         </div>
 
                         <div class="form-group form-check">
-                            <input type="checkbox" name="isActiveProduct" value="true" class="form-check-input" id="activeCheck">
+                            <input type="checkbox" name="isActiveProduct" value="true" class="form-check-input"
+                                   id="activeCheck"
+                                   <c:if test="${not empty productForm['isActiveProduct']}">checked</c:if> />
                             <label class="form-check-label" for="activeCheck"><fmt:message
                                     key="product.activecheck.label"/></label>
                         </div>
 
                         <div class="form-group">
                             <label for="description"><fmt:message key="product.description.label"/></label>
-                            <textarea class="form-control" name="description" id="description" rows="3" required></textarea>
+                            <textarea class="form-control" name="description" id="description" rows="3" required><c:out
+                                    value="${productForm['description']}"/></textarea>
                         </div>
 
                         <div class="form-group">
                             <label for="creatingTime"><fmt:message key="product.createdate.label"/></label>
-                            <input type="datetime-local" id="creatingTime" name="creatingTime" required>
+                            <input type="datetime-local" id="creatingTime" name="creatingTime"
+                                   value="<c:out value="${productForm['creatingTime']}"/>" required>
                         </div>
 
                         <div class="form-group">
                             <label for="uploadImage"><fmt:message key="product.uploadimage.label"/></label>
                             <input type="file" name="image" class="form-control-file" id="uploadImage" required>
                         </div>
+                        <c:remove var="productForm" scope="session"/>
 
                         <div class="create-product-item">
                             <button type="submit" id="submit" class="btn btn-primary"><fmt:message

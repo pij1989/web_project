@@ -1,6 +1,6 @@
 package com.pozharsky.dmitri.controller.command;
 
-public final class RequestAttribute {
+public class RequestAttribute {
 
 
     private RequestAttribute() {

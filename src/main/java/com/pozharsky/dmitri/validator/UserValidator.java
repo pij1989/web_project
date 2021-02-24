@@ -4,7 +4,7 @@ import com.pozharsky.dmitri.controller.command.RequestParameter;
 
 import java.util.Map;
 
-public final class UserValidator {
+public class UserValidator {
     private static final String EMPTY = "";
     private static final String NAME_REGEX = "[a-zA-Zа-яА-Я]+";
     private static final String USERNAME_REGEX = "\\w+";

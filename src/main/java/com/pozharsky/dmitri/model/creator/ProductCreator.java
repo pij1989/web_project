@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-public final class ProductCreator {
+public class ProductCreator {
     private static final Logger logger = LogManager.getLogger(ProductCreator.class);
 
     private ProductCreator() {
