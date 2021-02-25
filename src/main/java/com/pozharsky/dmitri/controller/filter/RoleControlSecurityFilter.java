@@ -50,6 +50,7 @@ public class RoleControlSecurityFilter implements Filter {
         postCommandMap.put(CommandType.CREATE_CATEGORY, List.of(RoleType.ADMIN));
         postCommandMap.put(CommandType.UPDATE_CATEGORY, List.of(RoleType.ADMIN));
         postCommandMap.put(CommandType.EDIT_PRODUCT, List.of(RoleType.ADMIN));
+        postCommandMap.put(CommandType.UPDATE_PRODUCT, List.of(RoleType.ADMIN));
     }
 
     @Override

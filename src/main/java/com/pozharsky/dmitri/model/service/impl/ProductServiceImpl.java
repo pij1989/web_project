@@ -1,12 +1,10 @@
 package com.pozharsky.dmitri.model.service.impl;
 
-import com.pozharsky.dmitri.controller.command.RequestParameter;
 import com.pozharsky.dmitri.exception.DaoException;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.creator.ProductCreator;
 import com.pozharsky.dmitri.model.dao.ProductDao;
 import com.pozharsky.dmitri.model.dao.TransactionManager;
-import com.pozharsky.dmitri.model.entity.Category;
 import com.pozharsky.dmitri.model.entity.Product;
 import com.pozharsky.dmitri.model.service.ProductService;
 import com.pozharsky.dmitri.validator.ProductValidator;
@@ -95,6 +93,30 @@ public class ProductServiceImpl implements ProductService {
             throw new ServiceException(e);
         } finally {
             transactionManager.end();
+        }
+    }
+
+    @Override
+    public Optional<Product> updateProduct(Map<String, String> productForm, String productId, Part part) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            Optional<Product> optionalProduct = Optional.empty();
+            if (ProductValidator.isValidProductForm(productForm)) {
+                ProductDao productDao = new ProductDao();
+                transactionManager.initTransaction(productDao);
+                long id = Long.parseLong(productId);
+                Product product = ProductCreator.createProduct(productForm, part);
+                product.setId(id);
+                optionalProduct = productDao.update(product);
+                transactionManager.commit();
+            }
+            return optionalProduct;
+        } catch (DaoException e) {
+            logger.error(e);
+            transactionManager.rollback();
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.endTransaction();
         }
     }
 

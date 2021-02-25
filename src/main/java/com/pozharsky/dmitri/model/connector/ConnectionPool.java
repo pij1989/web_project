@@ -58,6 +58,7 @@ public class ConnectionPool {
             givenAwayConnection.put(connection);
         } catch (InterruptedException e) {
             logger.error(e);
+            Thread.currentThread().interrupt();
         }
         return connection;
     }
@@ -70,6 +71,7 @@ public class ConnectionPool {
             }
         } catch (InterruptedException e) {
             logger.error(e);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -79,7 +81,10 @@ public class ConnectionPool {
                 freeConnection.take().realyClose();
             }
             deregisterDrivers();
-        } catch (InterruptedException | SQLException e) {
+        } catch (InterruptedException e) {
+            logger.error(e);
+            Thread.currentThread().interrupt();
+        } catch (SQLException e) {
             logger.error(e);
         }
     }

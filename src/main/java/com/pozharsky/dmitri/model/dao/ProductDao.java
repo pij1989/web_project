@@ -106,8 +106,23 @@ public class ProductDao extends AbstractDao<Product> {
     }
 
     @Override
-    public Optional<Product> update(Product entity) throws DaoException {
-        return Optional.empty();
+    public Optional<Product> update(Product product) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_ID,
+                ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+            preparedStatement.setLong(1, product.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Product findProduct = createProductFromResultSet(resultSet);
+                updateProductInResultSet(resultSet, product);
+                resultSet.updateRow();
+                return Optional.of(findProduct);
+            } else {
+                return Optional.empty();
+            }
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
     }
 
     @Override
@@ -149,5 +164,18 @@ public class ProductDao extends AbstractDao<Product> {
         product.setCreatingTime(resultSet.getTimestamp(ColumnName.TIME_CREATE).toLocalDateTime());
         product.setCategoryId(resultSet.getLong(ColumnName.CATEGORY_ID));
         return product;
+    }
+
+    private void updateProductInResultSet(ResultSet resultSet, Product product) throws SQLException {
+        resultSet.updateString(ColumnName.PRODUCT_NAME, product.getName());
+        resultSet.updateString(ColumnName.DESCRIPTION, product.getDescription());
+        resultSet.updateBigDecimal(ColumnName.PRICE, product.getPrice());
+        resultSet.updateBoolean(ColumnName.STATUS, product.isStatus());
+        resultSet.updateTimestamp(ColumnName.TIME_CREATE, Timestamp.valueOf(product.getCreatingTime()));
+        resultSet.updateLong(ColumnName.CATEGORY_ID, product.getCategoryId());
+        byte[] image = product.getImage();
+        if (image.length != 0) {
+            resultSet.updateBytes(ColumnName.IMAGE, product.getImage());
+        }
     }
 }

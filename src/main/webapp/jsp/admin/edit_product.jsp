@@ -33,14 +33,16 @@
             <div class="create-product-container">
                 <div class="create-product-item-wrapper bg-light">
                     <h2><fmt:message key="editproduct.message"/></h2>
-                    <form id="createProductForm"
+                    <form id="updateProductForm"
                           class="needs-validation <c:if test="${not empty productForm}">was-validated</c:if>"
                           method="post" novalidate
                           action="${pageContext.request.contextPath}/controller" enctype="multipart/form-data">
                         <input type="hidden" name="command" value="update_product">
+                        <input type="hidden" name="productId" value="<c:out value="${product.id}"/>">
                         <div class="form-group">
                             <label for="productName"><fmt:message key="product.productname.label"/></label>
-                            <input type="text" name="productName" value="<c:out value="${product.name}"/>"
+                            <input type="text" name="productName"
+                                   value="<c:out value="${product.name}"/>"
                                    class="form-control" id="productName"
                                    placeholder="<fmt:message key="product.productname.placeholder"/>" required
                                    pattern="[\-\s\w]+"/>
@@ -105,6 +107,6 @@
     </div>
 </div>
 <c:import url="../fragment/bootstrap_script.jsp"/>
-<script src="${pageContext.request.contextPath}/js/admin/create_product.js"></script>
+<script src="${pageContext.request.contextPath}/js/admin/edit_product.js"></script>
 </body>
 </html>

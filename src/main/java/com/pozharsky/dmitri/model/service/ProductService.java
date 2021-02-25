@@ -17,6 +17,8 @@ public interface ProductService {
 
     List<Product> findAllProducts() throws ServiceException;
 
+    Optional<Product> updateProduct(Map<String, String> productForm, String productId, Part part) throws ServiceException;
+
     int defineAmountProduct() throws ServiceException;
 
     List<Product> findProductsByPerPage(String page, String perPage) throws ServiceException;

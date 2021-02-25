@@ -12,6 +12,7 @@ public enum CommandType {
     CHANGE_USER_STATUS(new ChangeUserStatusCommand()),
     CREATE_PRODUCT(new CreateProductCommand()),
     EDIT_PRODUCT(new EditProductCommand()),
+    UPDATE_PRODUCT(new UpdateProductCommand()),
     GET_USERS(new GetUsersCommand()),
     GET_PRODUCTS(new GetProductsCommand()),
     GET_CATEGORIES(new GetCategoriesCommand()),

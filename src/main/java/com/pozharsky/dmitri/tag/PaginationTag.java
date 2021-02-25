@@ -8,6 +8,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class PaginationTag extends TagSupport {
     private static final int DEFAULT_PER_PAGE = 5;
