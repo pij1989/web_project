@@ -136,6 +136,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public int defineAmountProductByCategory(String categoryId) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            ProductDao productDao = new ProductDao();
+            transactionManager.init(productDao);
+            long id = Long.parseLong(categoryId);
+            return productDao.countProductByCategory(id);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
     public List<Product> findProductsByPerPage(String page, String perPage) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
@@ -145,6 +161,40 @@ public class ProductServiceImpl implements ProductService {
             int numberPage = page != null ? Integer.parseInt(page) : DEFAULT_PAGE;
             int offset = (numberPage - 1) * limit;
             return productDao.findByLimitAndOffset(limit, offset);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
+    public List<Product> findProductsByCategoryAndPerPage(String categoryId, String page, String perPage) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            ProductDao productDao = new ProductDao();
+            transactionManager.init(productDao);
+            int limit = perPage != null ? Integer.parseInt(perPage) : DEFAULT_PER_PAGE;
+            int numberPage = page != null ? Integer.parseInt(page) : DEFAULT_PAGE;
+            int offset = (numberPage - 1) * limit;
+            long id = Long.parseLong(categoryId);
+            return productDao.findByCategoryAndLimitAndOffset(id, limit, offset);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
+    public List<Product> searchProduct(String searchProduct) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            ProductDao productDao = new ProductDao();
+            transactionManager.init(productDao);
+            return productDao.findByProductName(searchProduct);
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);

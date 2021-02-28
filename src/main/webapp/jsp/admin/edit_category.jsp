@@ -61,6 +61,7 @@
                         <th scope="col">Image</th>
                         <th scope="col">Name</th>
                         <th scope="col">Price</th>
+                        <th scope="col">Amount</th>
                         <th scope="col">Description</th>
                         <th scope="col">Creating time</th>
                     </tr>
@@ -75,6 +76,7 @@
                                     style="width: 50%"/></td>
                             <td><c:out value="${product.name}"/></td>
                             <td><c:out value="${product.price}"/></td>
+                            <td><c:out value="${product.amount}"/></td>
                             <td><c:out value="${product.description}"/></td>
                             <td><c:out value="${product.creatingTime}"/></td>
                         </tr>

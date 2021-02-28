@@ -69,6 +69,15 @@
                             />
                         </div>
 
+                        <div class="form-group">
+                            <label for="price"><fmt:message key="product.amount.label"/></label>
+                            <input type="text" name="amount" value="<c:out value="${product.amount}"/>"
+                                   class="form-control" id="amount"
+                                   placeholder="<fmt:message key="product.amount.placeholder"/>" required
+                                   pattern="^[0-9]{1,5}$"
+                            />
+                        </div>
+
                         <div class="form-group form-check">
                             <input type="checkbox" name="isActiveProduct" value="true" class="form-check-input"
                                    id="activeCheck"

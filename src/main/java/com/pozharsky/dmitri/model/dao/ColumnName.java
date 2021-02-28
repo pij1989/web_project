@@ -20,6 +20,7 @@ class ColumnName {
     static final String DESCRIPTION = "description";
     static final String STATUS = "status";
     static final String IMAGE = "image";
+    static final String AMOUNT = "amount";
 
     private ColumnName() {
     }

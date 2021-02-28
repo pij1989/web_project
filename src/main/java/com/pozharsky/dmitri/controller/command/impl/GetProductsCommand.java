@@ -24,11 +24,19 @@ public class GetProductsCommand implements Command {
         try {
             String page = request.getParameter(RequestParameter.PAGE);
             String perPage = request.getParameter(RequestParameter.PER_PAGE);
-            logger.debug("Page: " + page + " perPage: " + perPage);
+            String categoryId = request.getParameter(RequestParameter.CATEGORY_ID);
             ProductService productService = ProductServiceImpl.getInstance();
-            int amountProduct = productService.defineAmountProduct();
-            List<Product> products = productService.findProductsByPerPage(page, perPage);
             HttpSession session = request.getSession();
+            logger.debug("Page: " + page + " perPage: " + perPage);
+            List<Product> products;
+            int amountProduct;
+            if (categoryId == null || categoryId.isBlank()) {
+                amountProduct = productService.defineAmountProduct();
+                products = productService.findProductsByPerPage(page, perPage);
+            } else {
+                amountProduct = productService.defineAmountProductByCategory(categoryId);
+                products = productService.findProductsByCategoryAndPerPage(categoryId, page, perPage);
+            }
             if (session.getAttribute(SessionAttribute.CATEGORIES) == null) {
                 CategoryService categoryService = CategoryServiceImpl.getInstance();
                 List<Category> categories = categoryService.findAllCategory();
@@ -36,6 +44,7 @@ public class GetProductsCommand implements Command {
             }
             session.setAttribute(SessionAttribute.PRODUCTS, products);
             session.setAttribute(SessionAttribute.AMOUNT_PRODUCT, amountProduct);
+            session.setAttribute(SessionAttribute.SELECTED_CATEGORY, categoryId);
             Router router = new Router(PagePath.PRODUCTS);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;

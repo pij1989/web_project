@@ -28,6 +28,7 @@ public class UpdateProductCommand implements Command {
             String productName = request.getParameter(RequestParameter.PRODUCT_NAME);
             String category = request.getParameter(RequestParameter.CATEGORY);
             String price = request.getParameter(RequestParameter.PRICE);
+            String amount = request.getParameter(RequestParameter.AMOUNT);
             String isActive = request.getParameter(RequestParameter.IS_ACTIVE_PRODUCT);
             String description = request.getParameter(RequestParameter.DESCRIPTION);
             String creatingTime = request.getParameter(RequestParameter.TIME_CREATE);
@@ -43,6 +44,7 @@ public class UpdateProductCommand implements Command {
             productForm.put(RequestParameter.PRODUCT_NAME, productName);
             productForm.put(RequestParameter.CATEGORY, category);
             productForm.put(RequestParameter.PRICE, price);
+            productForm.put(RequestParameter.AMOUNT, amount);
             productForm.put(RequestParameter.IS_ACTIVE_PRODUCT, isActive);
             productForm.put(RequestParameter.DESCRIPTION, description);
             productForm.put(RequestParameter.TIME_CREATE, creatingTime);

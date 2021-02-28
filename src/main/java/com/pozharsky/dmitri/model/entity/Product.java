@@ -8,6 +8,7 @@ public class Product extends Entity {
     private long id;
     private String name;
     private BigDecimal price;
+    private int amount;
     private boolean status;
     private String description;
     private byte[] image;
@@ -17,9 +18,10 @@ public class Product extends Entity {
     public Product() {
     }
 
-    public Product(String name, BigDecimal price, boolean status, String description, byte[] image, LocalDateTime creatingTime, long categoryId) {
+    public Product(String name, BigDecimal price, int amount, boolean status, String description, byte[] image, LocalDateTime creatingTime, long categoryId) {
         this.name = name;
         this.price = price;
+        this.amount = amount;
         this.status = status;
         this.description = description;
         this.image = image;
@@ -49,6 +51,14 @@ public class Product extends Entity {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     public boolean isStatus() {
@@ -99,6 +109,7 @@ public class Product extends Entity {
         Product product = (Product) o;
 
         if (id != product.id) return false;
+        if (amount != product.amount) return false;
         if (status != product.status) return false;
         if (categoryId != product.categoryId) return false;
         if (name != null ? !name.equals(product.name) : product.name != null) return false;
@@ -113,6 +124,7 @@ public class Product extends Entity {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + amount;
         result = 31 * result + (status ? 1 : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + Arrays.hashCode(image);
@@ -127,6 +139,7 @@ public class Product extends Entity {
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", price=").append(price);
+        sb.append(", amount=").append(amount);
         sb.append(", status=").append(status);
         sb.append(", description='").append(description).append('\'');
         sb.append(", image=").append(Arrays.toString(image));

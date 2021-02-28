@@ -63,7 +63,16 @@
                             <input type="text" name="price" value="<c:out value="${productForm['price']}"/>"
                                    class="form-control" id="price"
                                    placeholder="<fmt:message key="product.price.placeholder"/>" required
-                                   pattern="^[0-9]+\.[0-9]+$"
+                                   pattern="^[0-9]{1,4}\.[0-9]{2}$"
+                            />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="price"><fmt:message key="product.amount.label"/></label>
+                            <input type="text" name="amount" value="<c:out value="${productForm['amount']}"/>"
+                                   class="form-control" id="amount"
+                                   placeholder="<fmt:message key="product.amount.placeholder"/>" required
+                                   pattern="^[0-9]{1,5}$"
                             />
                         </div>
 

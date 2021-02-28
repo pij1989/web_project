@@ -21,5 +21,11 @@ public interface ProductService {
 
     int defineAmountProduct() throws ServiceException;
 
+    int defineAmountProductByCategory(String categoryId) throws ServiceException;
+
     List<Product> findProductsByPerPage(String page, String perPage) throws ServiceException;
+
+    List<Product> findProductsByCategoryAndPerPage(String categoryId, String page, String perPage) throws ServiceException;
+
+    List<Product> searchProduct(String searchProduct) throws ServiceException;
 }

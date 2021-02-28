@@ -17,13 +17,45 @@
     <div class="row flex-xl-nowrap">
         <c:import url="fragment/sidebar.jsp"/>
         <main class="col-md-10 col-xl-10" role="main">
-            <div style="display: flex; flex-grow: inherit; justify-content: flex-end">
-                <form class="form-inline my-3 my-lg-3" action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="command" value="to_create_product_page_command">
-                    <button class="btn btn-outline-primary mx-2 my-2 my-sm-0" type="submit">
-                        <span><i class="fas fa-plus"></i> <fmt:message key="admin.button.create"/></span>
-                    </button>
-                </form>
+            <div class="row">
+                <div class="col">
+                    <div style="display: flex; flex-grow: inherit; justify-content: flex-start">
+                        <form class="form-inline my-3 my-lg-3 mx-lg-5"
+                              action="${pageContext.request.contextPath}/controller">
+                            <input type="hidden" name="command" value="search_product">
+                            <input class="form-control mr-sm-2" type="search" name="searchProduct" placeholder="Search by name"
+                                   aria-label="Search" size="30">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><span><i
+                                    class="fas fa-search"></i></span> <fmt:message key="header.button.search"/>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col">
+                    <div style="display: flex; flex-grow: inherit; justify-content: flex-end">
+                        <form id="selectCategoryForm" class="form-inline my-3 my-lg-3"
+                              action="${pageContext.request.contextPath}/controller">
+                            <input type="hidden" name="command" value="get_products">
+                            <div class="form-group">
+                                <select name="categoryId" class="form-control" id="category">
+                                    <option value="">All categories</option>
+                                    <c:forEach var="category" items="${categories}">
+                                        <option value="<c:out value="${category.id}"/>"
+                                                <c:if test="${selectedCategory eq category.id}">selected</c:if>>
+                                            <c:out value="${category.name}"/>
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </form>
+                        <form class="form-inline my-3 my-lg-3" action="${pageContext.request.contextPath}/controller">
+                            <input type="hidden" name="command" value="to_create_product_page_command">
+                            <button class="btn btn-outline-primary mx-2 my-2 my-sm-0" type="submit">
+                                <span><i class="fas fa-plus"></i> <fmt:message key="admin.button.create"/></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="container">
                 <div class="row">
@@ -37,12 +69,15 @@
                                     <p class="card-text"><c:out value="${product.description}"/></p>
                                     <h5 class="card-title"><ctg:formatCurrency value="${product.price}"
                                                                                locale="${locale}"/></h5>
+                                    <h5 class="card-title"><fmt:message key="products.amount"/> <c:out value="${product.amount}"/></h5>
                                     <c:choose>
                                         <c:when test="${product.status}">
-                                            <p><span class="badge badge-success"><fmt:message key="products.active"/></span></p>
+                                            <p><span class="badge badge-success"><fmt:message
+                                                    key="products.active"/></span></p>
                                         </c:when>
                                         <c:otherwise>
-                                            <p><span class="badge badge-danger"><fmt:message key="products.notactive"/></span></p>
+                                            <p><span class="badge badge-danger"><fmt:message
+                                                    key="products.notactive"/></span></p>
                                         </c:otherwise>
                                     </c:choose>
                                     <p><small><fmt:message key="products.createtime"/> <ctg:formatLocalDateTime
@@ -64,8 +99,10 @@
                     <form class="form-inline" action="${pageContext.request.contextPath}/controller"
                           id="paginationForm">
                         <input type="hidden" name="command" value="get_products">
+                        <input type="hidden" name="categoryId" value="<c:out value="${selectedCategory}"/>">
                         <div class="form-row">
                             <ctg:pagination amountItem="${amountProduct}"/>
+                            <c:remove var="amountProduct" scope="session"/>
                         </div>
                     </form>
                 </c:if>
