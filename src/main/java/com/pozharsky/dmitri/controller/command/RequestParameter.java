@@ -27,6 +27,8 @@ public class RequestParameter {
     public static final String TIME_CREATE = "creatingTime";
     public static final String PER_PAGE = "perPage";
     public static final String PAGE = "page";
+    public static final String SEARCH_PRODUCT = "searchProduct";
+    public static final String AMOUNT = "amount";
 
     private RequestParameter() {
     }

@@ -15,6 +15,7 @@ public enum CommandType {
     UPDATE_PRODUCT(new UpdateProductCommand()),
     GET_USERS(new GetUsersCommand()),
     GET_PRODUCTS(new GetProductsCommand()),
+    SEARCH_PRODUCT(new SearchProductCommand()),
     GET_CATEGORIES(new GetCategoriesCommand()),
     DELETE_CATEGORY(new DeleteCategoryCommand()),
     CREATE_CATEGORY(new CreateCategoryCommand()),

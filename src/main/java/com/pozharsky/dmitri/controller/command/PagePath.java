@@ -14,6 +14,7 @@ public class PagePath {
     public static final String CATEGORIES = "/jsp/admin/categories.jsp";
     public static final String EDIT_CATEGORY = "/jsp/admin/edit_category.jsp";
     public static final String EDIT_PRODUCT = "/jsp/admin/edit_product.jsp";
+    public static final String RESULT_SEARCH_PRODUCTS = "/jsp/admin/result_search_products.jsp";
 
     private PagePath() {
     }
