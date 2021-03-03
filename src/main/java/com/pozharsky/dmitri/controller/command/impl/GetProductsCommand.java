@@ -5,6 +5,7 @@ import com.pozharsky.dmitri.exception.CommandException;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.entity.Category;
 import com.pozharsky.dmitri.model.entity.Product;
+import com.pozharsky.dmitri.model.entity.RoleType;
 import com.pozharsky.dmitri.model.service.CategoryService;
 import com.pozharsky.dmitri.model.service.ProductService;
 import com.pozharsky.dmitri.model.service.impl.CategoryServiceImpl;
@@ -27,6 +28,7 @@ public class GetProductsCommand implements Command {
             String categoryId = request.getParameter(RequestParameter.CATEGORY_ID);
             ProductService productService = ProductServiceImpl.getInstance();
             HttpSession session = request.getSession();
+            RoleType roleType = (RoleType) session.getAttribute(SessionAttribute.ROLE);
             logger.debug("Page: " + page + " perPage: " + perPage);
             List<Product> products;
             int amountProduct;
@@ -42,10 +44,16 @@ public class GetProductsCommand implements Command {
                 List<Category> categories = categoryService.findAllCategory();
                 session.setAttribute(SessionAttribute.CATEGORIES, categories);
             }
+            Router router = null;
+            if (roleType == RoleType.ADMIN) {
+                router = new Router(PagePath.PRODUCTS_ADMIN);
+            }
+            if (roleType == RoleType.USER) {
+                router = new Router(PagePath.PRODUCTS_USER);
+            }
             session.setAttribute(SessionAttribute.PRODUCTS, products);
             session.setAttribute(SessionAttribute.AMOUNT_PRODUCT, amountProduct);
             session.setAttribute(SessionAttribute.SELECTED_CATEGORY, categoryId);
-            Router router = new Router(PagePath.PRODUCTS);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;
         } catch (ServiceException e) {

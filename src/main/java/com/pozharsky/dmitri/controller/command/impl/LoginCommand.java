@@ -3,12 +3,14 @@ package com.pozharsky.dmitri.controller.command.impl;
 import com.pozharsky.dmitri.controller.command.*;
 import com.pozharsky.dmitri.exception.CommandException;
 import com.pozharsky.dmitri.exception.ServiceException;
-import com.pozharsky.dmitri.model.entity.RoleType;
-import com.pozharsky.dmitri.model.entity.StatusType;
-import com.pozharsky.dmitri.model.entity.User;
+import com.pozharsky.dmitri.model.entity.*;
 import com.pozharsky.dmitri.model.error.ApplicationError;
 import com.pozharsky.dmitri.model.error.ErrorType;
+import com.pozharsky.dmitri.model.service.CategoryService;
+import com.pozharsky.dmitri.model.service.ProductService;
 import com.pozharsky.dmitri.model.service.UserService;
+import com.pozharsky.dmitri.model.service.impl.CategoryServiceImpl;
+import com.pozharsky.dmitri.model.service.impl.ProductServiceImpl;
 import com.pozharsky.dmitri.model.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger(LoginCommand.class);
+    private static final int LIMIT = 6;
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -43,6 +46,12 @@ public class LoginCommand implements Command {
                         session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
                         return router;
                     } else {
+                        ProductService productService = ProductServiceImpl.getInstance();
+                        CategoryService categoryService = CategoryServiceImpl.getInstance();
+                        List<Product> products = productService.findLastAddProduct(LIMIT);
+                        List<Category> categories = categoryService.findAllCategory();
+                        session.setAttribute(SessionAttribute.PRODUCTS, products);
+                        session.setAttribute(SessionAttribute.CATEGORIES, categories);
                         Router router = new Router(PagePath.MAIN, Router.Type.REDIRECT);
                         session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
                         return router;

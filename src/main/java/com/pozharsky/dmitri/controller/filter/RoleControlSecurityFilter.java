@@ -21,6 +21,7 @@ import java.util.Map;
 @WebFilter(urlPatterns = {"/controller"}, initParams = @WebInitParam(name = "INDEX_PATH", value = "/index.jsp"))
 public class RoleControlSecurityFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(RoleControlSecurityFilter.class);
+    private static final String INDEX_PATH = "INDEX_PATH";
     private static final String GET_METHOD = "GET";
     private static final String POST_METHOD = "POST";
     private static final Map<CommandType, List<RoleType>> getCommandMap = new EnumMap<>(CommandType.class);
@@ -29,13 +30,13 @@ public class RoleControlSecurityFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        indexPath = filterConfig.getInitParameter("INDEX_PATH");
+        indexPath = filterConfig.getInitParameter(INDEX_PATH);
         getCommandMap.put(CommandType.TO_CHANGE_PASSWORD_PAGE_COMMAND, List.of(RoleType.GUEST, RoleType.USER, RoleType.ADMIN));
         getCommandMap.put(CommandType.TO_CREATE_PRODUCT_PAGE_COMMAND, List.of(RoleType.ADMIN));
         getCommandMap.put(CommandType.TO_LOGIN_PAGE_COMMAND, List.of(RoleType.GUEST, RoleType.USER, RoleType.ADMIN));
         getCommandMap.put(CommandType.TO_REGISTER_PAGE_COMMAND, List.of(RoleType.GUEST, RoleType.USER, RoleType.ADMIN));
         getCommandMap.put(CommandType.ACTIVATE_REGISTRATION, List.of(RoleType.GUEST, RoleType.USER, RoleType.ADMIN));
-        getCommandMap.put(CommandType.GET_PRODUCTS, List.of(RoleType.ADMIN));
+        getCommandMap.put(CommandType.GET_PRODUCTS, List.of(RoleType.ADMIN, RoleType.USER));
         getCommandMap.put(CommandType.SEARCH_PRODUCT, List.of(RoleType.ADMIN));
         getCommandMap.put(CommandType.GET_USERS, List.of(RoleType.ADMIN));
         getCommandMap.put(CommandType.GET_CATEGORIES, List.of(RoleType.ADMIN));

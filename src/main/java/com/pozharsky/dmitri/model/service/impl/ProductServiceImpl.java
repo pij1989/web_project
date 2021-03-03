@@ -202,4 +202,19 @@ public class ProductServiceImpl implements ProductService {
             transactionManager.end();
         }
     }
+
+    @Override
+    public List<Product> findLastAddProduct(int limit) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            ProductDao productDao = new ProductDao();
+            transactionManager.init(productDao);
+            return productDao.findWithOrderByCreateTimeDescAndLimit(limit);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
 }

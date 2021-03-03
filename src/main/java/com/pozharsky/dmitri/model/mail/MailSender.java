@@ -1,8 +1,5 @@
 package com.pozharsky.dmitri.model.mail;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -12,7 +9,6 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class MailSender {
-    private static final Logger logger = LogManager.getLogger(MailSender.class);
     private static final String MAIL_PROPERTIES = "mail.properties";
     private MimeMessage message;
     private String sendToEmail;
@@ -27,13 +23,9 @@ public class MailSender {
         this.properties = MailPropertiesReader.readProperties(MAIL_PROPERTIES);
     }
 
-    public void send() {
-        try {
-            initMessage();
-            Transport.send(message);
-        } catch (MessagingException e) {
-            logger.error("Error generating or sending message: " + e);
-        }
+    public void send() throws MessagingException {
+        initMessage();
+        Transport.send(message);
     }
 
     private void initMessage() throws MessagingException {

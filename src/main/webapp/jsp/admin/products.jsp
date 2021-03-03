@@ -102,7 +102,6 @@
                         <input type="hidden" name="categoryId" value="<c:out value="${selectedCategory}"/>">
                         <div class="form-row">
                             <ctg:pagination amountItem="${amountProduct}"/>
-                            <c:remove var="amountProduct" scope="session"/>
                         </div>
                     </form>
                 </c:if>

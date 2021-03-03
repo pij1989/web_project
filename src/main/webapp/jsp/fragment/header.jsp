@@ -13,7 +13,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <c:if test="${role eq 'USER'}">
+            <%--<c:if test="${role eq 'USER'}">
                 <div style="display: flex; flex-grow: inherit;">
                     <form class="form-inline my-2 my-lg-0 mx-lg-5"
                           action="${pageContext.request.contextPath}/controller">
@@ -25,7 +25,7 @@
                         </button>
                     </form>
                 </div>
-            </c:if>
+            </c:if>--%>
             <div style="display: flex; flex-grow: inherit; justify-content: flex-end">
                 <c:if test="${role eq 'USER' or role eq 'ADMIN'}">
                     <div style="color: white; padding-top: 5px; padding-right: 15px">

@@ -28,4 +28,6 @@ public interface ProductService {
     List<Product> findProductsByCategoryAndPerPage(String categoryId, String page, String perPage) throws ServiceException;
 
     List<Product> searchProduct(String searchProduct) throws ServiceException;
+
+    List<Product> findLastAddProduct(int limit) throws ServiceException;
 }

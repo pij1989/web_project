@@ -22,6 +22,7 @@ public class ProductDao extends AbstractDao<Product> {
     private static final String FIND_PRODUCT_BY_CATEGORY_AND_LIMIT_AND_OFFSET_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE category_id = ? LIMIT ? OFFSET ?;";
     private static final String FIND_PRODUCT_BY_ID_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE id = ?";
     private static final String FIND_PRODUCT_BY_NAME_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE product_name LIKE ?";
+    private static final String FIND_WITH_ORDER_BY_CREATE_TIME_DESC_AND_LIMIT_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products ORDER BY time_create DESC LIMIT ?";
     private static final String COUNT_ALL_PRODUCT_SQL = "SELECT count(*) FROM products";
     private static final String COUNT_PRODUCT_BY_CATEGORY_SQL = "SELECT count(category_id) FROM products WHERE category_id = ?";
     private static final String DELETE_PRODUCT_BY_CATEGORY_SQL = "DELETE FROM products WHERE category_id = ?";
@@ -49,12 +50,7 @@ public class ProductDao extends AbstractDao<Product> {
             preparedStatement.setInt(1, limit);
             preparedStatement.setInt(2, offset);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Product> products = new ArrayList<>();
-            while (resultSet.next()) {
-                Product product = createProductFromResultSet(resultSet);
-                products.add(product);
-            }
-            return products;
+            return createListProductFromResultSet(resultSet);
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);
@@ -67,12 +63,7 @@ public class ProductDao extends AbstractDao<Product> {
             preparedStatement.setInt(2, limit);
             preparedStatement.setInt(3, offset);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Product> products = new ArrayList<>();
-            while (resultSet.next()) {
-                Product product = createProductFromResultSet(resultSet);
-                products.add(product);
-            }
-            return products;
+            return createListProductFromResultSet(resultSet);
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);
@@ -83,12 +74,7 @@ public class ProductDao extends AbstractDao<Product> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CATEGORY_SQL)) {
             preparedStatement.setLong(1, categoryId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Product> products = new ArrayList<>();
-            while (resultSet.next()) {
-                Product product = createProductFromResultSet(resultSet);
-                products.add(product);
-            }
-            return products;
+            return createListProductFromResultSet(resultSet);
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);
@@ -99,12 +85,18 @@ public class ProductDao extends AbstractDao<Product> {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_NAME_SQL)) {
             preparedStatement.setString(1, "%" + productName + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Product> products = new ArrayList<>();
-            while (resultSet.next()) {
-                Product product = createProductFromResultSet(resultSet);
-                products.add(product);
-            }
-            return products;
+            return createListProductFromResultSet(resultSet);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    public List<Product> findWithOrderByCreateTimeDescAndLimit(int limit) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_WITH_ORDER_BY_CREATE_TIME_DESC_AND_LIMIT_SQL)) {
+            preparedStatement.setInt(1, limit);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return createListProductFromResultSet(resultSet);
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);
@@ -130,13 +122,8 @@ public class ProductDao extends AbstractDao<Product> {
     @Override
     public List<Product> findAll() throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_PRODUCT_SQL)) {
-            List<Product> products = new ArrayList<>();
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Product product = createProductFromResultSet(resultSet);
-                products.add(product);
-            }
-            return products;
+            return createListProductFromResultSet(resultSet);
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);
@@ -214,6 +201,15 @@ public class ProductDao extends AbstractDao<Product> {
         product.setCreatingTime(resultSet.getTimestamp(ColumnName.TIME_CREATE).toLocalDateTime());
         product.setCategoryId(resultSet.getLong(ColumnName.CATEGORY_ID));
         return product;
+    }
+
+    private List<Product> createListProductFromResultSet(ResultSet resultSet) throws SQLException {
+        ArrayList<Product> products = new ArrayList<>();
+        while (resultSet.next()) {
+            Product product = createProductFromResultSet(resultSet);
+            products.add(product);
+        }
+        return products;
     }
 
     private void updateProductInResultSet(ResultSet resultSet, Product product) throws SQLException {
