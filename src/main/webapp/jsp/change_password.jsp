@@ -8,13 +8,13 @@
 <head>
     <c:import url="fragment/bootstrap_style.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css" type="text/css"/>
-    <title><fmt:message key="changepassword.title"/></title>
+    <title><fmt:message key="password.change.title"/></title>
 </head>
 <body>
 <c:import url="fragment/header.jsp"/>
 <div class="login-container">
     <div class="login-item-wrapper bg-light">
-        <h2><fmt:message key="changepassword.message"/></h2>
+        <h2><fmt:message key="password.change.message"/></h2>
         <form id="changePasswordForm" class="needs-validation" action="${pageContext.request.contextPath}/controller" method="post" novalidate>
             <input type="hidden" name="command" value="change_password">
             <div class="form-group">
@@ -30,7 +30,7 @@
                 <small id="emailHelp" class="form-text text-muted"><fmt:message key="login.email.help"/></small>
             </div>
             <div class="form-group">
-                <label for="oldPassword"><fmt:message key="changepassword.oldpassword.label"/></label>
+                <label for="oldPassword"><fmt:message key="password.change.old_password.label"/></label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
@@ -44,7 +44,7 @@
             </div>
 
             <div class="form-group">
-                <label for="newPassword"><fmt:message key="changepassword.newpassword.label"/></label>
+                <label for="newPassword"><fmt:message key="password.change.new_password.label"/></label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text bg-white"><i class="fas fa-lock"></i></span>
@@ -57,19 +57,19 @@
                 <small id="newPasswordHelp" class="form-text text-muted"><fmt:message key="login.password.help"/></small>
             </div>
             <div class="login-item">
-                <button type="submit" id="submit" class="btn btn-primary"><fmt:message key="changepassword.submit"/></button>
+                <button type="submit" id="submit" class="btn btn-primary"><fmt:message key="password.change.submit"/></button>
             </div>
         </form>
         <br/>
         <c:if test="${changePasswordSuccess}">
             <div class="alert alert-success" role="alert" id="changePasswordSuccess">
-                <fmt:message key="changepassword.successchange"/>
+                <fmt:message key="password.change.success_change"/>
             </div>
             <c:remove var="changePasswordSuccess" scope="session"/>
         </c:if>
         <c:if test="${changePasswordError}">
             <div class="alert alert-danger" role="alert" id="changePasswordError">
-                <fmt:message key="changepassword.errorchange"/>
+                <fmt:message key="password.change.error_change"/>
             </div>
             <c:remove var="changePasswordError" scope="session"/>
         </c:if>

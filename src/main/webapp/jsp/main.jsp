@@ -19,7 +19,7 @@
     <main role="main" class="container">
         <h4 class="mb-3">Last add products</h4>
         <div class="row">
-            <c:forEach var="product" items="${products}">
+            <c:forEach var="product" items="${lastProducts}">
                 <div class="col-md-4">
                     <div class="card mb-4 shadow-sm">
                         <img src="data:image/jpg;base64,<ctg:encodeBytes bytes="${product.image}"/>"

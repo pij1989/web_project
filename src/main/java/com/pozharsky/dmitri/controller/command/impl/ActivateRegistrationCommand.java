@@ -3,8 +3,8 @@ package com.pozharsky.dmitri.controller.command.impl;
 import com.pozharsky.dmitri.controller.command.*;
 import com.pozharsky.dmitri.exception.CommandException;
 import com.pozharsky.dmitri.exception.ServiceException;
-import com.pozharsky.dmitri.model.entity.StatusType;
 import com.pozharsky.dmitri.model.entity.Token;
+import com.pozharsky.dmitri.model.entity.User;
 import com.pozharsky.dmitri.model.service.TokenService;
 import com.pozharsky.dmitri.model.service.UserService;
 import com.pozharsky.dmitri.model.service.impl.TokenServiceImpl;
@@ -31,7 +31,7 @@ public class ActivateRegistrationCommand implements Command {
             if (optionalToken.isPresent()) {
                 Token token = optionalToken.get();
                 long userId = token.getUserId();
-                userService.changeUserStatus(userId, StatusType.ACTIVE);
+                userService.changeUserStatus(userId, User.StatusType.ACTIVE);
                 Router router = new Router(PagePath.LOGIN, Router.Type.REDIRECT);
                 session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
                 return router;

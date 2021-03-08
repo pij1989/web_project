@@ -8,7 +8,7 @@
 <head>
     <c:import url="../fragment/bootstrap_style.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/admin.css">
-    <title><fmt:message key="editproduct.title"/></title>
+    <title><fmt:message key="product.edit.title"/></title>
 </head>
 <body>
 <c:import url="../fragment/header.jsp"/>
@@ -19,20 +19,25 @@
             <br/>
             <c:if test="${updateProductSuccess}">
                 <div class="alert alert-success" role="alert" id="successUpdateProduct">
-                    <fmt:message key="editproduct.successupdate"/>
+                    <fmt:message key="product.edit.success_update"/>
                 </div>
                 <c:remove var="updateProductSuccess" scope="session"/>
             </c:if>
             <c:if test="${updateProductError}">
                 <div class="alert alert-danger" role="alert" id="errorUpdateProduct">
-                    <fmt:message key="editproduct.errorupdate"/>
+                    <fmt:message key="product.edit.error_update"/>
                 </div>
                 <c:remove var="updateProductError" scope="session"/>
             </c:if>
+            <c:if test="${productNotExist}">
+                <div class="alert alert-danger" role="alert" id="productNotExist">
+                    <fmt:message key="product.not_exist"/>
+                </div>
+            </c:if>
             <br/>
-            <div class="create-product-container">
-                <div class="create-product-item-wrapper bg-light">
-                    <h2><fmt:message key="editproduct.message"/></h2>
+            <div class="create-container">
+                <div class="create-item-wrapper bg-light">
+                    <h2><fmt:message key="product.edit.message"/></h2>
                     <form id="updateProductForm"
                           class="needs-validation <c:if test="${not empty productForm}">was-validated</c:if>"
                           method="post" novalidate
@@ -40,11 +45,11 @@
                         <input type="hidden" name="command" value="update_product">
                         <input type="hidden" name="productId" value="<c:out value="${product.id}"/>">
                         <div class="form-group">
-                            <label for="productName"><fmt:message key="product.productname.label"/></label>
+                            <label for="productName"><fmt:message key="product.product_name.label"/></label>
                             <input type="text" name="productName"
                                    value="<c:out value="${product.name}"/>"
                                    class="form-control" id="productName"
-                                   placeholder="<fmt:message key="product.productname.placeholder"/>" required
+                                   placeholder="<fmt:message key="product.product_name.placeholder"/>" required
                                    pattern="[\-\s\w]+"/>
                         </div>
 
@@ -83,7 +88,7 @@
                                    id="activeCheck"
                                    <c:if test="${product.status}">checked</c:if> />
                             <label class="form-check-label" for="activeCheck"><fmt:message
-                                    key="product.activecheck.label"/></label>
+                                    key="product.active_check.label"/></label>
                         </div>
 
                         <div class="form-group">
@@ -93,20 +98,20 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="creatingTime"><fmt:message key="product.createdate.label"/></label>
+                            <label for="creatingTime"><fmt:message key="product.create_date.label"/></label>
                             <input type="datetime-local" id="creatingTime" name="creatingTime"
                                    value="<c:out value="${product.creatingTime}"/>" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="uploadImage"><fmt:message key="product.uploadimage.label"/></label>
+                            <label for="uploadImage"><fmt:message key="product.upload_image.label"/></label>
                             <input type="file" name="image" class="form-control-file" id="uploadImage">
                         </div>
                         <%--                        <c:remove var="productForm" scope="session"/>--%>
 
-                        <div class="create-product-item">
+                        <div class="create-item">
                             <button type="submit" id="submit" class="btn btn-primary">
-                                <fmt:message key="editproduct.submit"/>
+                                <fmt:message key="product.edit.submit"/>
                             </button>
                         </div>
                     </form>

@@ -60,7 +60,7 @@
                     <fmt:message key="login.link.registration"/></a>
                 <a class="nav-link"
                    href="${pageContext.request.contextPath}/controller?command=to_change_password_page_command">
-                    <fmt:message key="login.link.changepassword"/></a>
+                    <fmt:message key="login.link.change_password"/></a>
             </div>
         </form>
         <br/>
@@ -84,13 +84,13 @@
         <c:remove var="errors" scope="session"/>
         <c:if test="${mismatchedPassword}">
             <div class="alert alert-danger" role="alert">
-                <fmt:message key="login.mismatchedpassword"/><c:out value="${blockingCount}"/>
+                <fmt:message key="login.mismatched_password"/><c:out value="${blockingCount}"/>
             </div>
             <c:remove var="mismatchedPassword" scope="session"/>
         </c:if>
         <c:if test="${blockedUser}">
             <div class="alert alert-danger" role="alert">
-                <fmt:message key="login.blockeduser"/>
+                <fmt:message key="login.blocked_user"/>
             </div>
             <c:remove var="blockedUser" scope="session"/>
         </c:if>

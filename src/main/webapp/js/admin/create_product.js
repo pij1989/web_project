@@ -25,4 +25,4 @@ setTimeout(() => {
     if (errorCreateProduct != null) {
         errorCreateProduct.hidden = true;
     }
-}, 1000);
+}, 2000);

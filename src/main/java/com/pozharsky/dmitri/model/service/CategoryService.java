@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface CategoryService {
     boolean createCategory(Category category) throws ServiceException;
 
-    Optional<Category> findCategoryById(String categoryId) throws ServiceException;
+    Optional<Category> findCategoryById(long categoryId) throws ServiceException;
 
     List<Category> findAllCategory() throws ServiceException;
 

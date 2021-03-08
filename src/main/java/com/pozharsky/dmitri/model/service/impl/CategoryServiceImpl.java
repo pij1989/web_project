@@ -51,13 +51,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Optional<Category> findCategoryById(String categoryId) throws ServiceException {
+    public Optional<Category> findCategoryById(long categoryId) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             CategoryDao categoryDao = new CategoryDao();
             transactionManager.init(categoryDao);
-            long id = Long.parseLong(categoryId);
-            return categoryDao.findById(id);
+            return categoryDao.findById(categoryId);
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);

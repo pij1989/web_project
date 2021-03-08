@@ -20,17 +20,21 @@
             <br/>
             <c:if test="${createCategorySuccess}">
                 <div class="alert alert-success" role="alert" id="successCreateCategory">
-                    <fmt:message key="category.successcreate"/>
+                    <fmt:message key="category.success_create"/>
                 </div>
                 <c:remove var="createCategorySuccess" scope="session"/>
             </c:if>
             <c:if test="${createCategoryError}">
                 <div class="alert alert-danger" role="alert" id="errorCreateCategory">
-                    <fmt:message key="category.errorcreate"/>
+                    <fmt:message key="category.error_create"/>
                 </div>
                 <c:remove var="createCategoryError" scope="session"/>
             </c:if>
-            <br/>
+            <c:if test="${categoryNotExist}">
+                <div class="alert alert-danger" role="alert" id="categoryNotExist">
+                    <fmt:message key="category.not_exist"/>
+                </div>
+            </c:if>
             <div style="display: flex; flex-grow: inherit; justify-content: flex-end">
                 <form id="createCategoryForm" class="form-inline my-3 my-lg-3" method="post"
                       action="${pageContext.request.contextPath}/controller" novalidate>
@@ -38,9 +42,10 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group mx-sm-3 mb-2">
-                                <label for="createCategory" class="sr-only">Create category</label>
+                                <label for="createCategory" class="sr-only"><fmt:message
+                                        key="categories.label"/></label>
                                 <input type="text" class="form-control" name="categoryName" id="createCategory" required
-                                       pattern="[\-\s\w]+" placeholder="Create category" size="50">
+                                       pattern="[\-\s\w]+" placeholder="<fmt:message key="categories.create.placeholder"/>" size="50">
                             </div>
                         </div>
                         <div class="col">
@@ -68,12 +73,13 @@
                             <td><c:out value="${category.name}"/></td>
                             <td>
                                 <div style="display: flex; flex-grow: inherit; justify-content: flex-end">
-                                    <form method="post" action="${pageContext.request.contextPath}/controller">
+                                    <form action="${pageContext.request.contextPath}/controller">
                                         <input type="hidden" name="command" value="edit_category">
                                         <input type="hidden" name="categoryId"
                                                value="<c:out value="${category.id}"/>">
                                         <button class="btn btn-outline-primary mx-2 my-2 my-sm-0" type="submit">
-                                            <span><i class="fas fa-edit"></i> Edit</span>
+                                            <span><i class="fas fa-edit"></i> <fmt:message
+                                                    key="categories.button.edit"/></span>
                                         </button>
                                     </form>
                                 </div>

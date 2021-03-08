@@ -23,20 +23,30 @@ public class EditCategoryCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
+        String stringCategoryId = request.getParameter(RequestParameter.CATEGORY_ID);
+        long categoryId;
         try {
-            String categoryId = request.getParameter(RequestParameter.CATEGORY_ID);
-            logger.debug("CategoryId: " + categoryId);
+            categoryId = Long.parseLong(stringCategoryId);
+        } catch (NumberFormatException e) {
+            logger.error("Incorrect category id");
+            return new Router(PagePath.ERROR_404, Router.Type.REDIRECT);
+        }
+        try {
             CategoryService categoryService = CategoryServiceImpl.getInstance();
             Optional<Category> optionalCategory = categoryService.findCategoryById(categoryId);
             HttpSession session = request.getSession();
+            Router router;
             if (optionalCategory.isPresent()) {
                 Category category = optionalCategory.get();
                 ProductService productService = ProductServiceImpl.getInstance();
                 List<Product> products = productService.findProductByCategory(categoryId);
                 session.setAttribute(SessionAttribute.CATEGORY, category);
                 session.setAttribute(SessionAttribute.PRODUCTS, products);
+                router = new Router(PagePath.EDIT_CATEGORY);
+            } else {
+                request.setAttribute(RequestAttribute.CATEGORY_NOT_EXIST, true);
+                router = new Router(PagePath.CATEGORIES);
             }
-            Router router = new Router(PagePath.EDIT_CATEGORY, Router.Type.REDIRECT);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;
         } catch (ServiceException e) {

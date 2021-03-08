@@ -18,7 +18,7 @@
         <main class="col-md-10 col-xl-10" role="main">
             <div style="display: flex; flex-grow: inherit; justify-content: flex-end">
                 <form class="form-inline my-3 my-lg-3" action="${pageContext.request.contextPath}/controller">
-                    <input type="hidden" name="command" value="to_register_page_command">
+                    <input type="hidden" name="command" value="to_create_user_page_command">
                     <button class="btn btn-outline-primary mx-2 my-2 my-sm-0" type="submit">
                         <span><i class="fas fa-plus"></i> <fmt:message key="admin.button.create"/></span>
                     </button>
@@ -43,8 +43,8 @@
                             <thead>
                             <tr>
                                 <th scope="col"><fmt:message key="users.table.head.number"/></th>
-                                <th scope="col"><fmt:message key="users.table.head.firstname"/></th>
-                                <th scope="col"><fmt:message key="users.table.head.lastname"/></th>
+                                <th scope="col"><fmt:message key="users.table.head.first_name"/></th>
+                                <th scope="col"><fmt:message key="users.table.head.last_name"/></th>
                                 <th scope="col"><fmt:message key="users.table.head.username"/></th>
                                 <th scope="col"><fmt:message key="users.table.head.email"/></th>
                                 <th scope="col"><fmt:message key="users.table.head.role"/></th>
@@ -81,7 +81,7 @@
                                                     <option
                                                             <c:if test="${user.statusType eq 'WAIT_ACTIVE'}">selected</c:if>
                                                             value="WAIT_ACTIVE">
-                                                        <fmt:message key="users.status.waitactive"/>
+                                                        <fmt:message key="users.status.wait_active"/>
                                                     </option>
                                                 </select>
                                             </div>

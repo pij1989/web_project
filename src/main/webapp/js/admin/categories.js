@@ -1,5 +1,6 @@
 const SUCCESS_CREATE_CATEGORY = 'successCreateCategory';
 const ERROR_CREATE_CATEGORY = 'errorCreateCategory';
+const CATEGORY_NOT_EXIST = 'categoryNotExist';
 const FORM_ID = 'createCategoryForm';
 const SUBMIT = 'submit';
 const WAS_VALIDATED = 'was-validated';
@@ -19,10 +20,14 @@ form.addEventListener(SUBMIT, (event) => {
 setTimeout(() => {
     let successCreateProduct = document.getElementById(SUCCESS_CREATE_CATEGORY);
     let errorCreateProduct = document.getElementById(ERROR_CREATE_CATEGORY);
+    let categoryNotExist = document.getElementById(CATEGORY_NOT_EXIST);
     if (successCreateProduct != null) {
         successCreateProduct.hidden = true;
     }
     if (errorCreateProduct != null) {
         errorCreateProduct.hidden = true;
     }
-}, 1000);
+    if (categoryNotExist != null) {
+        categoryNotExist.hidden = true;
+    }
+}, 2000);

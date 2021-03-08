@@ -5,7 +5,7 @@ import com.pozharsky.dmitri.exception.CommandException;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.entity.Category;
 import com.pozharsky.dmitri.model.entity.Product;
-import com.pozharsky.dmitri.model.entity.RoleType;
+import com.pozharsky.dmitri.model.entity.User;
 import com.pozharsky.dmitri.model.service.CategoryService;
 import com.pozharsky.dmitri.model.service.ProductService;
 import com.pozharsky.dmitri.model.service.impl.CategoryServiceImpl;
@@ -19,20 +19,29 @@ import java.util.List;
 
 public class GetProductsCommand implements Command {
     private static final Logger logger = LogManager.getLogger(GetProductsCommand.class);
+    private static final long ZERO = 0L;
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
+        String stringCategoryId = request.getParameter(RequestParameter.CATEGORY_ID);
+        logger.debug("Category id: " + stringCategoryId);
+        long categoryId;
+        try {
+            categoryId = stringCategoryId != null ? Long.parseLong(stringCategoryId) : ZERO;
+        } catch (NumberFormatException e) {
+            logger.error("Incorrect category id", e);
+            return new Router(PagePath.ERROR_404, Router.Type.REDIRECT);
+        }
         try {
             String page = request.getParameter(RequestParameter.PAGE);
             String perPage = request.getParameter(RequestParameter.PER_PAGE);
-            String categoryId = request.getParameter(RequestParameter.CATEGORY_ID);
             ProductService productService = ProductServiceImpl.getInstance();
             HttpSession session = request.getSession();
-            RoleType roleType = (RoleType) session.getAttribute(SessionAttribute.ROLE);
+            User.RoleType roleType = (User.RoleType) session.getAttribute(SessionAttribute.ROLE);
             logger.debug("Page: " + page + " perPage: " + perPage);
             List<Product> products;
             int amountProduct;
-            if (categoryId == null || categoryId.isBlank()) {
+            if (categoryId == ZERO) {
                 amountProduct = productService.defineAmountProduct();
                 products = productService.findProductsByPerPage(page, perPage);
             } else {
@@ -45,10 +54,10 @@ public class GetProductsCommand implements Command {
                 session.setAttribute(SessionAttribute.CATEGORIES, categories);
             }
             Router router = null;
-            if (roleType == RoleType.ADMIN) {
+            if (roleType == User.RoleType.ADMIN) {
                 router = new Router(PagePath.PRODUCTS_ADMIN);
             }
-            if (roleType == RoleType.USER) {
+            if (roleType == User.RoleType.USER) {
                 router = new Router(PagePath.PRODUCTS_USER);
             }
             session.setAttribute(SessionAttribute.PRODUCTS, products);

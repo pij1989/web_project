@@ -8,7 +8,6 @@ import com.pozharsky.dmitri.model.creator.VerificationTokenCreator;
 import com.pozharsky.dmitri.model.dao.TokenDao;
 import com.pozharsky.dmitri.model.dao.TransactionManager;
 import com.pozharsky.dmitri.model.dao.UserDao;
-import com.pozharsky.dmitri.model.entity.StatusType;
 import com.pozharsky.dmitri.model.entity.Token;
 import com.pozharsky.dmitri.model.entity.User;
 import com.pozharsky.dmitri.model.error.ApplicationError;
@@ -104,7 +103,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean changeUserStatus(long id, StatusType statusType) throws ServiceException {
+    public boolean changeUserStatus(long id, User.StatusType statusType) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             UserDao userDao = new UserDao();
@@ -162,8 +161,8 @@ public class UserServiceImpl implements UserService {
                 Optional<User> optionalUser = userDao.findUserByEmail(email);
                 if (optionalUser.isPresent()) {
                     User user = optionalUser.get();
-                    if (!user.getStatusType().equals(StatusType.BLOCKED)) {
-                        isBlocked = userDao.updateUserStatusById(user.getId(), StatusType.BLOCKED);
+                    if (!user.getStatusType().equals(User.StatusType.BLOCKED)) {
+                        isBlocked = userDao.updateUserStatusById(user.getId(), User.StatusType.BLOCKED);
                     } else {
                         isBlocked = true;
                     }
@@ -197,6 +196,40 @@ public class UserServiceImpl implements UserService {
             }
             transactionManager.commit();
             return isChange;
+        } catch (DaoException e) {
+            logger.error(e);
+            transactionManager.rollback();
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.endTransaction();
+        }
+    }
+
+    @Override
+    public boolean createUserByAdmin(Map<String, String> userForm) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            boolean isCreate = false;
+            if (UserValidator.isValidRegistrationForm(userForm)) {
+                UserDao userDao = new UserDao();
+                transactionManager.initTransaction(userDao);
+                String email = userForm.get(RequestParameter.EMAIL);
+                Optional<User> optionalUser = userDao.findUserByEmail(email);
+                if (optionalUser.isEmpty()) {
+                    String password = userForm.get(RequestParameter.PASSWORD);
+                    String hashPassword = PasswordEncrypter.encryptPassword(password);
+                    User user = UserCreator.createUser(userForm);
+                    Optional<Long> optionalId = userDao.create(user, hashPassword);
+                    if (optionalId.isPresent()) {
+                        isCreate = true;
+                    }
+                } else {
+                    ApplicationError errors = ApplicationError.getInstance();
+                    errors.addError(ErrorType.ERROR_USER_EXIST);
+                }
+                transactionManager.commit();
+            }
+            return isCreate;
         } catch (DaoException e) {
             logger.error(e);
             transactionManager.rollback();

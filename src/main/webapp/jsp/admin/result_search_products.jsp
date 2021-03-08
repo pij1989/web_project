@@ -21,7 +21,8 @@
                 <form class="form-inline my-3 my-lg-3 mx-lg-5"
                       action="${pageContext.request.contextPath}/controller">
                     <input type="hidden" name="command" value="search_product">
-                    <input class="form-control mr-sm-2" type="search" name="searchProduct" placeholder="Search by name"
+                    <input class="form-control mr-sm-2" type="search" name="searchProduct"
+                           placeholder="<fmt:message key="products.search.placeholder"/>"
                            aria-label="Search" size="30">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><span><i
                             class="fas fa-search"></i></span> <fmt:message key="header.button.search"/>
@@ -42,7 +43,8 @@
                                             <p class="card-text"><c:out value="${product.description}"/></p>
                                             <h5 class="card-title"><ctg:formatCurrency value="${product.price}"
                                                                                        locale="${locale}"/></h5>
-                                            <h5 class="card-title"><fmt:message key="products.amount"/> <c:out value="${product.amount}"/></h5>
+                                            <h5 class="card-title"><fmt:message key="products.amount"/> <c:out
+                                                    value="${product.amount}"/></h5>
                                             <c:choose>
                                                 <c:when test="${product.status}">
                                                     <p><span class="badge badge-success"><fmt:message
@@ -50,12 +52,12 @@
                                                 </c:when>
                                                 <c:otherwise>
                                                     <p><span class="badge badge-danger"><fmt:message
-                                                            key="products.notactive"/></span></p>
+                                                            key="products.not_active"/></span></p>
                                                 </c:otherwise>
                                             </c:choose>
-                                            <p><small><fmt:message key="products.createtime"/> <ctg:formatLocalDateTime
+                                            <p><small><fmt:message key="products.create_time"/> <ctg:formatLocalDateTime
                                                     date="${product.creatingTime}" locale="${locale}"/></small></p>
-                                            <form method="post" action="${pageContext.request.contextPath}/controller">
+                                            <form action="${pageContext.request.contextPath}/controller">
                                                 <input type="hidden" name="command" value="edit_product">
                                                 <input type="hidden" name="productId"
                                                        value="<c:out value="${product.id}"/>">
@@ -68,18 +70,10 @@
                                 </div>
                             </c:forEach>
                         </div>
-                        <%--<form class="form-inline" action="${pageContext.request.contextPath}/controller"
-                              id="paginationForm">
-                            <input type="hidden" name="command" value="search_product">
-                            <div class="form-row">
-                                <ctg:pagination amountItem="${amountProduct}"/>
-                                <c:remove var="amountProduct" scope="session"/>
-                            </div>
-                        </form>--%>
                     </c:when>
                     <c:otherwise>
                         <div style="text-align: center;padding-top: 15px">
-                            <h1><fmt:message key="resultsearchproducts.message"/></h1>
+                            <h1><fmt:message key="products.search.not_found_message"/></h1>
                         </div>
                     </c:otherwise>
                 </c:choose>

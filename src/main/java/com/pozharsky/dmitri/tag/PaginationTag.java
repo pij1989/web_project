@@ -36,8 +36,15 @@ public class PaginationTag extends TagSupport {
         HttpSession session = request.getSession();
         String page = request.getParameter(RequestParameter.PAGE);
         String perPage = request.getParameter(RequestParameter.PER_PAGE);
-        int numberPage = page != null ? Integer.parseInt(page) : DEFAULT_PAGE;
-        int numberPerPage = perPage != null ? Integer.parseInt(perPage) : DEFAULT_PER_PAGE;
+        int numberPage;
+        int numberPerPage;
+        try {
+            numberPage = page != null ? Integer.parseInt(page) : DEFAULT_PAGE;
+            numberPerPage = perPage != null ? Integer.parseInt(perPage) : DEFAULT_PER_PAGE;
+        } catch (NumberFormatException e) {
+            numberPage = DEFAULT_PAGE;
+            numberPerPage = DEFAULT_PER_PAGE;
+        }
         int amountPage = PaginationUtil.defineAmountPage(amountItem, numberPerPage);
         Locale locale = (Locale) session.getAttribute(SessionAttribute.LOCALE);
         ResourceBundle bundle = ResourceBundle.getBundle(RESOURCE_NAME, locale);

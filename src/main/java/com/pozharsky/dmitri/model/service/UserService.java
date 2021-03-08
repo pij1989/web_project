@@ -1,7 +1,6 @@
 package com.pozharsky.dmitri.model.service;
 
 import com.pozharsky.dmitri.exception.ServiceException;
-import com.pozharsky.dmitri.model.entity.StatusType;
 import com.pozharsky.dmitri.model.entity.User;
 
 import java.util.List;
@@ -14,7 +13,7 @@ public interface UserService {
 
     boolean registrationUser(Map<String, String> userForm) throws ServiceException;
 
-    boolean changeUserStatus(long id, StatusType statusType) throws ServiceException;
+    boolean changeUserStatus(long id, User.StatusType statusType) throws ServiceException;
 
     Optional<User> findUserByEmail(String email) throws ServiceException;
 
@@ -23,4 +22,6 @@ public interface UserService {
     boolean blockUser(String email, AtomicInteger blockingCount) throws ServiceException;
 
     boolean changeUserPassword(String email, String oldPassword, String newPassword) throws ServiceException;
+
+    boolean createUserByAdmin(Map<String, String> userForm) throws ServiceException;
 }

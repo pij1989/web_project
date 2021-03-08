@@ -4,18 +4,17 @@ import com.pozharsky.dmitri.controller.command.Command;
 import com.pozharsky.dmitri.controller.command.PagePath;
 import com.pozharsky.dmitri.controller.command.Router;
 import com.pozharsky.dmitri.controller.command.SessionAttribute;
+import com.pozharsky.dmitri.exception.CommandException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public class ToRegistrationPageCommand implements Command {
+public class ToMainPageCommand implements Command {
     @Override
-    public Router execute(HttpServletRequest request) {
+    public Router execute(HttpServletRequest request) throws CommandException {
         HttpSession session = request.getSession();
-        Router router = new Router(PagePath.REGISTRATION);
-//        session.setAttribute(SessionAttribute.CURRENT_PAGE, new Router(PagePath.REGISTRATION, Router.Type.REDIRECT));
+        Router router = new Router(PagePath.MAIN);
         session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
-//        return new Router(PagePath.REGISTRATION);
         return router;
     }
 }

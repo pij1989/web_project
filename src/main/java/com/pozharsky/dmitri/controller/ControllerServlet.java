@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet(urlPatterns = {"/controller"})
+@WebServlet(urlPatterns = {"/controller"/*, "*.do"*/})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024,
         maxFileSize = 1024 * 1024 * 5,
         maxRequestSize = 1024 * 1024 * 5 * 5)
@@ -45,7 +45,7 @@ public class ControllerServlet extends HttpServlet {
                 Command command = optionalCommand.get();
                 Router router = command.execute(request);
                 if (router != null) {
-                    if (router.getType().equals(Router.Type.FORWARD)) {
+                    if (router.getType() == Router.Type.FORWARD) {
                         RequestDispatcher requestDispatcher = request.getRequestDispatcher(router.getPagePath());
                         requestDispatcher.forward(request, response);
                     } else {
@@ -61,7 +61,7 @@ public class ControllerServlet extends HttpServlet {
             }
         } catch (CommandException e) {
             logger.error("Redirect to the error page", e);
-            throw new ServletException(e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 

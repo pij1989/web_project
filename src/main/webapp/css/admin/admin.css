@@ -2,17 +2,17 @@
     font-size: larger;
 }
 
-.create-product-container {
+.create-container {
     display: flex;
     justify-content: center;
 }
 
-.create-product-container h2{
+.create-container h2{
     text-align: center;
     margin: 30px;
 }
 
-.create-product-item-wrapper{
+.create-item-wrapper{
     margin-top: 25px;
     border: 1px solid rgba(0, 0, 0, .1);
     border-radius: 20px;
@@ -21,6 +21,6 @@
     padding-bottom: 35px;
 }
 
-.create-product-item {
+.create-item {
     text-align: center;
 }

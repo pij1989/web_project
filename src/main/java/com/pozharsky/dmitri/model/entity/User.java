@@ -1,6 +1,19 @@
 package com.pozharsky.dmitri.model.entity;
 
 public class User extends Entity {
+
+    public enum RoleType {
+        ADMIN,
+        USER,
+        GUEST
+    }
+
+    public enum StatusType {
+        ACTIVE,
+        BLOCKED,
+        WAIT_ACTIVE
+    }
+
     private long id;
     private String firstName;
     private String lastName;

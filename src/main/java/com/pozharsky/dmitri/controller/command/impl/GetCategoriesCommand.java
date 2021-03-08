@@ -25,7 +25,7 @@ public class GetCategoriesCommand implements Command {
             CategoryService categoryService = CategoryServiceImpl.getInstance();
             List<Category> categories = categoryService.findAllCategory();
             HttpSession session = request.getSession();
-            Router router = new Router(PagePath.CATEGORIES, Router.Type.REDIRECT);
+            Router router = new Router(PagePath.CATEGORIES);
             session.setAttribute(SessionAttribute.CATEGORIES, categories);
             session.setAttribute(SessionAttribute.CURRENT_PAGE,router);
             return router;

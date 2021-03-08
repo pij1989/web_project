@@ -8,14 +8,12 @@ import com.pozharsky.dmitri.controller.command.SessionAttribute;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-public class ToRegistrationPageCommand implements Command {
+public class ToCreateUserPageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Router router = new Router(PagePath.REGISTRATION);
-//        session.setAttribute(SessionAttribute.CURRENT_PAGE, new Router(PagePath.REGISTRATION, Router.Type.REDIRECT));
+        Router router = new Router(PagePath.CREATE_USER);
         session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
-//        return new Router(PagePath.REGISTRATION);
         return router;
     }
 }

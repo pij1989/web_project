@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,19 +31,9 @@ public class RegistrationCommand implements Command {
             UserServiceImpl userService = UserServiceImpl.getInstance();
             EmailServiceImpl emailService = EmailServiceImpl.getInstance();
             TokenServiceImpl tokenService = TokenServiceImpl.getInstance();
-            String firstName = request.getParameter(FIRST_NAME);
-            String lastName = request.getParameter(LAST_NAME);
-            String username = request.getParameter(USERNAME);
+            Map<String, String> userForm = requestParameterToMap(request, FIRST_NAME, LAST_NAME, USERNAME,
+                    EMAIL, PASSWORD, CONFIRM_PASSWORD);
             String email = request.getParameter(EMAIL);
-            String password = request.getParameter(PASSWORD);
-            String confirmPassword = request.getParameter(CONFIRM_PASSWORD);
-            Map<String, String> userForm = new HashMap<>();
-            userForm.put(FIRST_NAME, firstName);
-            userForm.put(LAST_NAME, lastName);
-            userForm.put(USERNAME, username);
-            userForm.put(EMAIL, email);
-            userForm.put(PASSWORD, password);
-            userForm.put(CONFIRM_PASSWORD, confirmPassword);
             HttpSession session = request.getSession();
             if (userService.registrationUser(userForm)) {
                 Optional<Token> optionalToken = tokenService.findTokenByUserEmail(email);

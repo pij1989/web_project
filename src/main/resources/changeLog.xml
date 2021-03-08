@@ -9,7 +9,7 @@
         <sql>
             create table if not exists `roles`(
             `id` int not null primary key auto_increment,
-            `role_name` varchar(32) not null)
+            `role_name` enum ('ADMIN','USER','GUEST'))
             default character set = utf8;
         </sql>
     </changeSet>
@@ -17,9 +17,9 @@
 
     <changeSet id="2" author="Dmitri">
         <sql>
-            insert ignore into `roles` set `role_name`='ADMIN';
-            insert ignore into `roles` set `role_name`='USER';
-            insert ignore into `roles` set `role_name`='GUEST';
+            insert into `roles`(`role_name`) values ('ADMIN');
+            insert into `roles`(`role_name`) values ('USER');
+            insert into `roles`(`role_name`) values ('GUEST');
         </sql>
     </changeSet>
 
@@ -27,23 +27,23 @@
         <sql>
             create table if not exists `status`(
             `id` int not null primary key auto_increment,
-            `status_name` varchar(32) not null)
+            `status_name` enum ('ACTIVE','BLOCKED','WAIT_ACTIVE'))
             default character set = utf8;
         </sql>
     </changeSet>
 
     <changeSet id="4" author="Dmitri">
         <sql>
-            insert ignore into `status` set `status_name`='ACTIVE';
-            insert ignore into `status` set `status_name`='BLOCKED';
-            insert ignore into `status` set `status_name`='WAIT_ACTIVE';
+            insert into `status` (`status_name`) values ('ACTIVE');
+            insert into `status` (`status_name`) values ('BLOCKED');
+            insert into `status` (`status_name`) values ('WAIT_ACTIVE');
         </sql>
     </changeSet>
 
     <changeSet id="5" author="Dmitri">
         <sql>
             create table if not exists `users`(
-            `id` int not null primary key auto_increment,
+            `id` bigint not null primary key auto_increment,
             `first_name` varchar(128) not null,
             `last_name` varchar(128) not null,
             `username` varchar(128) not null,
@@ -62,11 +62,11 @@
     <changeSet id="6" author="Dmitri">
         <sql>
             create table if not exists `tokens`(
-            `id` int not null primary key auto_increment,
+            `id` bigint not null primary key auto_increment,
             `token_value` varchar(128) not null,
             `time_create` datetime not null,
             `time_expire` datetime not null,
-            `user_id` int not null,
+            `user_id` bigint not null,
             constraint `tokens_users_id_fk`
             foreign key (`user_id`) references `users` (`id`))
             default character set = utf8;
@@ -84,7 +84,7 @@
     <changeSet id="8" author="Dmitri">
         <sql>
             create table if not exists `categories`(
-            `id` int not null primary key auto_increment,
+            `id` bigint not null primary key auto_increment,
             `category_name` varchar(128) not null)
             default character set = utf8;
         </sql>
@@ -93,7 +93,7 @@
     <changeSet id="9" author="Dmitri">
         <sql>
             create table if not exists `products`(
-            `id` int not null primary key auto_increment,
+            `id` bigint not null primary key auto_increment,
             `product_name` varchar(255) not null,
             `description` text,
             `price` decimal(6,2) not null,
@@ -101,7 +101,7 @@
             `status` tinyint(1),
             `image` mediumblob,
             `time_create` datetime,
-            `category_id` int not null,
+            `category_id` bigint not null,
             constraint `products_categories_id_fk`
             foreign key (`category_id`) references `categories` (`id`))
             default character set = utf8;
@@ -111,6 +111,77 @@
     <changeSet id="10" author="Dmitri">
         <sql>
             alter schema `web_project_database` default character set utf8;
+        </sql>
+    </changeSet>
+
+    <changeSet id="11" author="Dmitri">
+        <sql>
+            create table if not exists `reviews` (
+            `id` bigint not null primary key auto_increment,
+            `comment` text not null,
+            `rating` int not null,
+            `time_create` datetime not null,
+            `user_id` bigint not null,
+            `product_id` bigint not null,
+            constraint `reviews_products_id_fk`
+            foreign key (`product_id`) references `products` (`id`),
+            constraint reviews_users_id_fk
+            foreign key (`user_id`) references `users` (`id`))
+            default character set = utf8;
+        </sql>
+    </changeSet>
+
+    <changeSet id="12" author="Dmitri">
+        <sql>
+            create table if not exists `orders` (
+            `id` bigint not null primary key auto_increment,
+            `time_create` datetime not null,
+            `cost` decimal(10,2) not null,
+            `order_status_id` int not null,
+            `user_id` bigint not null,
+            constraint `orders_users_id_fk`
+            foreign key (`user_id`) references `users` (`id`))
+            default character set = utf8;
+        </sql>
+    </changeSet>
+
+    <changeSet id="13" author="Dmitri">
+        <sql>
+            create table if not exists `orders_status`(
+            `id` int not null primary key auto_increment,
+            `order_status_name` enum ('NEW','PROCESSING','DELIVERY'))
+            default character set = utf8;
+        </sql>
+    </changeSet>
+
+    <changeSet id="14" author="Dmitri">
+        <sql>
+            insert into `orders_status` (`order_status_name`) values ('NEW');
+            insert into `orders_status` (`order_status_name`) values ('PROCESSING');
+            insert into `orders_status` (`order_status_name`) values ('DELIVERY');
+        </sql>
+    </changeSet>
+
+    <changeSet id="15" author="Dmitri">
+        <sql>
+            alter table `orders`
+            add constraint `orders_orders_status_id_fk`
+            foreign key (`order_status_id`) references `orders_status` (`id`);
+        </sql>
+    </changeSet>
+
+    <changeSet id="16" author="Dmitri">
+        <sql>
+            create table if not exists  `order_products` (
+            `id` bigint not null primary key auto_increment,
+            `amount` int not null,
+            `order_id` bigint not null,
+            `product_id` bigint not null,
+            constraint `order_products_orders_id_fk`
+            foreign key (`order_id`) references `orders` (`id`),
+            constraint `order_products_products_id_fk`
+            foreign key (`product_id`) references `products` (`id`))
+            default character set = utf8;
         </sql>
     </changeSet>
 </databaseChangeLog>

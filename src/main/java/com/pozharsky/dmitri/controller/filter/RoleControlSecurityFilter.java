@@ -3,7 +3,7 @@ package com.pozharsky.dmitri.controller.filter;
 import com.pozharsky.dmitri.controller.command.CommandType;
 import com.pozharsky.dmitri.controller.command.RequestParameter;
 import com.pozharsky.dmitri.controller.command.SessionAttribute;
-import com.pozharsky.dmitri.model.entity.RoleType;
+import com.pozharsky.dmitri.model.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,35 +24,40 @@ public class RoleControlSecurityFilter implements Filter {
     private static final String INDEX_PATH = "INDEX_PATH";
     private static final String GET_METHOD = "GET";
     private static final String POST_METHOD = "POST";
-    private static final Map<CommandType, List<RoleType>> getCommandMap = new EnumMap<>(CommandType.class);
-    private static final Map<CommandType, List<RoleType>> postCommandMap = new EnumMap<>(CommandType.class);
+    private static final Map<CommandType, List<User.RoleType>> getCommandMap = new EnumMap<>(CommandType.class);
+    private static final Map<CommandType, List<User.RoleType>> postCommandMap = new EnumMap<>(CommandType.class);
     private String indexPath;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         indexPath = filterConfig.getInitParameter(INDEX_PATH);
-        getCommandMap.put(CommandType.TO_CHANGE_PASSWORD_PAGE_COMMAND, List.of(RoleType.GUEST, RoleType.USER, RoleType.ADMIN));
-        getCommandMap.put(CommandType.TO_CREATE_PRODUCT_PAGE_COMMAND, List.of(RoleType.ADMIN));
-        getCommandMap.put(CommandType.TO_LOGIN_PAGE_COMMAND, List.of(RoleType.GUEST, RoleType.USER, RoleType.ADMIN));
-        getCommandMap.put(CommandType.TO_REGISTER_PAGE_COMMAND, List.of(RoleType.GUEST, RoleType.USER, RoleType.ADMIN));
-        getCommandMap.put(CommandType.ACTIVATE_REGISTRATION, List.of(RoleType.GUEST, RoleType.USER, RoleType.ADMIN));
-        getCommandMap.put(CommandType.GET_PRODUCTS, List.of(RoleType.ADMIN, RoleType.USER));
-        getCommandMap.put(CommandType.SEARCH_PRODUCT, List.of(RoleType.ADMIN));
-        getCommandMap.put(CommandType.GET_USERS, List.of(RoleType.ADMIN));
-        getCommandMap.put(CommandType.GET_CATEGORIES, List.of(RoleType.ADMIN));
-        getCommandMap.put(CommandType.LOGOUT, List.of(RoleType.ADMIN, RoleType.USER));
-        postCommandMap.put(CommandType.EDIT_CATEGORY, List.of(RoleType.ADMIN));
-        postCommandMap.put(CommandType.CHANGE_LOCALE, List.of(RoleType.ADMIN, RoleType.USER, RoleType.GUEST));
-        postCommandMap.put(CommandType.CHANGE_PASSWORD, List.of(RoleType.ADMIN, RoleType.USER, RoleType.GUEST));
-        postCommandMap.put(CommandType.CHANGE_USER_STATUS, List.of(RoleType.ADMIN));
-        postCommandMap.put(CommandType.CREATE_PRODUCT, List.of(RoleType.ADMIN));
-        postCommandMap.put(CommandType.DELETE_CATEGORY, List.of(RoleType.ADMIN));
-        postCommandMap.put(CommandType.LOGIN, List.of(RoleType.ADMIN, RoleType.USER, RoleType.GUEST));
-        postCommandMap.put(CommandType.REGISTER, List.of(RoleType.ADMIN, RoleType.USER, RoleType.GUEST));
-        postCommandMap.put(CommandType.CREATE_CATEGORY, List.of(RoleType.ADMIN));
-        postCommandMap.put(CommandType.UPDATE_CATEGORY, List.of(RoleType.ADMIN));
-        postCommandMap.put(CommandType.EDIT_PRODUCT, List.of(RoleType.ADMIN));
-        postCommandMap.put(CommandType.UPDATE_PRODUCT, List.of(RoleType.ADMIN));
+        getCommandMap.put(CommandType.TO_CHANGE_PASSWORD_PAGE_COMMAND, List.of(User.RoleType.GUEST));
+        getCommandMap.put(CommandType.TO_CREATE_PRODUCT_PAGE_COMMAND, List.of(User.RoleType.ADMIN));
+        getCommandMap.put(CommandType.TO_LOGIN_PAGE_COMMAND, List.of(User.RoleType.GUEST));
+        getCommandMap.put(CommandType.TO_REGISTER_PAGE_COMMAND, List.of(User.RoleType.GUEST, User.RoleType.USER));
+        getCommandMap.put(CommandType.TO_ADMIN_PAGE_COMMAND, List.of(User.RoleType.ADMIN));
+        getCommandMap.put(CommandType.TO_MAIN_PAGE_COMMAND, List.of(User.RoleType.USER));
+        getCommandMap.put(CommandType.TO_CREATE_USER_PAGE_COMMAND, List.of(User.RoleType.ADMIN));
+        getCommandMap.put(CommandType.ACTIVATE_REGISTRATION, List.of(User.RoleType.GUEST, User.RoleType.USER, User.RoleType.ADMIN));
+        getCommandMap.put(CommandType.GET_PRODUCTS, List.of(User.RoleType.ADMIN, User.RoleType.USER));
+        getCommandMap.put(CommandType.SEARCH_PRODUCT, List.of(User.RoleType.ADMIN));
+        getCommandMap.put(CommandType.VIEW_PRODUCT, List.of(User.RoleType.USER));
+        getCommandMap.put(CommandType.GET_USERS, List.of(User.RoleType.ADMIN));
+        getCommandMap.put(CommandType.GET_CATEGORIES, List.of(User.RoleType.ADMIN));
+        getCommandMap.put(CommandType.LOGOUT, List.of(User.RoleType.ADMIN, User.RoleType.USER));
+        getCommandMap.put(CommandType.EDIT_CATEGORY, List.of(User.RoleType.ADMIN));
+        getCommandMap.put(CommandType.EDIT_PRODUCT, List.of(User.RoleType.ADMIN));
+        getCommandMap.put(CommandType.CHANGE_LOCALE, List.of(User.RoleType.ADMIN, User.RoleType.USER, User.RoleType.GUEST));
+        postCommandMap.put(CommandType.CHANGE_PASSWORD, List.of(User.RoleType.ADMIN, User.RoleType.USER, User.RoleType.GUEST));
+        postCommandMap.put(CommandType.CHANGE_USER_STATUS, List.of(User.RoleType.ADMIN));
+        postCommandMap.put(CommandType.CREATE_PRODUCT, List.of(User.RoleType.ADMIN));
+        postCommandMap.put(CommandType.CREATE_USER, List.of(User.RoleType.ADMIN));
+        postCommandMap.put(CommandType.DELETE_CATEGORY, List.of(User.RoleType.ADMIN));
+        postCommandMap.put(CommandType.LOGIN, List.of(User.RoleType.ADMIN, User.RoleType.USER, User.RoleType.GUEST));
+        postCommandMap.put(CommandType.REGISTER, List.of(User.RoleType.ADMIN, User.RoleType.USER, User.RoleType.GUEST));
+        postCommandMap.put(CommandType.CREATE_CATEGORY, List.of(User.RoleType.ADMIN));
+        postCommandMap.put(CommandType.UPDATE_CATEGORY, List.of(User.RoleType.ADMIN));
+        postCommandMap.put(CommandType.UPDATE_PRODUCT, List.of(User.RoleType.ADMIN));
     }
 
     @Override
@@ -62,7 +67,7 @@ public class RoleControlSecurityFilter implements Filter {
         String method = httpServletRequest.getMethod();
         HttpSession session = httpServletRequest.getSession();
         String command = httpServletRequest.getParameter(RequestParameter.COMMAND);
-        RoleType role = (RoleType) session.getAttribute(SessionAttribute.ROLE);
+        User.RoleType role = (User.RoleType) session.getAttribute(SessionAttribute.ROLE);
         if (command != null) {
             CommandType commandType;
             try {
@@ -73,6 +78,10 @@ public class RoleControlSecurityFilter implements Filter {
                 return;
             }
             if (!hasPermission(commandType, role, method)) {
+                logger.debug("No permission");
+                if (role == User.RoleType.USER || role == User.RoleType.ADMIN) {
+                    session.invalidate();
+                }
                 httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + indexPath);
                 return;
             }
@@ -85,7 +94,7 @@ public class RoleControlSecurityFilter implements Filter {
         indexPath = null;
     }
 
-    private boolean hasPermission(CommandType commandType, RoleType roleType, String method) {
+    private boolean hasPermission(CommandType commandType, User.RoleType roleType, String method) {
         boolean hasPermission = false;
         switch (method) {
             case GET_METHOD: {
@@ -100,10 +109,10 @@ public class RoleControlSecurityFilter implements Filter {
         return hasPermission;
     }
 
-    private boolean hasPermission(CommandType commandType, RoleType roleType, Map<CommandType, List<RoleType>> commandMap) {
+    private boolean hasPermission(CommandType commandType, User.RoleType roleType, Map<CommandType, List<User.RoleType>> commandMap) {
         boolean hasPermission = false;
         if (commandMap.get(commandType) != null) {
-            List<RoleType> roles = commandMap.get(commandType);
+            List<User.RoleType> roles = commandMap.get(commandType);
             if (roles.contains(roleType)) {
                 hasPermission = true;
             }

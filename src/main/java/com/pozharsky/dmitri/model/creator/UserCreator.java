@@ -1,7 +1,5 @@
 package com.pozharsky.dmitri.model.creator;
 
-import com.pozharsky.dmitri.model.entity.RoleType;
-import com.pozharsky.dmitri.model.entity.StatusType;
 import com.pozharsky.dmitri.model.entity.User;
 
 import java.util.Map;
@@ -20,17 +18,17 @@ public class UserCreator {
         String email = userForm.get(EMAIL);
         String role = userForm.get(ROLE);
         String status = userForm.get(STATUS);
-        RoleType roleType;
-        StatusType statusType;
+        User.RoleType roleType;
+        User.StatusType statusType;
         if (role == null) {
-            roleType = RoleType.USER;
+            roleType = User.RoleType.USER;
         } else {
-            roleType = RoleType.valueOf(role);
+            roleType = User.RoleType.valueOf(role);
         }
         if (status == null) {
-            statusType = StatusType.WAIT_ACTIVE;
+            statusType = User.StatusType.WAIT_ACTIVE;
         } else {
-            statusType = StatusType.valueOf(status);
+            statusType = User.StatusType.valueOf(status);
         }
         return new User(firstName, lastName, username, email, roleType, statusType);
     }

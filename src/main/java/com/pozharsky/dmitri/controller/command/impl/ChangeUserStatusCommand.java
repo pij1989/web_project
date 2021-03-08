@@ -3,7 +3,6 @@ package com.pozharsky.dmitri.controller.command.impl;
 import com.pozharsky.dmitri.controller.command.*;
 import com.pozharsky.dmitri.exception.CommandException;
 import com.pozharsky.dmitri.exception.ServiceException;
-import com.pozharsky.dmitri.model.entity.StatusType;
 import com.pozharsky.dmitri.model.entity.User;
 import com.pozharsky.dmitri.model.service.UserService;
 import com.pozharsky.dmitri.model.service.impl.UserServiceImpl;
@@ -26,14 +25,14 @@ public class ChangeUserStatusCommand implements Command {
             HttpSession session = request.getSession();
             logger.debug("User id: " + userId + " Status: " + status);
             UserService userService = UserServiceImpl.getInstance();
-            boolean result = userService.changeUserStatus(Long.parseLong(userId), StatusType.valueOf(status));
+            boolean result = userService.changeUserStatus(Long.parseLong(userId), User.StatusType.valueOf(status));
             if (result) {
                 @SuppressWarnings("unchecked")
                 List<User> users = (List<User>) session.getAttribute(SessionAttribute.USERS);
                 List<User> updateUsers = users.stream()
                         .peek(user -> {
                             if (user.getId() == Long.parseLong(userId)) {
-                                user.setStatusType(StatusType.valueOf(status));
+                                user.setStatusType(User.StatusType.valueOf(status));
                             }
                         })
                         .collect(Collectors.toList());

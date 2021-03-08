@@ -20,17 +20,16 @@
             <br/>
             <c:if test="${updateCategorySuccess}">
                 <div class="alert alert-success" role="alert" id="successUpdateCategory">
-                    <fmt:message key="category.successupdate"/>
+                    <fmt:message key="category.success_update"/>
                 </div>
                 <c:remove var="updateCategorySuccess" scope="session"/>
             </c:if>
             <c:if test="${updateCategoryError}">
                 <div class="alert alert-danger" role="alert" id="errorUpdateCategory">
-                    <fmt:message key="category.errorupdate"/>
+                    <fmt:message key="category.error_update"/>
                 </div>
                 <c:remove var="updateCategoryError" scope="session"/>
             </c:if>
-            <br/>
             <div style="display: flex; flex-grow: inherit; justify-content: flex-end">
                 <form id="updateCategoryForm" class="form-inline my-3 my-lg-3" method="post"
                       action="${pageContext.request.contextPath}/controller" novalidate>
@@ -39,15 +38,15 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group mx-sm-3 mb-2">
-                                <label for="updateCategory" class="sr-only">Create category</label>
+                                <label for="updateCategory" class="sr-only"><fmt:message key="category.label"/></label>
                                 <input type="text" class="form-control" name="categoryName"
                                        value="<c:out value="${category.name}"/>" id="updateCategory" required
-                                       pattern="[\-\s\w]+" placeholder="Update category" size="50">
+                                       pattern="[\-\s\w]+" placeholder="<fmt:message key="category.update.placeholder"/>" size="50">
                             </div>
                         </div>
                         <div class="col">
                             <button class="btn btn-outline-primary mx-2 my-2 my-sm-0" type="submit">
-                                <span> Update</span>
+                                <fmt:message key="category.update.submit"/>
                             </button>
                         </div>
                     </div>
@@ -57,13 +56,13 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Number</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Amount</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Creating time</th>
+                        <th scope="col"><fmt:message key="product.table.head.number"/></th>
+                        <th scope="col"><fmt:message key="product.table.head.image"/></th>
+                        <th scope="col"><fmt:message key="product.table.head.name"/></th>
+                        <th scope="col"><fmt:message key="product.table.head.price"/></th>
+                        <th scope="col"><fmt:message key="product.table.head.amount"/></th>
+                        <th scope="col"><fmt:message key="product.table.head.description"/></th>
+                        <th scope="col"><fmt:message key="product.table.head.creating_time"/></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -89,7 +88,7 @@
                                 <input type="hidden" name="command" value="delete_category">
                                 <input type="hidden" name="categoryId" value="<c:out value="${category.id}"/>">
                                 <button class="btn btn-outline-danger mx-2 my-2 my-sm-0" type="submit">
-                                    <span><i class="fas fa-trash"></i> Delete</span>
+                                    <span><i class="fas fa-trash"></i> <fmt:message key="category.delete.submit"/></span>
                                 </button>
                             </form>
                         </td>

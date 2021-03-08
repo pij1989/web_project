@@ -2,7 +2,7 @@ package com.pozharsky.dmitri.controller.filter;
 
 import com.pozharsky.dmitri.controller.command.Router;
 import com.pozharsky.dmitri.controller.command.SessionAttribute;
-import com.pozharsky.dmitri.model.entity.RoleType;
+import com.pozharsky.dmitri.model.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,8 +37,8 @@ public class PageRedirectSecurityFilter implements Filter {
             chain.doFilter(request, response);
         } else {
             Router router = (Router) session.getAttribute(SessionAttribute.CURRENT_PAGE);
-            RoleType role = (RoleType) session.getAttribute(SessionAttribute.ROLE);
-            if (role == null || role.equals(RoleType.GUEST)) {
+            User.RoleType role = (User.RoleType) session.getAttribute(SessionAttribute.ROLE);
+            if (role == null || role == User.RoleType.GUEST) {
                 httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + indexPath);
                 logger.debug("Redirect to index: " + role);
                 return;

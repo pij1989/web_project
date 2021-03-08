@@ -34,6 +34,10 @@ public class SessionAttribute {
     public static final String UPDATE_PRODUCT_SUCCESS = "updateProductSuccess";
     public static final String UPDATE_PRODUCT_ERROR = "updateProductError";
     public static final String SELECTED_CATEGORY = "selectedCategory";
+    public static final String USER = "user";
+    public static final String CREATE_USER_SUCCESS = "createUserSuccess";
+    public static final String CREATE_USER_ERROR = "createUserError";
+    public static final String LAST_PRODUCTS = "lastProducts";
 
     private SessionAttribute() {
     }

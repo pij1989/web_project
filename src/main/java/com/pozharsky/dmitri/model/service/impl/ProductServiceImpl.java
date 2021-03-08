@@ -50,13 +50,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findProductByCategory(String categoryId) throws ServiceException {
+    public List<Product> findProductByCategory(long categoryId) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             ProductDao productDao = new ProductDao();
             transactionManager.init(productDao);
-            long id = Long.parseLong(categoryId);
-            return productDao.findByCategory(id);
+            return productDao.findByCategory(categoryId);
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
@@ -66,13 +65,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> findProductById(String productId) throws ServiceException {
+    public Optional<Product> findProductById(long productId) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             ProductDao productDao = new ProductDao();
             transactionManager.init(productDao);
-            long id = Long.parseLong(productId);
-            return productDao.findById(id);
+            return productDao.findById(productId);
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
@@ -136,13 +134,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public int defineAmountProductByCategory(String categoryId) throws ServiceException {
+    public int defineAmountProductByCategory(long categoryId) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             ProductDao productDao = new ProductDao();
             transactionManager.init(productDao);
-            long id = Long.parseLong(categoryId);
-            return productDao.countProductByCategory(id);
+            return productDao.countProductByCategory(categoryId);
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
@@ -153,12 +150,20 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findProductsByPerPage(String page, String perPage) throws ServiceException {
+        int limit;
+        int numberPage;
+        try {
+            limit = perPage != null ? Integer.parseInt(perPage) : DEFAULT_PER_PAGE;
+            numberPage = page != null ? Integer.parseInt(page) : DEFAULT_PAGE;
+        } catch (NumberFormatException e) {
+            logger.error(e);
+            limit = DEFAULT_PER_PAGE;
+            numberPage = DEFAULT_PAGE;
+        }
         TransactionManager transactionManager = new TransactionManager();
         try {
             ProductDao productDao = new ProductDao();
             transactionManager.init(productDao);
-            int limit = perPage != null ? Integer.parseInt(perPage) : DEFAULT_PER_PAGE;
-            int numberPage = page != null ? Integer.parseInt(page) : DEFAULT_PAGE;
             int offset = (numberPage - 1) * limit;
             return productDao.findByLimitAndOffset(limit, offset);
         } catch (DaoException e) {
@@ -170,16 +175,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findProductsByCategoryAndPerPage(String categoryId, String page, String perPage) throws ServiceException {
+    public List<Product> findProductsByCategoryAndPerPage(long categoryId, String page, String perPage) throws ServiceException {
+        int limit;
+        int numberPage;
+        try {
+            limit = perPage != null ? Integer.parseInt(perPage) : DEFAULT_PER_PAGE;
+            numberPage = page != null ? Integer.parseInt(page) : DEFAULT_PAGE;
+        } catch (NumberFormatException e) {
+            logger.error(e);
+            limit = DEFAULT_PER_PAGE;
+            numberPage = DEFAULT_PAGE;
+        }
         TransactionManager transactionManager = new TransactionManager();
         try {
             ProductDao productDao = new ProductDao();
             transactionManager.init(productDao);
-            int limit = perPage != null ? Integer.parseInt(perPage) : DEFAULT_PER_PAGE;
-            int numberPage = page != null ? Integer.parseInt(page) : DEFAULT_PAGE;
             int offset = (numberPage - 1) * limit;
-            long id = Long.parseLong(categoryId);
-            return productDao.findByCategoryAndLimitAndOffset(id, limit, offset);
+            return productDao.findByCategoryAndLimitAndOffset(categoryId, limit, offset);
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);

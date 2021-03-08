@@ -1,5 +1,6 @@
 const SUCCESS_UPDATE_PRODUCT = 'successUpdateProduct';
 const ERROR_UPDATE_PRODUCT = 'errorUpdateProduct';
+const PRODUCT_NOT_EXIST = 'productNotExist';
 const FORM_ID = 'updateProductForm';
 const SUBMIT = 'submit';
 const WAS_VALIDATED = 'was-validated';
@@ -19,10 +20,14 @@ form.addEventListener(SUBMIT, (event) => {
 setTimeout(() => {
     let successCreateProduct = document.getElementById(SUCCESS_UPDATE_PRODUCT);
     let errorCreateProduct = document.getElementById(ERROR_UPDATE_PRODUCT);
+    let productNotExist = document.getElementById(PRODUCT_NOT_EXIST);
     if (successCreateProduct != null) {
         successCreateProduct.hidden = true;
     }
     if (errorCreateProduct != null) {
         errorCreateProduct.hidden = true;
     }
-}, 1000);
+    if (productNotExist != null) {
+        productNotExist.hidden = true;
+    }
+}, 2000);

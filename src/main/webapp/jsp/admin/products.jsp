@@ -23,7 +23,8 @@
                         <form class="form-inline my-3 my-lg-3 mx-lg-5"
                               action="${pageContext.request.contextPath}/controller">
                             <input type="hidden" name="command" value="search_product">
-                            <input class="form-control mr-sm-2" type="search" name="searchProduct" placeholder="Search by name"
+                            <input class="form-control mr-sm-2" type="search" name="searchProduct"
+                                   placeholder="<fmt:message key="products.search.placeholder"/>"
                                    aria-label="Search" size="30">
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><span><i
                                     class="fas fa-search"></i></span> <fmt:message key="header.button.search"/>
@@ -38,7 +39,7 @@
                             <input type="hidden" name="command" value="get_products">
                             <div class="form-group">
                                 <select name="categoryId" class="form-control" id="category">
-                                    <option value="">All categories</option>
+                                    <option value="0">All categories</option>
                                     <c:forEach var="category" items="${categories}">
                                         <option value="<c:out value="${category.id}"/>"
                                                 <c:if test="${selectedCategory eq category.id}">selected</c:if>>
@@ -77,12 +78,12 @@
                                         </c:when>
                                         <c:otherwise>
                                             <p><span class="badge badge-danger"><fmt:message
-                                                    key="products.notactive"/></span></p>
+                                                    key="products.not_active"/></span></p>
                                         </c:otherwise>
                                     </c:choose>
-                                    <p><small><fmt:message key="products.createtime"/> <ctg:formatLocalDateTime
+                                    <p><small><fmt:message key="products.create_time"/> <ctg:formatLocalDateTime
                                             date="${product.creatingTime}" locale="${locale}"/></small></p>
-                                    <form method="post" action="${pageContext.request.contextPath}/controller">
+                                    <form action="${pageContext.request.contextPath}/controller">
                                         <input type="hidden" name="command" value="edit_product">
                                         <input type="hidden" name="productId"
                                                value="<c:out value="${product.id}"/>">

@@ -61,7 +61,9 @@ if (next != null && previous != null) {
     }
 }
 
-selectCategoryForm.addEventListener(CHANGE, (event) => {
-    const currentTarget = event.currentTarget;
-    HTMLFormElement.prototype.submit.call(currentTarget);
-});
+if (selectCategoryForm != null) {
+    selectCategoryForm.addEventListener(CHANGE, (event) => {
+        const currentTarget = event.currentTarget;
+        HTMLFormElement.prototype.submit.call(currentTarget);
+    });
+}

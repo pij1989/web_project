@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public final class FormatCurrencyUtil {
+public class FormatCurrencyUtil {
     private static final double COURSE_BY_USD = 2.6;
 
     private FormatCurrencyUtil() {

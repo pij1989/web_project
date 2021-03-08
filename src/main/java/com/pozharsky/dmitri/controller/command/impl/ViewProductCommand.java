@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
-public class EditProductCommand implements Command {
-    private static final Logger logger = LogManager.getLogger(EditProductCommand.class);
+public class ViewProductCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(ViewProductCommand.class);
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
@@ -27,17 +27,14 @@ public class EditProductCommand implements Command {
             return new Router(PagePath.ERROR_404, Router.Type.REDIRECT);
         }
         try {
-            HttpSession session = request.getSession();
             ProductService productService = ProductServiceImpl.getInstance();
             Optional<Product> optionalProduct = productService.findProductById(productId);
+            HttpSession session = request.getSession();
             if (optionalProduct.isPresent()) {
                 Product product = optionalProduct.get();
-                logger.debug(product);
                 session.setAttribute(SessionAttribute.PRODUCT, product);
-            } else {
-                request.setAttribute(RequestAttribute.PRODUCT_NOT_EXIST, true);
             }
-            Router router = new Router(PagePath.EDIT_PRODUCT);
+            Router router = new Router(PagePath.VIEW_PRODUCT);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;
         } catch (ServiceException e) {

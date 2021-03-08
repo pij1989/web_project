@@ -1,6 +1,6 @@
 package com.pozharsky.dmitri.util;
 
-public final class PaginationUtil {
+public class PaginationUtil {
 
     private PaginationUtil() {
     }

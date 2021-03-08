@@ -1,8 +1,6 @@
 package com.pozharsky.dmitri.model.dao;
 
 import com.pozharsky.dmitri.exception.DaoException;
-import com.pozharsky.dmitri.model.entity.RoleType;
-import com.pozharsky.dmitri.model.entity.StatusType;
 import com.pozharsky.dmitri.model.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -87,7 +85,7 @@ public class UserDao extends AbstractDao<User> {
         }
     }
 
-    public boolean updateUserStatusById(long id, StatusType status) throws DaoException {
+    public boolean updateUserStatusById(long id, User.StatusType status) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_STATUS_BY_ID_SQL);
              PreparedStatement statusPreparedStatement = connection.prepareStatement(FIND_STATUS_ID_BY_NAME_SQL)) {
             long statusId = findStatusId(statusPreparedStatement, status);
@@ -188,19 +186,19 @@ public class UserDao extends AbstractDao<User> {
         user.setLastName(resultSet.getString(ColumnName.LAST_NAME));
         user.setUsername(resultSet.getString(ColumnName.USERNAME));
         user.setEmail(resultSet.getString(ColumnName.EMAIL));
-        user.setRoleType(RoleType.valueOf(resultSet.getString(ColumnName.ROLE_NAME)));
-        user.setStatusType(StatusType.valueOf(resultSet.getString(ColumnName.STATUS_NAME)));
+        user.setRoleType(User.RoleType.valueOf(resultSet.getString(ColumnName.ROLE_NAME)));
+        user.setStatusType(User.StatusType.valueOf(resultSet.getString(ColumnName.STATUS_NAME)));
         return user;
     }
 
-    private long findRoleId(PreparedStatement rolePreparedStatement, RoleType roleType) throws SQLException {
+    private long findRoleId(PreparedStatement rolePreparedStatement, User.RoleType roleType) throws SQLException {
         rolePreparedStatement.setString(1, roleType.toString());
         ResultSet roleKeys = rolePreparedStatement.executeQuery();
         roleKeys.next();
         return roleKeys.getLong(ColumnName.ID);
     }
 
-    private long findStatusId(PreparedStatement statusPreparedStatement, StatusType statusType) throws SQLException {
+    private long findStatusId(PreparedStatement statusPreparedStatement, User.StatusType statusType) throws SQLException {
         statusPreparedStatement.setString(1, statusType.toString());
         ResultSet statusKeys = statusPreparedStatement.executeQuery();
         statusKeys.next();

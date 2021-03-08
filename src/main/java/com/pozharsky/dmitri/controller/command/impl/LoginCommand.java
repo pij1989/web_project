@@ -36,28 +36,29 @@ public class LoginCommand implements Command {
             Optional<User> optionalUser = userService.loginUser(email, password, blockingCount);
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
-                StatusType status = user.getStatusType();
-                if (status.equals(StatusType.ACTIVE)) {
-                    RoleType roleType = user.getRoleType();
-                    session.setAttribute(SessionAttribute.USERNAME, user.getUsername());
+                User.StatusType status = user.getStatusType();
+                if (status == User.StatusType.ACTIVE) {
+                    User.RoleType roleType = user.getRoleType();
+                    session.setAttribute(SessionAttribute.USER, user);
                     session.setAttribute(SessionAttribute.ROLE, user.getRoleType());
-                    if (roleType.equals(RoleType.ADMIN)) {
+                    if (roleType == User.RoleType.ADMIN) {
                         Router router = new Router(PagePath.ADMIN, Router.Type.REDIRECT);
                         session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
                         return router;
-                    } else {
+                    }
+                    if (roleType == User.RoleType.USER) {
                         ProductService productService = ProductServiceImpl.getInstance();
                         CategoryService categoryService = CategoryServiceImpl.getInstance();
                         List<Product> products = productService.findLastAddProduct(LIMIT);
                         List<Category> categories = categoryService.findAllCategory();
-                        session.setAttribute(SessionAttribute.PRODUCTS, products);
+                        session.setAttribute(SessionAttribute.LAST_PRODUCTS, products);
                         session.setAttribute(SessionAttribute.CATEGORIES, categories);
                         Router router = new Router(PagePath.MAIN, Router.Type.REDIRECT);
                         session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
                         return router;
                     }
                 } else {
-                    if (status.equals(StatusType.BLOCKED)) {
+                    if (status == User.StatusType.BLOCKED) {
                         session.setAttribute(SessionAttribute.BLOCKED_USER, true);
                     }
                 }

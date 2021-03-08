@@ -12,7 +12,9 @@ public class ToChangePasswordPageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {
         HttpSession session = request.getSession();
-        session.setAttribute(SessionAttribute.CURRENT_PAGE, new Router(PagePath.CHANGE_PASSWORD, Router.Type.REDIRECT));
-        return new Router(PagePath.CHANGE_PASSWORD);
+        Router router = new Router(PagePath.CHANGE_PASSWORD);
+//        session.setAttribute(SessionAttribute.CURRENT_PAGE, new Router(PagePath.CHANGE_PASSWORD, Router.Type.REDIRECT));
+        session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+        return router;
     }
 }
