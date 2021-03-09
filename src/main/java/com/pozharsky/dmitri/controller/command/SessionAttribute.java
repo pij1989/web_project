@@ -38,6 +38,8 @@ public class SessionAttribute {
     public static final String CREATE_USER_SUCCESS = "createUserSuccess";
     public static final String CREATE_USER_ERROR = "createUserError";
     public static final String LAST_PRODUCTS = "lastProducts";
+    public static final String ADD_REVIEW_SUCCESS = "addReviewSuccess";
+    public static final String ADD_REVIEW_ERROR = "addReviewError";
 
     private SessionAttribute() {
     }

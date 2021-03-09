@@ -24,6 +24,7 @@ public enum CommandType {
     EDIT_CATEGORY(new EditCategoryCommand()),
     UPDATE_CATEGORY(new UpdateCategoryCommand()),
     CHANGE_PASSWORD(new ChangePasswordCommand()),
+    ADD_REVIEW(new AddReviewCommand()),
     TO_ADMIN_PAGE_COMMAND(new ToAdminPageCommand()),
     TO_MAIN_PAGE_COMMAND(new ToMainPageCommand()),
     TO_CREATE_PRODUCT_PAGE_COMMAND(new ToCreatProductPageCommand()),

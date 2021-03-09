@@ -21,7 +21,18 @@
 <div class="container">
     <main role="main" class="container">
         <c:import url="fragment/navigation.jsp"/>
-
+        <c:if test="${addReviewSuccess}">
+            <div class="alert alert-success" role="alert" id="successAddReview">
+                Review is created
+            </div>
+            <c:remove var="addReviewSuccess" scope="session"/>
+        </c:if>
+        <c:if test="${addReviewError}">
+            <div class="alert alert-danger" role="alert" id="errorAddReview">
+                Error is occurred
+            </div>
+            <c:remove var="addReviewError" scope="session"/>
+        </c:if>
         <div class="card">
             <h4 class="card-header"><c:out value="${product.name}"/></h4>
             <div class="card-body">
@@ -80,7 +91,8 @@
                 </ul>
             </div>
             <div class="card-body">
-                <form id="addReviewForm">
+                <form id="addReviewForm" method="post" action="${pageContext.request.contextPath}/controller">
+                    <input type="hidden" name="command" value="add_review">
                     <div class="form-group">
                         <label for="comment">Comment</label>
                         <textarea class="form-control" name="comment" id="comment" rows="5" required></textarea>

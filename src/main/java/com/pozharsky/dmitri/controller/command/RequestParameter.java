@@ -29,6 +29,8 @@ public class RequestParameter {
     public static final String PAGE = "page";
     public static final String SEARCH_PRODUCT = "searchProduct";
     public static final String AMOUNT = "amount";
+    public static final String COMMENT = "comment";
+    public static final String RATING = "rating";
 
     private RequestParameter() {
     }
