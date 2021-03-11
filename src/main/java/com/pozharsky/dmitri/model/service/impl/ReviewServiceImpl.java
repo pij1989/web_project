@@ -10,6 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 public class ReviewServiceImpl implements ReviewService {
     private static final Logger logger = LogManager.getLogger(ReviewServiceImpl.class);
@@ -20,7 +22,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public boolean createReview(String comment, String rating, long userId, long productId) throws ServiceException {
+    public Optional<Review> createReview(String comment, String rating, long userId, long productId) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             ReviewDao reviewDao = new ReviewDao();
@@ -29,6 +31,21 @@ public class ReviewServiceImpl implements ReviewService {
             LocalDateTime localDateTime = LocalDateTime.now();
             Review review = new Review(comment, numberRating, localDateTime, userId, productId);
             return reviewDao.create(review);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
+    public List<Review> findReviewByProduct(long productId) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            ReviewDao reviewDao = new ReviewDao();
+            transactionManager.init(reviewDao);
+            return reviewDao.findByProductId(productId);
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);

@@ -40,6 +40,7 @@ public class SessionAttribute {
     public static final String LAST_PRODUCTS = "lastProducts";
     public static final String ADD_REVIEW_SUCCESS = "addReviewSuccess";
     public static final String ADD_REVIEW_ERROR = "addReviewError";
+    public static final String REVIEWS = "reviews";
 
     private SessionAttribute() {
     }

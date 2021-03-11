@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib uri="custom_tag" prefix="ctg" %>
 <fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="property.text"/>
@@ -45,7 +46,7 @@
                         <span class="fa fa-star"></span>
                     </div>
                     <div class="px-4">
-                        <a href="#review">Review</a>
+                        <a href="#review"><c:if test="${not empty reviews}">${fn:length(reviews)}</c:if> Review</a>
                     </div>
                 </div>
             </div>
@@ -113,6 +114,23 @@
                 </form>
             </div>
         </div>
+
+        <c:forEach var="review" items="${reviews}">
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <c:forEach var="i" begin="1" end="${review.rating}">
+                            <span class="fa fa-star checked"></span>
+                        </c:forEach>
+                    </div>
+                    <h5 class="card-title"><c:out value="${review.username}"/></h5>
+                    <h6 class="card-subtitle mb-2 text-muted"><ctg:formatLocalDateTime date="${review.creatingTime}"
+                                                                                       locale="${locale}"/></h6>
+                    <p class="card-text"><c:out value="${review.comment}"/></p>
+                </div>
+            </div>
+        </c:forEach>
+
     </main>
 </div>
 <c:import url="fragment/footer.jsp"/>

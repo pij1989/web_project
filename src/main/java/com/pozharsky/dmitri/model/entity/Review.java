@@ -9,6 +9,7 @@ public class Review extends Entity {
     private LocalDateTime creatingTime;
     private long userId;
     private long productId;
+    private String username;
 
     public Review() {
     }
@@ -69,6 +70,14 @@ public class Review extends Entity {
         this.productId = productId;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -81,7 +90,9 @@ public class Review extends Entity {
         if (userId != review.userId) return false;
         if (productId != review.productId) return false;
         if (comment != null ? !comment.equals(review.comment) : review.comment != null) return false;
-        return creatingTime != null ? creatingTime.equals(review.creatingTime) : review.creatingTime == null;
+        if (creatingTime != null ? !creatingTime.equals(review.creatingTime) : review.creatingTime != null)
+            return false;
+        return username != null ? username.equals(review.username) : review.username == null;
     }
 
     @Override
@@ -92,6 +103,7 @@ public class Review extends Entity {
         result = 31 * result + (creatingTime != null ? creatingTime.hashCode() : 0);
         result = 31 * result + (int) (userId ^ (userId >>> 32));
         result = 31 * result + (int) (productId ^ (productId >>> 32));
+        result = 31 * result + (username != null ? username.hashCode() : 0);
         return result;
     }
 
@@ -104,6 +116,7 @@ public class Review extends Entity {
         sb.append(", creatingTime=").append(creatingTime);
         sb.append(", userId=").append(userId);
         sb.append(", productId=").append(productId);
+        sb.append(", username='").append(username).append('\'');
         sb.append('}');
         return sb.toString();
     }

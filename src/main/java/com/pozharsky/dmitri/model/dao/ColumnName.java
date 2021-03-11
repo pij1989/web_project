@@ -21,6 +21,9 @@ class ColumnName {
     static final String STATUS = "status";
     static final String IMAGE = "image";
     static final String AMOUNT = "amount";
+    static final String COMMENT = "comment";
+    static final String RATING = "rating";
+    static final String PRODUCT_ID = "product_id";
 
     private ColumnName() {
     }
