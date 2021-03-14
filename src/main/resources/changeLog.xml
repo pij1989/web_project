@@ -172,7 +172,7 @@
 
     <changeSet id="16" author="Dmitri">
         <sql>
-            create table if not exists  `order_products` (
+            create table if not exists `order_products` (
             `id` bigint not null primary key auto_increment,
             `amount` int not null,
             `order_id` bigint not null,
@@ -182,6 +182,12 @@
             constraint `order_products_products_id_fk`
             foreign key (`product_id`) references `products` (`id`))
             default character set = utf8;
+        </sql>
+    </changeSet>
+
+    <changeSet id="17" author="Dmitri">
+        <sql>
+            alter table `order_products` change `amount` `amount_product` int not null;
         </sql>
     </changeSet>
 </databaseChangeLog>

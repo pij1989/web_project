@@ -25,8 +25,8 @@ public class FormatLocalDateTimeTag extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             String result = FormatLocalDateTimeUtil.formatLocaleDateTime(date, locale);
-            JspWriter jspWriter = pageContext.getOut();
-            jspWriter.println(result);
+            JspWriter out = pageContext.getOut();
+            out.write(result);
         } catch (IOException e) {
             throw new JspException(e.getMessage());
         }

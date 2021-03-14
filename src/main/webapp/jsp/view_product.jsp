@@ -9,12 +9,7 @@
 <html>
 <head>
     <c:import url="fragment/bootstrap_style.jsp"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/admin.css">
-    <style>
-        .checked {
-            color: orange;
-        }
-    </style>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/view_product.css">
     <title><fmt:message key="products.title"/></title>
 </head>
 <body>
@@ -38,13 +33,7 @@
             <h4 class="card-header"><c:out value="${product.name}"/></h4>
             <div class="card-body">
                 <div class="d-flex flex-row">
-                    <div>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star"></span>
-                        <span class="fa fa-star"></span>
-                    </div>
+                    <ctg:averageRating/>
                     <div class="px-4">
                         <a href="#review"><c:if test="${not empty reviews}">${fn:length(reviews)}</c:if> Review</a>
                     </div>
@@ -73,11 +62,23 @@
                             </c:otherwise>
                         </c:choose>
                     </div>
-                    <form>
-                        <div class="create-item">
-                            <button type="submit" id="" class="btn btn-primary">
-                                Append to cart
-                            </button>
+                    <form action="${pageContext.request.contextPath}/controller" method="post">
+                        <input type="hidden" name="command" value="add_product_to_cart">
+                        <input type="hidden" name="amountProduct" value="1">
+                        <div class="view-product-btn">
+                            <c:choose>
+                                <c:when test="${addOrderSuccess}">
+                                    <button type="submit" class="btn btn-outline-primary" disabled>
+                                        In the cart
+                                    </button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button type="submit" class="btn btn-primary">
+                                        Append to cart
+                                    </button>
+                                </c:otherwise>
+                            </c:choose>
+                            <c:remove var="addOrderSuccess"/>
                         </div>
                     </form>
                 </div>
@@ -108,7 +109,7 @@
                             <option>5</option>
                         </select>
                     </div>
-                    <div class="create-item">
+                    <div class="view-product-btn">
                         <button type="submit" id="submit" class="btn btn-primary">Add review</button>
                     </div>
                 </form>
@@ -120,7 +121,7 @@
                 <div class="card-body">
                     <div>
                         <c:forEach var="i" begin="1" end="${review.rating}">
-                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked-rate"></span>
                         </c:forEach>
                     </div>
                     <h5 class="card-title"><c:out value="${review.username}"/></h5>

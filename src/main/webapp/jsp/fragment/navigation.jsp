@@ -13,7 +13,8 @@
                 class="fas fa-search"></i></span> <fmt:message key="header.button.search"/>
         </button>
     </form>
-    <form class="form-inline py-2">
+    <form class="form-inline py-2" action="${pageContext.request.contextPath}/controller">
+        <input type="hidden" name="command" value="view_cart"/>
         <button class="btn btn-outline-primary my-2" type="submit">
             <span><i class="fas fa-shopping-cart"></i></span> Cart
         </button>

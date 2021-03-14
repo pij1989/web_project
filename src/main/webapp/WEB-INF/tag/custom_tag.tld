@@ -56,4 +56,9 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <name>averageRating</name>
+        <tag-class>com.pozharsky.dmitri.tag.AverageRatingTag</tag-class>
+        <body-content>empty</body-content>
+    </tag>
 </taglib>

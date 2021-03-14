@@ -24,6 +24,10 @@ class ColumnName {
     static final String COMMENT = "comment";
     static final String RATING = "rating";
     static final String PRODUCT_ID = "product_id";
+    static final String COST = "cost";
+    static final String ORDER_STATUS_NAME = "order_status_name";
+    static final String AMOUNT_PRODUCT = "amount_product";
+    static final String ORDER_ID = "order_id";
 
     private ColumnName() {
     }

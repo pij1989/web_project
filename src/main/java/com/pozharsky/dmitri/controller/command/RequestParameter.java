@@ -31,6 +31,7 @@ public class RequestParameter {
     public static final String AMOUNT = "amount";
     public static final String COMMENT = "comment";
     public static final String RATING = "rating";
+    public static final String AMOUNT_PRODUCT = "amountProduct";
 
     private RequestParameter() {
     }

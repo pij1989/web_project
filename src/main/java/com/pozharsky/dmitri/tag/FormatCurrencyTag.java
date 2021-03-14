@@ -26,8 +26,8 @@ public class FormatCurrencyTag extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             String result = FormatCurrencyUtil.formatCurrency(value, locale);
-            JspWriter jspWriter = pageContext.getOut();
-            jspWriter.println(result);
+            JspWriter out = pageContext.getOut();
+            out.write(result);
         } catch (IOException e) {
             throw new JspException(e.getMessage());
         }

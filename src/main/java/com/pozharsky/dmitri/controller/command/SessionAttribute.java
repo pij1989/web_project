@@ -41,6 +41,8 @@ public class SessionAttribute {
     public static final String ADD_REVIEW_SUCCESS = "addReviewSuccess";
     public static final String ADD_REVIEW_ERROR = "addReviewError";
     public static final String REVIEWS = "reviews";
+    public static final String ADD_ORDER_SUCCESS = "addOrderSuccess";
+    public static final String ORDER_PRODUCTS = "orderProducts";
 
     private SessionAttribute() {
     }

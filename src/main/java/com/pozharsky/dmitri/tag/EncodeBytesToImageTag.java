@@ -17,8 +17,8 @@ public class EncodeBytesToImageTag extends TagSupport {
     public int doStartTag() throws JspException {
         try {
             String base64Image = Base64.getEncoder().encodeToString(bytes);
-            JspWriter jspWriter = pageContext.getOut();
-            jspWriter.println(base64Image);
+            JspWriter out = pageContext.getOut();
+            out.write(base64Image);
         } catch (IOException e) {
             throw new JspException(e.getMessage());
         }
