@@ -45,6 +45,8 @@ public class SessionAttribute {
     public static final String ORDER_PRODUCTS = "orderProducts";
     public static final String ORDER = "order";
     public static final String CREATE_ORDER_ERROR = "createOrderError";
+    public static final String DELETE_PRODUCT_FROM_ORDER_SUCCESS = "deleteProductFromOrderSuccess";
+    public static final String DELETE_PRODUCT_FROM_ORDER_ERROR = "deleteProductFromOrderError";
 
     private SessionAttribute() {
     }

@@ -17,6 +17,18 @@
 <div class="container">
     <main role="main" class="container">
         <c:import url="fragment/navigation.jsp"/>
+        <c:if test="${deleteProductFromOrderSuccess}">
+            <div class="alert alert-success" role="alert" id="successDeleteProductFromOrder">
+                Product is delete from order
+            </div>
+            <c:remove var="deleteProductFromOrderSuccess" scope="session"/>
+        </c:if>
+        <c:if test="${deleteProductFromOrderError}">
+            <div class="alert alert-danger" role="alert" id="errorDeleteProductFromOrder">
+                Error is occurred
+            </div>
+            <c:remove var="deleteProductFromOrderError" scope="session"/>
+        </c:if>
         <table class="table">
             <thead>
             <tr>
@@ -47,8 +59,8 @@
 
                     <td style="text-align: start">
                         <form method="post" action="${pageContext.request.contextPath}/controller">
-                                <%--                            <input type="hidden" name="command" value="delete_category">--%>
-                                <%--                            <input type="hidden" name="categoryId" value="<c:out value="${category.id}"/>">--%>
+                            <input type="hidden" name="command" value="delete_product_from_order">
+                            <input type="hidden" name="orderProductId" value="<c:out value="${orderProduct.id}"/>">
                             <button class="btn btn-outline-danger mx-2 my-2 my-sm-0" type="submit">
                                 <span><i class="fas fa-trash"></i> Delete</span>
                             </button>
@@ -81,6 +93,6 @@
 </div>
 <c:import url="fragment/footer.jsp"/>
 <c:import url="fragment/bootstrap_script.jsp"/>
-<script src="${pageContext.request.contextPath}/js/view_product.js"></script>
+<script src="${pageContext.request.contextPath}/js/view_order.js"></script>
 </body>
 </html>

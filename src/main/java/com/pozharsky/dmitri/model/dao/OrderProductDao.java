@@ -17,9 +17,11 @@ import java.util.Optional;
 public class OrderProductDao extends AbstractDao<OrderProduct> {
     private static final Logger logger = LogManager.getLogger(OrderProductDao.class);
     private static final String CREATE_ORDER_PRODUCT_SQL = "INSERT INTO order_products(amount_product, order_id, product_id) VALUES (?,?,?);";
+    private static final String FIND_ORDER_PRODUCT_BY_ID_SQL = "SELECT id, amount_product, order_id, product_id FROM order_products WHERE id = ?";
     private static final String FIND_ORDER_PRODUCT_BY_USER_ID_AND_STATUS_SQL = "SELECT op.id, op.amount_product, op.product_id, op.order_id, o.cost, os.order_status_name, o.user_id, p.product_name, p.price, p.amount, p.status, p.image FROM orders AS o JOIN order_products AS op on o.id = op.order_id JOIN products AS p on op.product_id = p.id JOIN orders_status AS os on o.order_status_id = os.id WHERE o.user_id = ? AND os.order_status_name = ?;";
     private static final String FIND_ORDER_PRODUCT_BY_ORDER_ID_SQL = "SELECT op.id, op.amount_product, op.product_id, op.order_id, p.product_name, p.price, p.amount, p.image, p.price*op.amount_product AS total_price FROM order_products AS op JOIN products AS p on op.product_id = p.id WHERE op.order_id = ?";
     private static final String UPDATE_AMOUNT_PRODUCT_BY_ORDER_ID_AND_PRODUCT_ID_SQL = "UPDATE order_products SET amount_product = amount_product + ? WHERE order_id = ? AND product_id = ?;";
+    private static final String DELETE_ORDER_PRODUCT_BY_ID_SQL = "DELETE FROM order_products WHERE id = ?";
 
     public boolean create(OrderProduct orderProduct) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_ORDER_PRODUCT_SQL)) {
@@ -77,7 +79,6 @@ public class OrderProductDao extends AbstractDao<OrderProduct> {
         }
     }
 
-
     public boolean updateAmountProductByOrderIdAndProductId(int amount, long orderId, long productId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_AMOUNT_PRODUCT_BY_ORDER_ID_AND_PRODUCT_ID_SQL)) {
             preparedStatement.setInt(1, amount);
@@ -93,7 +94,26 @@ public class OrderProductDao extends AbstractDao<OrderProduct> {
 
     @Override
     public Optional<OrderProduct> findById(long id) throws DaoException {
-        return Optional.empty();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_ORDER_PRODUCT_BY_ID_SQL)) {
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                OrderProduct orderProduct = new OrderProduct();
+                Order order = new Order();
+                Product product = new Product();
+                order.setId(resultSet.getLong(ColumnName.ORDER_ID));
+                product.setId(resultSet.getLong(ColumnName.PRODUCT_ID));
+                orderProduct.setId(resultSet.getLong(ColumnName.ID));
+                orderProduct.setAmount(resultSet.getInt(ColumnName.AMOUNT_PRODUCT));
+                orderProduct.setOrder(order);
+                orderProduct.setProduct(product);
+                return Optional.of(orderProduct);
+            }
+            return Optional.empty();
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
     }
 
     @Override
@@ -109,6 +129,17 @@ public class OrderProductDao extends AbstractDao<OrderProduct> {
     @Override
     public boolean delete(OrderProduct entity) throws DaoException {
         return false;
+    }
+
+    public boolean delete(long orderProductId) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ORDER_PRODUCT_BY_ID_SQL)) {
+            preparedStatement.setLong(1, orderProductId);
+            int resultDelete = preparedStatement.executeUpdate();
+            return resultDelete > 0;
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
     }
 
     private OrderProduct createOrderProductFromResultSet(ResultSet resultSet) throws SQLException {

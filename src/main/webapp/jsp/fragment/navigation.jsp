@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="ctg" uri="custom_tag" %>
 <fmt:setLocale value="${locale}"/>
 <fmt:setBundle basename="property.text"/>
 <nav class="navbar"
@@ -17,7 +17,7 @@
     <form class="form-inline py-2" action="${pageContext.request.contextPath}/controller">
         <input type="hidden" name="command" value="view_order"/>
         <button class="btn btn-outline-primary my-2" type="submit">
-            <span><i class="fas fa-shopping-cart"></i></span> Cart <c:if test="${not empty orderProducts}">${fn:length(orderProducts)}</c:if>
+            <ctg:cart/>
         </button>
     </form>
 </nav>

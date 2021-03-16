@@ -168,12 +168,11 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
-    public boolean increaseAmountById(int amount, long productId) throws DaoException {
+    public void increaseAmountById(int amount, long productId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INCREASE_AMOUNT_BY_ID_SQL)) {
             preparedStatement.setInt(1, amount);
             preparedStatement.setLong(2, productId);
-            int resultUpdate = preparedStatement.executeUpdate();
-            return resultUpdate > 0;
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);

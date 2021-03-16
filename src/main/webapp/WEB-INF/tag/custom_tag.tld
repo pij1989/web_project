@@ -61,4 +61,9 @@
         <tag-class>com.pozharsky.dmitri.tag.AverageRatingTag</tag-class>
         <body-content>empty</body-content>
     </tag>
+    <tag>
+        <name>cart</name>
+        <tag-class>com.pozharsky.dmitri.tag.CartTag</tag-class>
+        <body-content>empty</body-content>
+    </tag>
 </taglib>

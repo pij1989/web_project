@@ -18,4 +18,6 @@ public interface OrderService {
     boolean addProductToOrder(String amountProduct, Product product, Order order) throws ServiceException;
 
     List<OrderProduct> findProductInNewOrder(long orderId) throws ServiceException;
+
+    Optional<OrderProduct> deleteProductFromOrder(String orderProductId) throws ServiceException;
 }

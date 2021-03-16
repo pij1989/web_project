@@ -148,6 +148,34 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    @Override
+    public Optional<OrderProduct> deleteProductFromOrder(String orderProductId) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            OrderProductDao orderProductDao = new OrderProductDao();
+            ProductDao productDao = new ProductDao();
+            transactionManager.initTransaction(orderProductDao, productDao);
+            long id = Long.parseLong(orderProductId);
+            Optional<OrderProduct> optionalOrderProduct = orderProductDao.findById(id);
+            if (optionalOrderProduct.isPresent()) {
+                if (orderProductDao.delete(id)) {
+                    OrderProduct orderProduct = optionalOrderProduct.get();
+                    int amountProduct = orderProduct.getAmount();
+                    long productId = orderProduct.getProduct().getId();
+                    productDao.increaseAmountById(amountProduct, productId);
+                }
+            }
+            transactionManager.commit();
+            return optionalOrderProduct;
+        } catch (DaoException e) {
+            logger.error(e);
+            transactionManager.rollback();
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.endTransaction();
+        }
+    }
+
     private BigDecimal calculateCost(int amount, BigDecimal price) {
         return price.multiply(new BigDecimal(amount));
     }
