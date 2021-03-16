@@ -52,7 +52,7 @@
                         <h5 class="card-title"><ctg:formatCurrency value="${product.price}" locale="${locale}"/></h5>
                         <p class="card-text"><c:out value="${product.description}"/></p>
                         <c:choose>
-                            <c:when test="${product.status}">
+                            <c:when test="${product.amount gt 0}">
                                 <p><span class="badge badge-success"><fmt:message
                                         key="products.active"/></span></p>
                             </c:when>
@@ -63,7 +63,7 @@
                         </c:choose>
                     </div>
                     <form action="${pageContext.request.contextPath}/controller" method="post">
-                        <input type="hidden" name="command" value="add_product_to_cart">
+                        <input type="hidden" name="command" value="add_product_to_order">
                         <input type="hidden" name="amountProduct" value="1">
                         <div class="view-product-btn">
                             <c:choose>

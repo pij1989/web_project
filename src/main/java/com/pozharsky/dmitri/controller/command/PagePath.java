@@ -10,7 +10,7 @@ public class PagePath {
     public static final String PRODUCTS_ADMIN = "/jsp/admin/products.jsp";
     public static final String PRODUCTS_USER = "/jsp/products.jsp";
     public static final String VIEW_PRODUCT = "/jsp/view_product.jsp";
-    public static final String VIEW_CART = "/jsp/view_cart.jsp";
+    public static final String VIEW_ORDER = "/jsp/view_order.jsp";
     public static final String CREATE_PRODUCT = "/jsp/admin/create_product.jsp";
     public static final String ACTIVATE_REGISTRATION = "/jsp/activate_registration.jsp";
     public static final String CHANGE_PASSWORD = "/jsp/change_password.jsp";

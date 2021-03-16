@@ -25,6 +25,8 @@ public class ProductDao extends AbstractDao<Product> {
     private static final String FIND_WITH_ORDER_BY_CREATE_TIME_DESC_AND_LIMIT_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products ORDER BY time_create DESC LIMIT ?";
     private static final String COUNT_ALL_PRODUCT_SQL = "SELECT count(*) FROM products";
     private static final String COUNT_PRODUCT_BY_CATEGORY_SQL = "SELECT count(category_id) FROM products WHERE category_id = ?";
+    private static final String INCREASE_AMOUNT_BY_ID_SQL = "UPDATE  products SET amount = amount + ? WHERE id = ?";
+    private static final String DECREASE_AMOUNT_BY_ID_SQL = "UPDATE products SET amount = amount - ? WHERE id = ? AND amount >= ?";
     private static final String DELETE_PRODUCT_BY_CATEGORY_SQL = "DELETE FROM products WHERE category_id = ?";
 
     public boolean create(Product product) throws DaoException {
@@ -166,6 +168,31 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    public boolean increaseAmountById(int amount, long productId) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INCREASE_AMOUNT_BY_ID_SQL)) {
+            preparedStatement.setInt(1, amount);
+            preparedStatement.setLong(2, productId);
+            int resultUpdate = preparedStatement.executeUpdate();
+            return resultUpdate > 0;
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    public boolean decreaseAmountById(int amount, long productId) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DECREASE_AMOUNT_BY_ID_SQL)) {
+            preparedStatement.setInt(1, amount);
+            preparedStatement.setLong(2, productId);
+            preparedStatement.setInt(3, amount);
+            int resultUpdate = preparedStatement.executeUpdate();
+            return resultUpdate > 0;
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
     public int countAllProduct() throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(COUNT_ALL_PRODUCT_SQL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -204,7 +231,7 @@ public class ProductDao extends AbstractDao<Product> {
     }
 
     private List<Product> createListProductFromResultSet(ResultSet resultSet) throws SQLException {
-        ArrayList<Product> products = new ArrayList<>();
+        List<Product> products = new ArrayList<>();
         while (resultSet.next()) {
             Product product = createProductFromResultSet(resultSet);
             products.add(product);

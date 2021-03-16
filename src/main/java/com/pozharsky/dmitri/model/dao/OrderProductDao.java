@@ -18,6 +18,7 @@ public class OrderProductDao extends AbstractDao<OrderProduct> {
     private static final Logger logger = LogManager.getLogger(OrderProductDao.class);
     private static final String CREATE_ORDER_PRODUCT_SQL = "INSERT INTO order_products(amount_product, order_id, product_id) VALUES (?,?,?);";
     private static final String FIND_ORDER_PRODUCT_BY_USER_ID_AND_STATUS_SQL = "SELECT op.id, op.amount_product, op.product_id, op.order_id, o.cost, os.order_status_name, o.user_id, p.product_name, p.price, p.amount, p.status, p.image FROM orders AS o JOIN order_products AS op on o.id = op.order_id JOIN products AS p on op.product_id = p.id JOIN orders_status AS os on o.order_status_id = os.id WHERE o.user_id = ? AND os.order_status_name = ?;";
+    private static final String FIND_ORDER_PRODUCT_BY_ORDER_ID_SQL = "SELECT op.id, op.amount_product, op.product_id, op.order_id, p.product_name, p.price, p.amount, p.image, p.price*op.amount_product AS total_price FROM order_products AS op JOIN products AS p on op.product_id = p.id WHERE op.order_id = ?";
     private static final String UPDATE_AMOUNT_PRODUCT_BY_ORDER_ID_AND_PRODUCT_ID_SQL = "UPDATE order_products SET amount_product = amount_product + ? WHERE order_id = ? AND product_id = ?;";
 
     public boolean create(OrderProduct orderProduct) throws DaoException {
@@ -46,6 +47,36 @@ public class OrderProductDao extends AbstractDao<OrderProduct> {
             throw new DaoException(e);
         }
     }
+
+    public List<OrderProduct> findByOrderId(long orderId) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_ORDER_PRODUCT_BY_ORDER_ID_SQL)) {
+            preparedStatement.setLong(1, orderId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<OrderProduct> orderProducts = new ArrayList<>();
+            while (resultSet.next()) {
+                Product product = new Product();
+                product.setId(resultSet.getLong(ColumnName.PRODUCT_ID));
+                product.setName(resultSet.getString(ColumnName.PRODUCT_NAME));
+                product.setAmount(resultSet.getInt(ColumnName.AMOUNT));
+                product.setPrice(resultSet.getBigDecimal(ColumnName.PRICE));
+                product.setImage(resultSet.getBytes(ColumnName.IMAGE));
+                Order order = new Order();
+                order.setId(resultSet.getLong(ColumnName.ORDER_ID));
+                OrderProduct orderProduct = new OrderProduct();
+                orderProduct.setOrder(order);
+                orderProduct.setProduct(product);
+                orderProduct.setId(resultSet.getLong(ColumnName.ID));
+                orderProduct.setAmount(resultSet.getInt(ColumnName.AMOUNT_PRODUCT));
+                orderProduct.setTotalPrice(resultSet.getBigDecimal(ColumnName.TOTAL_PRICE));
+                orderProducts.add(orderProduct);
+            }
+            return orderProducts;
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
 
     public boolean updateAmountProductByOrderIdAndProductId(int amount, long orderId, long productId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_AMOUNT_PRODUCT_BY_ORDER_ID_AND_PRODUCT_ID_SQL)) {
@@ -102,7 +133,7 @@ public class OrderProductDao extends AbstractDao<OrderProduct> {
     }
 
     private List<OrderProduct> createListOrderProductFromResultSet(ResultSet resultSet) throws SQLException {
-        ArrayList<OrderProduct> orderProducts = new ArrayList<>();
+        List<OrderProduct> orderProducts = new ArrayList<>();
         while (resultSet.next()) {
             OrderProduct orderProduct = createOrderProductFromResultSet(resultSet);
             orderProducts.add(orderProduct);

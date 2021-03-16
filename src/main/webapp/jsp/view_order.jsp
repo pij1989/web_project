@@ -28,7 +28,6 @@
             </thead>
             <tbody>
             <c:forEach var="orderProduct" items="${orderProducts}">
-                <c:set var="order" value="${orderProduct.order}"/>
                 <tr>
                     <td style="width: 340px">
                         <div class="d-flex">
@@ -57,7 +56,7 @@
                     </td>
 
                     <td style="text-align: end"><c:out value="${orderProduct.amount}"/></td>
-                    <td style="text-align: end"><c:out value="${orderProduct.product.price}"/></td>
+                    <td style="text-align: end"><c:out value="${orderProduct.totalPrice}"/></td>
                 </tr>
             </c:forEach>
             <tr>

@@ -1,8 +1,11 @@
 package com.pozharsky.dmitri.model.entity;
 
+import java.math.BigDecimal;
+
 public class OrderProduct extends Entity {
     private long id;
     private int amount;
+    private BigDecimal totalPrice;
     private Product product;
     private Order order;
 
@@ -32,6 +35,14 @@ public class OrderProduct extends Entity {
         this.amount = amount;
     }
 
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public Product getProduct() {
         return product;
     }
@@ -57,6 +68,7 @@ public class OrderProduct extends Entity {
 
         if (id != that.id) return false;
         if (amount != that.amount) return false;
+        if (totalPrice != null ? !totalPrice.equals(that.totalPrice) : that.totalPrice != null) return false;
         if (product != null ? !product.equals(that.product) : that.product != null) return false;
         return order != null ? order.equals(that.order) : that.order == null;
     }
@@ -65,6 +77,7 @@ public class OrderProduct extends Entity {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + amount;
+        result = 31 * result + (totalPrice != null ? totalPrice.hashCode() : 0);
         result = 31 * result + (product != null ? product.hashCode() : 0);
         result = 31 * result + (order != null ? order.hashCode() : 0);
         return result;
@@ -75,6 +88,7 @@ public class OrderProduct extends Entity {
         final StringBuilder sb = new StringBuilder("OrderProduct{");
         sb.append("id=").append(id);
         sb.append(", amount=").append(amount);
+        sb.append(", totalPrice=").append(totalPrice);
         sb.append(", product=").append(product);
         sb.append(", order=").append(order);
         sb.append('}');

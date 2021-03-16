@@ -28,6 +28,7 @@ class ColumnName {
     static final String ORDER_STATUS_NAME = "order_status_name";
     static final String AMOUNT_PRODUCT = "amount_product";
     static final String ORDER_ID = "order_id";
+    static final String TOTAL_PRICE = "total_price";
 
     private ColumnName() {
     }

@@ -4,6 +4,7 @@ import com.pozharsky.dmitri.exception.DaoException;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.dao.OrderDao;
 import com.pozharsky.dmitri.model.dao.OrderProductDao;
+import com.pozharsky.dmitri.model.dao.ProductDao;
 import com.pozharsky.dmitri.model.dao.TransactionManager;
 import com.pozharsky.dmitri.model.entity.Order;
 import com.pozharsky.dmitri.model.entity.OrderProduct;
@@ -29,6 +30,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Optional<Order> addNewOrder(long userId) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            OrderDao orderDao = new OrderDao();
+            transactionManager.init(orderDao);
+            LocalDateTime timeCreating = LocalDateTime.now();
+            BigDecimal cost = BigDecimal.ZERO;
+            Order.StatusType status = Order.StatusType.NEW;
+            Order order = new Order(cost, timeCreating, status, userId);
+            Optional<Long> optionalLong = orderDao.create(order);
+            if (optionalLong.isPresent()) {
+                long orderId = optionalLong.get();
+                order.setId(orderId);
+                return Optional.of(order);
+            }
+            return Optional.empty();
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+   /* @Override
     public boolean addNewOrder(String amountProduct, Product product, long userId) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
@@ -56,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
         } finally {
             transactionManager.endTransaction();
         }
-    }
+    }*/
 
     @Override
     public Optional<Order> findNewOrder(long userId) throws ServiceException {
@@ -65,11 +91,8 @@ public class OrderServiceImpl implements OrderService {
             OrderDao orderDao = new OrderDao();
             transactionManager.init(orderDao);
             List<Order> orders = orderDao.findByUserIdAndStatus(userId, Order.StatusType.NEW);
-            if (!orders.isEmpty()) {
-                Order order = orders.get(0);
-                return Optional.of(order);
-            }
-            return Optional.empty();
+            return orders.stream()
+                    .findFirst();
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
@@ -82,19 +105,22 @@ public class OrderServiceImpl implements OrderService {
     public boolean addProductToOrder(String amountProduct, Product product, Order order) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
-            boolean isAdd;
+            boolean isAdd = false;
             OrderProductDao orderProductDao = new OrderProductDao();
             OrderDao orderDao = new OrderDao();
-            transactionManager.initTransaction(orderProductDao, orderDao);
+            ProductDao productDao = new ProductDao();
+            transactionManager.initTransaction(orderProductDao, orderDao, productDao);
             int amount = Integer.parseInt(amountProduct);
-            isAdd = orderProductDao.updateAmountProductByOrderIdAndProductId(amount, order.getId(), product.getId());
-            if (!isAdd) {
-                OrderProduct orderProduct = new OrderProduct(amount, product, order);
-                isAdd = orderProductDao.create(orderProduct);
-            }
-            if (isAdd) {
-                BigDecimal cost = calculateCost(amount, product.getPrice());
-                isAdd = orderDao.updateCostById(cost, order.getId());
+            if (productDao.decreaseAmountById(amount, product.getId())) {
+                isAdd = orderProductDao.updateAmountProductByOrderIdAndProductId(amount, order.getId(), product.getId());
+                if (!isAdd) {
+                    OrderProduct orderProduct = new OrderProduct(amount, product, order);
+                    isAdd = orderProductDao.create(orderProduct);
+                }
+                if (isAdd) {
+                    BigDecimal cost = calculateCost(amount, product.getPrice());
+                    isAdd = orderDao.updateCostById(cost, order.getId());
+                }
             }
             transactionManager.commit();
             return isAdd;
@@ -108,12 +134,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderProduct> findProductInNewOrder(long userId) throws ServiceException {
+    public List<OrderProduct> findProductInNewOrder(long orderId) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             OrderProductDao orderProductDao = new OrderProductDao();
             transactionManager.init(orderProductDao);
-            return orderProductDao.findByUserIdAndStatus(userId, Order.StatusType.NEW);
+            return orderProductDao.findByOrderId(orderId);
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
