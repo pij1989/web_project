@@ -23,13 +23,13 @@ public class DeleteProductFromOrderCommand implements Command {
         try {
             String orderProductId = request.getParameter(RequestParameter.ORDER_PRODUCT_ID);
             HttpSession session = request.getSession();
+            Order order = (Order) session.getAttribute(SessionAttribute.ORDER);
             OrderService orderService = OrderServiceImpl.getInstance();
-            Optional<OrderProduct> optionalOrderProduct = orderService.deleteProductFromOrder(orderProductId);
+            Optional<OrderProduct> optionalOrderProduct = orderService.deleteProductFromOrder(orderProductId, order);
             if (optionalOrderProduct.isPresent()) {
                 OrderProduct orderProduct = optionalOrderProduct.get();
                 @SuppressWarnings("unchecked")
                 List<OrderProduct> orderProducts = (List<OrderProduct>) session.getAttribute(SessionAttribute.ORDER_PRODUCTS);
-                Order order = (Order) session.getAttribute(SessionAttribute.ORDER);
                 orderProducts.remove(orderProduct);
                 session.setAttribute(SessionAttribute.DELETE_PRODUCT_FROM_ORDER_SUCCESS, true);
             } else {

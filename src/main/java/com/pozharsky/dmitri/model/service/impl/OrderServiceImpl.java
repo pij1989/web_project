@@ -119,7 +119,9 @@ public class OrderServiceImpl implements OrderService {
                 }
                 if (isAdd) {
                     BigDecimal cost = calculateCost(amount, product.getPrice());
-                    isAdd = orderDao.increaseCostById(cost, order.getId());
+                    if (orderDao.increaseCostById(cost, order.getId())) {
+                        increaseCostOfOrder(cost, order);
+                    }
                 }
             }
             transactionManager.commit();
@@ -149,7 +151,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Optional<OrderProduct> deleteProductFromOrder(String orderProductId) throws ServiceException {
+    public Optional<OrderProduct> deleteProductFromOrder(String orderProductId, Order order) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             OrderProductDao orderProductDao = new OrderProductDao();
@@ -167,6 +169,7 @@ public class OrderServiceImpl implements OrderService {
                     BigDecimal totalPrice = orderProduct.getTotalPrice();
                     orderDao.decreaseCostById(totalPrice, orderId);
                     productDao.increaseAmountById(amountProduct, productId);
+                    decreaseCostOfOrder(totalPrice, order);
                 }
             }
             transactionManager.commit();
@@ -182,5 +185,17 @@ public class OrderServiceImpl implements OrderService {
 
     private BigDecimal calculateCost(int amount, BigDecimal price) {
         return price.multiply(new BigDecimal(amount));
+    }
+
+    private void increaseCostOfOrder(BigDecimal cost, Order order) {
+        BigDecimal previousCost = order.getCost();
+        BigDecimal actualCost = previousCost.add(cost);
+        order.setCost(actualCost);
+    }
+
+    private void decreaseCostOfOrder(BigDecimal cost, Order order) {
+        BigDecimal previousCost = order.getCost();
+        BigDecimal actualCost = previousCost.subtract(cost);
+        order.setCost(actualCost);
     }
 }

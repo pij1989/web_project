@@ -1,9 +1,6 @@
 package com.pozharsky.dmitri.controller.command.impl;
 
-import com.pozharsky.dmitri.controller.command.Command;
-import com.pozharsky.dmitri.controller.command.PagePath;
-import com.pozharsky.dmitri.controller.command.Router;
-import com.pozharsky.dmitri.controller.command.SessionAttribute;
+import com.pozharsky.dmitri.controller.command.*;
 import com.pozharsky.dmitri.exception.CommandException;
 import com.pozharsky.dmitri.model.entity.Order;
 import com.pozharsky.dmitri.model.entity.OrderProduct;
@@ -38,8 +35,8 @@ public class ViewOrderCommand implements Command {
                     order = optionalOrder.get();
                     orderProducts = orderService.findProductInNewOrder(order.getId());
                     session.setAttribute(SessionAttribute.ORDER, order);
-                } else{
-                    //TODO
+                } else {
+                    request.setAttribute(RequestAttribute.ORDER_IS_EMPTY, true);
                 }
             }
             session.setAttribute(SessionAttribute.ORDER_PRODUCTS, orderProducts);

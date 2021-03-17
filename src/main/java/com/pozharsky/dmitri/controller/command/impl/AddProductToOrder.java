@@ -26,30 +26,30 @@ public class AddProductToOrder implements Command {
             HttpSession session = request.getSession();
             Product product = (Product) session.getAttribute(SessionAttribute.PRODUCT);
             User user = (User) session.getAttribute(SessionAttribute.USER);
+            Order order = (Order) session.getAttribute(SessionAttribute.ORDER);
             long userId = user.getId();
-            OrderService orderService = OrderServiceImpl.getInstance();
-            Optional<Order> findOptionalOrder = orderService.findNewOrder(userId);
             Router router = new Router(PagePath.VIEW_PRODUCT, Router.Type.REDIRECT);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
-            boolean isAdd;
-            Order order;
-            if (findOptionalOrder.isPresent()) {
-                order = findOptionalOrder.get();
-            } else {
-                Optional<Order> optionalOrder = orderService.addNewOrder(userId);
-                if (optionalOrder.isPresent()) {
-                    order = optionalOrder.get();
+            OrderService orderService = OrderServiceImpl.getInstance();
+            if (order == null) {
+                Optional<Order> findOptionalOrder = orderService.findNewOrder(userId);
+                if (findOptionalOrder.isPresent()) {
+                    order = findOptionalOrder.get();
                 } else {
-                    session.setAttribute(SessionAttribute.CREATE_ORDER_ERROR, true);
-                    return router;
+                    Optional<Order> optionalOrder = orderService.addNewOrder(userId);
+                    if (optionalOrder.isPresent()) {
+                        order = optionalOrder.get();
+                    } else {
+                        session.setAttribute(SessionAttribute.CREATE_ORDER_ERROR, true);
+                        return router;
+                    }
                 }
             }
-            isAdd = orderService.addProductToOrder(amountProduct, product, order);
+            boolean isAdd = orderService.addProductToOrder(amountProduct, product, order);
             if (isAdd) {
                 List<OrderProduct> orderProducts = orderService.findProductInNewOrder(order.getId());
                 session.setAttribute(SessionAttribute.ORDER_PRODUCTS, orderProducts);
             }
-            //TODO:problem with order
             session.setAttribute(SessionAttribute.ORDER, order);
             session.setAttribute(SessionAttribute.ADD_ORDER_SUCCESS, isAdd);
             return router;

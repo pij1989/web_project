@@ -62,6 +62,7 @@ public class RoleControlSecurityFilter implements Filter {
         postCommandMap.put(CommandType.ADD_REVIEW, List.of(User.RoleType.USER));
         postCommandMap.put(CommandType.ADD_PRODUCT_TO_ORDER, List.of(User.RoleType.USER));
         postCommandMap.put(CommandType.DELETE_PRODUCT_FROM_ORDER, List.of(User.RoleType.USER));
+        postCommandMap.put(CommandType.CHANGE_AMOUNT_PRODUCT_IN_ORDER, List.of(User.RoleType.USER));
     }
 
     @Override

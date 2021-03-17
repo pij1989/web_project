@@ -57,7 +57,7 @@
                         <div class="dropdown-menu" aria-labelledby="change_locale">
                             <button class="dropdown-item" type="submit" name="language" value="en-US"><fmt:message
                                     key="header.language.english"/></button>
-                            <button class="dropdown-item" type="submit" name="language" value="ru-RU"><fmt:message
+                            <button class="dropdown-item" type="submit" name="language" value="ru-BY"><fmt:message
                                     key="header.language.russian"/></button>
                         </div>
                     </div>

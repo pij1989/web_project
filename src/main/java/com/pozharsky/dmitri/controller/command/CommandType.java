@@ -21,6 +21,7 @@ public enum CommandType {
     DELETE_CATEGORY(new DeleteCategoryCommand()),
     CREATE_CATEGORY(new CreateCategoryCommand()),
     DELETE_PRODUCT_FROM_ORDER(new DeleteProductFromOrderCommand()),
+    CHANGE_AMOUNT_PRODUCT_IN_ORDER(new ChangeAmountProductInOrderCommand()),
     CREATE_USER(new CreateUserCommand()),
     EDIT_CATEGORY(new EditCategoryCommand()),
     UPDATE_CATEGORY(new UpdateCategoryCommand()),

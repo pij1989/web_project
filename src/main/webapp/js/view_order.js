@@ -2,16 +2,22 @@ const SUCCESS_DELETE_PRODUCT_FROM_ORDER = 'successDeleteProductFromOrder';
 const ERROR_DELETE_PRODUCT_FROM_ORDER = 'errorDeleteProductFromOrder';
 const CLICK = 'click';
 const CHANGE = 'change';
+const SUBMIT = 'submit';
 const ADD_PRODUCT_TO_ORDER = '.add-product-to-order';
 
 const forms = document.querySelectorAll(ADD_PRODUCT_TO_ORDER);
 
 forms.forEach((form) => {
     let amountProduct = form.children[2].children[1].value;
+    form.addEventListener(SUBMIT, (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+    });
     form.addEventListener(CHANGE, (event) => {
         let element = event.target;
         if (element.checkValidity()) {
             amountProduct = element.value;
+            HTMLFormElement.prototype.submit.call(form);
         } else {
             form.children[2].children[1].value = amountProduct;
         }
@@ -27,6 +33,7 @@ forms.forEach((form) => {
         } else {
             form.children[2].children[1].value = amount;
             amountProduct = amount;
+            HTMLFormElement.prototype.submit.call(form);
         }
     });
     plus.addEventListener(CLICK, () => {
@@ -34,28 +41,9 @@ forms.forEach((form) => {
         let amount = Number.parseInt(form.children[2].children[1].value) + 1;
         form.children[2].children[1].value = amount;
         amountProduct = amount;
+        HTMLFormElement.prototype.submit.call(form);
     })
 });
-
-/*loginForm.addEventListener(SUBMIT, (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    if (loginForm.email.checkValidity() === true) {
-        showValidationMessage(emailValidMessage, emailInvalidMessage);
-    } else {
-        showValidationMessage(emailInvalidMessage, emailValidMessage);
-    }
-    if (loginForm.password.checkValidity() === true) {
-        showValidationMessage(passwordValidMessage, passwordInvalidMessage);
-    } else {
-        showValidationMessage(passwordInvalidMessage, passwordValidMessage);
-    }
-    loginForm.classList.add(WAS_VALIDATED);
-    if (loginForm.checkValidity() === true) {
-        HTMLFormElement.prototype.submit.call(loginForm);
-        loginForm.classList.remove(WAS_VALIDATED);
-    }
-});*/
 
 setTimeout(() => {
     let successDeleteProductFromOrder = document.getElementById(SUCCESS_DELETE_PRODUCT_FROM_ORDER);
