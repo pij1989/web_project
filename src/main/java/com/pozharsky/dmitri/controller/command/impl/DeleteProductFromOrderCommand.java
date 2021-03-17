@@ -3,6 +3,7 @@ package com.pozharsky.dmitri.controller.command.impl;
 import com.pozharsky.dmitri.controller.command.*;
 import com.pozharsky.dmitri.exception.CommandException;
 import com.pozharsky.dmitri.exception.ServiceException;
+import com.pozharsky.dmitri.model.entity.Order;
 import com.pozharsky.dmitri.model.entity.OrderProduct;
 import com.pozharsky.dmitri.model.service.OrderService;
 import com.pozharsky.dmitri.model.service.impl.OrderServiceImpl;
@@ -28,7 +29,7 @@ public class DeleteProductFromOrderCommand implements Command {
                 OrderProduct orderProduct = optionalOrderProduct.get();
                 @SuppressWarnings("unchecked")
                 List<OrderProduct> orderProducts = (List<OrderProduct>) session.getAttribute(SessionAttribute.ORDER_PRODUCTS);
-                //TODO:orderProduct's object not equals
+                Order order = (Order) session.getAttribute(SessionAttribute.ORDER);
                 orderProducts.remove(orderProduct);
                 session.setAttribute(SessionAttribute.DELETE_PRODUCT_FROM_ORDER_SUCCESS, true);
             } else {

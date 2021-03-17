@@ -49,6 +49,7 @@ public class AddProductToOrder implements Command {
                 List<OrderProduct> orderProducts = orderService.findProductInNewOrder(order.getId());
                 session.setAttribute(SessionAttribute.ORDER_PRODUCTS, orderProducts);
             }
+            //TODO:problem with order
             session.setAttribute(SessionAttribute.ORDER, order);
             session.setAttribute(SessionAttribute.ADD_ORDER_SUCCESS, isAdd);
             return router;

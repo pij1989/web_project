@@ -34,7 +34,7 @@
             <tr>
                 <th scope="col">Product</th>
                 <th scope="col"></th>
-                <th scope="col" style="text-align: end">Amount</th>
+                <th scope="col" class="pl-5">Amount</th>
                 <th scope="col" style="text-align: end">Cost</th>
             </tr>
             </thead>
@@ -49,8 +49,7 @@
                                 <input type="hidden" name="command" value="view_product">
                                 <input type="hidden" name="productId"
                                        value="<c:out value="${orderProduct.product.id}"/>">
-                                <button type="submit" class="btn btn-link"
-                                        style="padding-left: 0;padding-right: 0">
+                                <button type="submit" class="btn btn-link px-0 ml-1">
                                     <p><c:out value="${orderProduct.product.name}"/></p>
                                 </button>
                             </form>
@@ -67,14 +66,30 @@
                         </form>
                     </td>
 
-                    <td style="text-align: end"><c:out value="${orderProduct.amount}"/></td>
+                    <td>
+                        <form class="add-product-to-order" method="post" action="${pageContext.request.contextPath}/controller">
+                            <input type="hidden" name="command" value="add_product_to_order">
+                            <input type="hidden" name="orderProductId" value="<c:out value="${orderProduct.id}"/>">
+                            <div class="input-group" style="width: 150px">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-minus"></i></span>
+                                </div>
+                                <input type="text" class="form-control" maxlength="5" name="amountProduct"
+                                       value="<c:out value="${orderProduct.amount}"/>" required pattern="^[0-9]{1,5}$"/>
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fas fa-plus"></i></span>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+
                     <td style="text-align: end"><c:out value="${orderProduct.totalPrice}"/></td>
                 </tr>
             </c:forEach>
             <tr>
                 <td colspan="4">
                     <div class="d-flex justify-content-end">
-                        Total command: <c:out value="${order.cost}"/>
+                        <h5>Total cost: <c:out value="${order.cost}"/></h5>
                     </div>
                 </td>
             </tr>

@@ -119,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
                 }
                 if (isAdd) {
                     BigDecimal cost = calculateCost(amount, product.getPrice());
-                    isAdd = orderDao.updateCostById(cost, order.getId());
+                    isAdd = orderDao.increaseCostById(cost, order.getId());
                 }
             }
             transactionManager.commit();
@@ -154,14 +154,18 @@ public class OrderServiceImpl implements OrderService {
         try {
             OrderProductDao orderProductDao = new OrderProductDao();
             ProductDao productDao = new ProductDao();
-            transactionManager.initTransaction(orderProductDao, productDao);
+            OrderDao orderDao = new OrderDao();
+            transactionManager.initTransaction(orderProductDao, productDao, orderDao);
             long id = Long.parseLong(orderProductId);
             Optional<OrderProduct> optionalOrderProduct = orderProductDao.findById(id);
             if (optionalOrderProduct.isPresent()) {
                 if (orderProductDao.delete(id)) {
                     OrderProduct orderProduct = optionalOrderProduct.get();
+                    long orderId = orderProduct.getOrder().getId();
                     int amountProduct = orderProduct.getAmount();
                     long productId = orderProduct.getProduct().getId();
+                    BigDecimal totalPrice = orderProduct.getTotalPrice();
+                    orderDao.decreaseCostById(totalPrice, orderId);
                     productDao.increaseAmountById(amountProduct, productId);
                 }
             }

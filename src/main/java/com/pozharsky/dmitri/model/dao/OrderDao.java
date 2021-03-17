@@ -16,7 +16,8 @@ public class OrderDao extends AbstractDao<Order> {
     private static final String CREATE_ORDER_SQL = "INSERT INTO orders(time_create, cost, order_status_id, user_id) VALUES (?,?,?,?);";
     private static final String FIND_STATUS_ID_BY_NAME_SQL = "SELECT id FROM orders_status WHERE order_status_name = ?;";
     private static final String FIND_ORDER_BY_USER_ID_STATUS_SQL = "SELECT o.id, o.time_create, o.cost, os.order_status_name, o.user_id FROM orders AS o JOIN orders_status AS os on o.order_status_id = os.id WHERE o.user_id = ? AND os.order_status_name = ?;";
-    private static final String UPDATE_COST_BY_ID = "UPDATE orders SET cost = cost + ? WHERE id = ?";
+    private static final String INCREASE_COST_BY_ID = "UPDATE orders SET cost = cost + ? WHERE id = ?";
+    private static final String DECREASE_COST_BY_ID = "UPDATE orders SET cost = cost - ? WHERE id = ?";
 
     public Optional<Long> create(Order order) throws DaoException {
         try (PreparedStatement orderPreparedStatement = connection.prepareStatement(CREATE_ORDER_SQL, Statement.RETURN_GENERATED_KEYS);
@@ -52,12 +53,23 @@ public class OrderDao extends AbstractDao<Order> {
         }
     }
 
-    public boolean updateCostById(BigDecimal cost, long orderId) throws DaoException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_COST_BY_ID)) {
+    public boolean increaseCostById(BigDecimal cost, long orderId) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(INCREASE_COST_BY_ID)) {
             preparedStatement.setBigDecimal(1, cost);
             preparedStatement.setLong(2, orderId);
-            int resultUpdate = preparedStatement.executeUpdate();
-            return resultUpdate > 0;
+            int result = preparedStatement.executeUpdate();
+            return result > 0;
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    public void decreaseCostById(BigDecimal cost, long orderId) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DECREASE_COST_BY_ID)) {
+            preparedStatement.setBigDecimal(1, cost);
+            preparedStatement.setLong(2, orderId);
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);
