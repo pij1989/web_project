@@ -54,11 +54,11 @@
                         <c:choose>
                             <c:when test="${product.amount gt 0}">
                                 <p><span class="badge badge-success"><fmt:message
-                                        key="products.active"/></span></p>
+                                        key="products.in_stock"/></span></p>
                             </c:when>
                             <c:otherwise>
                                 <p><span class="badge badge-danger"><fmt:message
-                                        key="products.not_active"/></span></p>
+                                        key="products.not_available"/></span></p>
                             </c:otherwise>
                         </c:choose>
                     </div>
@@ -66,19 +66,20 @@
                         <input type="hidden" name="command" value="add_product_to_order">
                         <input type="hidden" name="amountProduct" value="1">
                         <div class="view-product-btn">
-                            <c:choose>
-                                <c:when test="${addOrderSuccess}">
+                            <c:set var="flag" value="true"/>
+                            <c:forEach var="orderProduct" items="${orderProducts}">
+                                <c:if test="${orderProduct.product.id eq product.id}">
                                     <button type="submit" class="btn btn-outline-primary" disabled>
                                         In the cart
                                     </button>
-                                </c:when>
-                                <c:otherwise>
-                                    <button type="submit" class="btn btn-primary">
-                                        Append to cart
-                                    </button>
-                                </c:otherwise>
-                            </c:choose>
-                            <c:remove var="addOrderSuccess"/>
+                                    <c:set var="flag" value="false"/>
+                                </c:if>
+                            </c:forEach>
+                            <c:if test="${flag}">
+                                <button type="submit" class="btn btn-primary">
+                                    Append to cart
+                                </button>
+                            </c:if>
                         </div>
                     </form>
                 </div>

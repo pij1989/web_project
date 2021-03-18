@@ -16,8 +16,10 @@ forms.forEach((form) => {
     form.addEventListener(CHANGE, (event) => {
         let element = event.target;
         if (element.checkValidity()) {
-            amountProduct = element.value;
-            HTMLFormElement.prototype.submit.call(form);
+            if (amountProduct !== element.value) {
+                amountProduct = element.value;
+                HTMLFormElement.prototype.submit.call(form);
+            }
         } else {
             form.children[2].children[1].value = amountProduct;
         }

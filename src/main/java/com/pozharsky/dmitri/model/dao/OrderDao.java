@@ -53,12 +53,11 @@ public class OrderDao extends AbstractDao<Order> {
         }
     }
 
-    public boolean increaseCostById(BigDecimal cost, long orderId) throws DaoException {
+    public void increaseCostById(BigDecimal cost, long orderId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INCREASE_COST_BY_ID)) {
             preparedStatement.setBigDecimal(1, cost);
             preparedStatement.setLong(2, orderId);
-            int result = preparedStatement.executeUpdate();
-            return result > 0;
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);

@@ -10,6 +10,7 @@ import com.pozharsky.dmitri.model.entity.Order;
 import com.pozharsky.dmitri.model.entity.OrderProduct;
 import com.pozharsky.dmitri.model.entity.Product;
 import com.pozharsky.dmitri.model.service.OrderService;
+import com.pozharsky.dmitri.validator.OrderValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 public class OrderServiceImpl implements OrderService {
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
+    private static final int ZERO = 0;
     private static final OrderServiceImpl instance = new OrderServiceImpl();
 
     private OrderServiceImpl() {
@@ -119,9 +121,8 @@ public class OrderServiceImpl implements OrderService {
                 }
                 if (isAdd) {
                     BigDecimal cost = calculateCost(amount, product.getPrice());
-                    if (orderDao.increaseCostById(cost, order.getId())) {
-                        increaseCostOfOrder(cost, order);
-                    }
+                    orderDao.increaseCostById(cost, order.getId());
+                    increaseCostOfOrder(cost, order);
                 }
             }
             transactionManager.commit();
@@ -183,6 +184,59 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    @Override
+    public Optional<OrderProduct> changeAmountProductInOrder(String orderProductId, String amountProduct, Order order) throws ServiceException {
+        if (!OrderValidator.isValidAmountProduct(amountProduct)) {
+            return Optional.empty();
+        }
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            OrderDao orderDao = new OrderDao();
+            ProductDao productDao = new ProductDao();
+            OrderProductDao orderProductDao = new OrderProductDao();
+            transactionManager.initTransaction(orderDao, productDao, orderProductDao);
+            long id = Long.parseLong(orderProductId);
+            int newAmountProduct = Integer.parseInt(amountProduct);
+            Optional<OrderProduct> optionalOrderProduct = orderProductDao.findById(id);
+            if (optionalOrderProduct.isPresent()) {
+                OrderProduct orderProduct = optionalOrderProduct.get();
+                long orderId = orderProduct.getOrder().getId();
+                long productId = orderProduct.getProduct().getId();
+                int oldAmountProduct = orderProduct.getAmount();
+                int difAmountProduct = newAmountProduct - oldAmountProduct;
+                if (difAmountProduct < ZERO) {
+                    if (orderProductDao.updateAmountProductByOrderIdAndProductId(difAmountProduct, orderId, productId)) {
+                        BigDecimal difTotalPrice = updateCostOfOrder(orderDao, orderProduct, difAmountProduct);
+                        productDao.decreaseAmountById(difAmountProduct, productId);
+                        increaseCostOfOrder(difTotalPrice, order);
+                    } else {
+                        optionalOrderProduct = Optional.empty();
+                    }
+                } else {
+                    if (productDao.decreaseAmountById(difAmountProduct, productId)) {
+                        if (orderProductDao.updateAmountProductByOrderIdAndProductId(difAmountProduct, orderId, productId)) {
+                            BigDecimal difTotalPrice = updateCostOfOrder(orderDao, orderProduct, difAmountProduct);
+                            increaseCostOfOrder(difTotalPrice, order);
+                        } else {
+                            transactionManager.rollback();
+                            optionalOrderProduct = Optional.empty();
+                        }
+                    } else {
+                        optionalOrderProduct = Optional.empty();
+                    }
+                }
+            }
+            transactionManager.commit();
+            return optionalOrderProduct;
+        } catch (DaoException e) {
+            logger.error(e);
+            transactionManager.rollback();
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.endTransaction();
+        }
+    }
+
     private BigDecimal calculateCost(int amount, BigDecimal price) {
         return price.multiply(new BigDecimal(amount));
     }
@@ -197,5 +251,13 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal previousCost = order.getCost();
         BigDecimal actualCost = previousCost.subtract(cost);
         order.setCost(actualCost);
+    }
+
+    private BigDecimal updateCostOfOrder(OrderDao orderDao, OrderProduct orderProduct, int difAmountProduct) throws DaoException {
+        BigDecimal price = orderProduct.getProduct().getPrice();
+        long orderId = orderProduct.getOrder().getId();
+        BigDecimal difTotalPrice = calculateCost(difAmountProduct, price);
+        orderDao.increaseCostById(difTotalPrice, orderId);
+        return difTotalPrice;
     }
 }

@@ -51,13 +51,13 @@
                                     <h5 class="card-title"><ctg:formatCurrency value="${product.price}"
                                                                                locale="${locale}"/></h5>
                                     <c:choose>
-                                        <c:when test="${product.status}">
+                                        <c:when test="${product.amount gt 0}">
                                             <p><span class="badge badge-success"><fmt:message
-                                                    key="products.active"/></span></p>
+                                                    key="products.in_stock"/></span></p>
                                         </c:when>
                                         <c:otherwise>
                                             <p><span class="badge badge-danger"><fmt:message
-                                                    key="products.not_active"/></span></p>
+                                                    key="products.not_available"/></span></p>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>

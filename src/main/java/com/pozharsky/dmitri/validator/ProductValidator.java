@@ -15,6 +15,9 @@ public class ProductValidator {
     private static final String PRICE_REGEX = "^[0-9]{1,4}\\.[0-9]{2}$";
     private static final String AMOUNT_REGEX = "^[0-9]{1,5}$";
 
+    private ProductValidator() {
+    }
+
     public static boolean isValidProductForm(Map<String, String> form) {
         boolean isValid = true;
         String productName = form.get(RequestParameter.PRODUCT_NAME);

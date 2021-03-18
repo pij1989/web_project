@@ -20,4 +20,6 @@ public interface OrderService {
     List<OrderProduct> findProductInNewOrder(long orderId) throws ServiceException;
 
     Optional<OrderProduct> deleteProductFromOrder(String orderProductId, Order order) throws ServiceException;
+
+    Optional<OrderProduct> changeAmountProductInOrder(String orderProductId, String amountProduct, Order order) throws ServiceException;
 }
