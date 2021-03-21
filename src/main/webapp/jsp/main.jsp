@@ -8,34 +8,31 @@
 <html>
 <head>
     <c:import url="fragment/bootstrap_style.jsp"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sidebar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navigation.css">
     <title><fmt:message key="main.title"/></title>
 </head>
 <body>
 <c:import url="fragment/header.jsp"/>
-
-<div class="container">
+<main role="main" class="container" style="min-height: calc(100vh - 112px)">
     <c:import url="fragment/navigation.jsp"/>
-    <main role="main" class="container">
-        <h4 class="mb-3">Last add products</h4>
-        <div class="row">
-            <c:forEach var="product" items="${lastProducts}">
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
-                        <img src="data:image/jpg;base64,<ctg:encodeBytes bytes="${product.image}"/>"
-                             class="card-img-top" alt=""/>
-                        <div class="card-body">
-                            <h5 class="card-title"><c:out value="${product.name}"/></h5>
-                            <p class="card-text"><c:out value="${product.description}"/></p>
-                            <h5 class="card-title"><ctg:formatCurrency value="${product.price}"
-                                                                       locale="${locale}"/></h5>
-                        </div>
+    <h4 class="mb-3">Last add products</h4>
+    <div class="row">
+        <c:forEach var="product" items="${lastProducts}">
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm">
+                    <img src="data:image/jpg;base64,<ctg:encodeBytes bytes="${product.image}"/>"
+                         class="card-img-top" alt=""/>
+                    <div class="card-body">
+                        <h5 class="card-title"><c:out value="${product.name}"/></h5>
+                        <p class="card-text"><c:out value="${product.description}"/></p>
+                        <h5 class="card-title"><ctg:formatCurrency value="${product.price}"
+                                                                   locale="${locale}"/></h5>
                     </div>
                 </div>
-            </c:forEach>
-        </div>
-    </main>
-</div>
+            </div>
+        </c:forEach>
+    </div>
+</main>
 <c:import url="fragment/footer.jsp"/>
 <c:import url="fragment/bootstrap_script.jsp"/>
 </body>

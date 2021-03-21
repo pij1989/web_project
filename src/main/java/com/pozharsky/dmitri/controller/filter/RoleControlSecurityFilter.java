@@ -40,7 +40,7 @@ public class RoleControlSecurityFilter implements Filter {
         getCommandMap.put(CommandType.TO_CREATE_USER_PAGE_COMMAND, List.of(User.RoleType.ADMIN));
         getCommandMap.put(CommandType.ACTIVATE_REGISTRATION, List.of(User.RoleType.GUEST, User.RoleType.USER, User.RoleType.ADMIN));
         getCommandMap.put(CommandType.GET_PRODUCTS, List.of(User.RoleType.ADMIN, User.RoleType.USER));
-        getCommandMap.put(CommandType.SEARCH_PRODUCT, List.of(User.RoleType.ADMIN));
+        getCommandMap.put(CommandType.SEARCH_PRODUCT, List.of(User.RoleType.ADMIN, User.RoleType.USER));
         getCommandMap.put(CommandType.VIEW_PRODUCT, List.of(User.RoleType.USER));
         getCommandMap.put(CommandType.VIEW_ORDER, List.of(User.RoleType.USER));
         getCommandMap.put(CommandType.GET_USERS, List.of(User.RoleType.ADMIN));

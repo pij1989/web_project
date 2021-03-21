@@ -1,0 +1,15 @@
+#searchField {
+    width: 807px;
+}
+
+@media all and (max-width: 1199px) {
+    #searchField {
+        width: 627px;
+    }
+}
+
+@media all and (max-width: 991px) {
+    #searchField {
+        width: 300px;
+    }
+}

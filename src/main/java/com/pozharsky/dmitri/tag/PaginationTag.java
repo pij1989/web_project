@@ -3,6 +3,7 @@ package com.pozharsky.dmitri.tag;
 import com.pozharsky.dmitri.controller.command.RequestParameter;
 import com.pozharsky.dmitri.controller.command.SessionAttribute;
 import com.pozharsky.dmitri.util.PaginationUtil;
+import com.pozharsky.dmitri.validator.PageValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -38,12 +39,12 @@ public class PaginationTag extends TagSupport {
         String perPage = request.getParameter(RequestParameter.PER_PAGE);
         int numberPage;
         int numberPerPage;
-        try {
-            numberPage = page != null ? Integer.parseInt(page) : DEFAULT_PAGE;
-            numberPerPage = perPage != null ? Integer.parseInt(perPage) : DEFAULT_PER_PAGE;
-        } catch (NumberFormatException e) {
-            numberPage = DEFAULT_PAGE;
+        if (PageValidator.isValidPage(page, perPage)) {
+            numberPerPage = Integer.parseInt(perPage);
+            numberPage = Integer.parseInt(page);
+        } else {
             numberPerPage = DEFAULT_PER_PAGE;
+            numberPage = DEFAULT_PAGE;
         }
         int amountPage = PaginationUtil.defineAmountPage(amountItem, numberPerPage);
         Locale locale = (Locale) session.getAttribute(SessionAttribute.LOCALE);

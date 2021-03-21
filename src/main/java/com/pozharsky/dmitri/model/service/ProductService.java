@@ -23,9 +23,15 @@ public interface ProductService {
 
     int defineAmountProductByCategory(long categoryId) throws ServiceException;
 
+    int defineAmountActiveProductByCategory(long categoryId) throws ServiceException;
+
+    int defineAmountActiveSearchProduct(String searchProduct) throws ServiceException;
+
     List<Product> findProductsByPerPage(String page, String perPage) throws ServiceException;
 
     List<Product> findProductsByCategoryAndPerPage(long categoryId, String page, String perPage) throws ServiceException;
+
+    List<Product> findActiveProductsByCategoryAndPerPage(long categoryId, String page, String perPage, String sort) throws ServiceException;
 
     List<Product> searchProduct(String searchProduct) throws ServiceException;
 

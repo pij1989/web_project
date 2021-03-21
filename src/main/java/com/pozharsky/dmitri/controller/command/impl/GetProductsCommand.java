@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GetProductsCommand implements Command {
@@ -35,30 +36,34 @@ public class GetProductsCommand implements Command {
         try {
             String page = request.getParameter(RequestParameter.PAGE);
             String perPage = request.getParameter(RequestParameter.PER_PAGE);
+            String sort = request.getParameter(RequestParameter.SORT);
             ProductService productService = ProductServiceImpl.getInstance();
             HttpSession session = request.getSession();
             User.RoleType roleType = (User.RoleType) session.getAttribute(SessionAttribute.ROLE);
-            logger.debug("Page: " + page + " perPage: " + perPage);
-            List<Product> products;
-            int amountProduct;
-            if (categoryId == ZERO) {
-                amountProduct = productService.defineAmountProduct();
-                products = productService.findProductsByPerPage(page, perPage);
-            } else {
-                amountProduct = productService.defineAmountProductByCategory(categoryId);
-                products = productService.findProductsByCategoryAndPerPage(categoryId, page, perPage);
-            }
-            if (session.getAttribute(SessionAttribute.CATEGORIES) == null) {
-                CategoryService categoryService = CategoryServiceImpl.getInstance();
-                List<Category> categories = categoryService.findAllCategory();
-                session.setAttribute(SessionAttribute.CATEGORIES, categories);
-            }
+            logger.debug("Page: " + page + " perPage: " + perPage + " categoryId: " + categoryId + " Sort: " + sort);
+            int amountProduct = 0;
+            List<Product> products = new ArrayList<>();
             Router router = null;
             if (roleType == User.RoleType.ADMIN) {
+                if (categoryId == ZERO) {
+                    amountProduct = productService.defineAmountProduct();
+                    products = productService.findProductsByPerPage(page, perPage);
+                } else {
+                    amountProduct = productService.defineAmountProductByCategory(categoryId);
+                    products = productService.findProductsByCategoryAndPerPage(categoryId, page, perPage);
+                }
+                if (session.getAttribute(SessionAttribute.CATEGORIES) == null) {
+                    CategoryService categoryService = CategoryServiceImpl.getInstance();
+                    List<Category> categories = categoryService.findAllCategory();
+                    session.setAttribute(SessionAttribute.CATEGORIES, categories);
+                }
                 router = new Router(PagePath.PRODUCTS_ADMIN);
-            }
-            if (roleType == User.RoleType.USER) {
-                router = new Router(PagePath.PRODUCTS_USER);
+            } else {
+                if (roleType == User.RoleType.USER) {
+                    amountProduct = productService.defineAmountActiveProductByCategory(categoryId);
+                    products = productService.findActiveProductsByCategoryAndPerPage(categoryId, page, perPage, sort);
+                    router = new Router(PagePath.PRODUCTS_USER);
+                }
             }
             session.setAttribute(SessionAttribute.PRODUCTS, products);
             session.setAttribute(SessionAttribute.AMOUNT_PRODUCT, amountProduct);

@@ -7,12 +7,14 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <c:choose>
             <c:when test="${role eq 'ADMIN'}">
-                <a class="navbar-brand" href="${pageContext.request.contextPath}/controller?command=to_admin_page_command">
+                <a class="navbar-brand"
+                   href="${pageContext.request.contextPath}/controller?command=to_admin_page_command">
                     <span><i class="fas fa-store"></i></span> <fmt:message key="header.brand"/>
                 </a>
             </c:when>
             <c:when test="${role eq 'USER'}">
-                <a class="navbar-brand" href="${pageContext.request.contextPath}/controller?command=to_main_page_command">
+                <a class="navbar-brand"
+                   href="${pageContext.request.contextPath}/controller?command=to_main_page_command">
                     <span><i class="fas fa-store"></i></span> <fmt:message key="header.brand"/>
                 </a>
             </c:when>
@@ -27,19 +29,6 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <%--<c:if test="${role eq 'USER'}">
-                <div style="display: flex; flex-grow: inherit;">
-                    <form class="form-inline my-2 my-lg-0 mx-lg-5"
-                          action="${pageContext.request.contextPath}/controller">
-                        <input type="hidden" name="command" value="search">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Search"
-                               aria-label="Search" size="30">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><span><i
-                                class="fas fa-search"></i></span> <fmt:message key="header.button.search"/>
-                        </button>
-                    </form>
-                </div>
-            </c:if>--%>
             <div style="display: flex; flex-grow: inherit; justify-content: flex-end">
                 <c:if test="${role eq 'USER' or role eq 'ADMIN'}">
                     <div style="color: white; padding-top: 5px; padding-right: 15px">

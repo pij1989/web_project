@@ -33,6 +33,7 @@ public class RequestParameter {
     public static final String RATING = "rating";
     public static final String AMOUNT_PRODUCT = "amountProduct";
     public static final String ORDER_PRODUCT_ID = "orderProductId";
+    public static final String SORT = "sort";
 
     private RequestParameter() {
     }

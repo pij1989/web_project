@@ -7,6 +7,7 @@ import com.pozharsky.dmitri.model.dao.ProductDao;
 import com.pozharsky.dmitri.model.dao.TransactionManager;
 import com.pozharsky.dmitri.model.entity.Product;
 import com.pozharsky.dmitri.model.service.ProductService;
+import com.pozharsky.dmitri.validator.PageValidator;
 import com.pozharsky.dmitri.validator.ProductValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +21,8 @@ public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LogManager.getLogger(ProductServiceImpl.class);
     private static final int DEFAULT_PER_PAGE = 5;
     private static final int DEFAULT_PAGE = 1;
+    private static final String CHEAP = "cheap";
+    private static final String EXPENSIVE = "expensive";
     private static final ProductServiceImpl instance = new ProductServiceImpl();
 
     private ProductServiceImpl() {
@@ -149,14 +152,43 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public int defineAmountActiveProductByCategory(long categoryId) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            ProductDao productDao = new ProductDao();
+            transactionManager.init(productDao);
+            return productDao.countProductByCategoryAndStatus(categoryId, true);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
+    public int defineAmountActiveSearchProduct(String searchProduct) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            ProductDao productDao = new ProductDao();
+            transactionManager.init(productDao);
+            return productDao.countProductBySearchNameAndStatus(searchProduct, true);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
     public List<Product> findProductsByPerPage(String page, String perPage) throws ServiceException {
         int limit;
         int numberPage;
-        try {
-            limit = perPage != null ? Integer.parseInt(perPage) : DEFAULT_PER_PAGE;
-            numberPage = page != null ? Integer.parseInt(page) : DEFAULT_PAGE;
-        } catch (NumberFormatException e) {
-            logger.error(e);
+        if (PageValidator.isValidPage(page, perPage)) {
+            limit = Integer.parseInt(perPage);
+            numberPage = Integer.parseInt(page);
+        } else {
             limit = DEFAULT_PER_PAGE;
             numberPage = DEFAULT_PAGE;
         }
@@ -165,7 +197,7 @@ public class ProductServiceImpl implements ProductService {
             ProductDao productDao = new ProductDao();
             transactionManager.init(productDao);
             int offset = (numberPage - 1) * limit;
-            return productDao.findByLimitAndOffset(limit, offset);
+            return productDao.findWithLimit(limit, offset);
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
@@ -178,11 +210,10 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findProductsByCategoryAndPerPage(long categoryId, String page, String perPage) throws ServiceException {
         int limit;
         int numberPage;
-        try {
-            limit = perPage != null ? Integer.parseInt(perPage) : DEFAULT_PER_PAGE;
-            numberPage = page != null ? Integer.parseInt(page) : DEFAULT_PAGE;
-        } catch (NumberFormatException e) {
-            logger.error(e);
+        if (PageValidator.isValidPage(page, perPage)) {
+            limit = Integer.parseInt(perPage);
+            numberPage = Integer.parseInt(page);
+        } else {
             limit = DEFAULT_PER_PAGE;
             numberPage = DEFAULT_PAGE;
         }
@@ -191,7 +222,36 @@ public class ProductServiceImpl implements ProductService {
             ProductDao productDao = new ProductDao();
             transactionManager.init(productDao);
             int offset = (numberPage - 1) * limit;
-            return productDao.findByCategoryAndLimitAndOffset(categoryId, limit, offset);
+            return productDao.findByCategoryWithLimit(categoryId, limit, offset);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
+    public List<Product> findActiveProductsByCategoryAndPerPage(long categoryId, String page, String perPage, String sort) throws ServiceException {
+        int limit;
+        int numberPage;
+        if (PageValidator.isValidPage(page, perPage)) {
+            limit = Integer.parseInt(perPage);
+            numberPage = Integer.parseInt(page);
+        } else {
+            limit = DEFAULT_PER_PAGE;
+            numberPage = DEFAULT_PAGE;
+        }
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            ProductDao productDao = new ProductDao();
+            transactionManager.init(productDao);
+            int offset = (numberPage - 1) * limit;
+            if (sort == null) {
+                return productDao.findByCategoryAndStatusWithLimit(categoryId, true, limit, offset);
+            } else {
+                return findSortedActiveProduct(productDao, categoryId, limit, offset, sort);
+            }
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
@@ -227,6 +287,21 @@ public class ProductServiceImpl implements ProductService {
             throw new ServiceException(e);
         } finally {
             transactionManager.end();
+        }
+    }
+
+    private List<Product> findSortedActiveProduct(ProductDao productDao, long categoryId, int limit,
+                                                  int offset, String sort) throws DaoException {
+        switch (sort) {
+            case CHEAP: {
+                return productDao.findByCategoryAndStatusWithLimitOrderByPriceAsc(categoryId, true, limit, offset);
+            }
+            case EXPENSIVE: {
+                return productDao.findByCategoryAndStatusWithLimitOrderByPriceDesc(categoryId, true, limit, offset);
+            }
+            default: {
+                return productDao.findByCategoryAndStatusWithLimit(categoryId, true, limit, offset);
+            }
         }
     }
 }
