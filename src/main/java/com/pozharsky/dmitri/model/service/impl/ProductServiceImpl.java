@@ -6,6 +6,7 @@ import com.pozharsky.dmitri.model.creator.ProductCreator;
 import com.pozharsky.dmitri.model.dao.ProductDao;
 import com.pozharsky.dmitri.model.dao.TransactionManager;
 import com.pozharsky.dmitri.model.entity.Product;
+import com.pozharsky.dmitri.model.entity.SortType;
 import com.pozharsky.dmitri.model.service.ProductService;
 import com.pozharsky.dmitri.validator.PageValidator;
 import com.pozharsky.dmitri.validator.ProductValidator;
@@ -21,8 +22,6 @@ public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LogManager.getLogger(ProductServiceImpl.class);
     private static final int DEFAULT_PER_PAGE = 5;
     private static final int DEFAULT_PAGE = 1;
-    private static final String CHEAP = "cheap";
-    private static final String EXPENSIVE = "expensive";
     private static final ProductServiceImpl instance = new ProductServiceImpl();
 
     private ProductServiceImpl() {
@@ -292,16 +291,25 @@ public class ProductServiceImpl implements ProductService {
 
     private List<Product> findSortedActiveProduct(ProductDao productDao, long categoryId, int limit,
                                                   int offset, String sort) throws DaoException {
-        switch (sort) {
-            case CHEAP: {
-                return productDao.findByCategoryAndStatusWithLimitOrderByPriceAsc(categoryId, true, limit, offset);
+        try {
+            SortType sortType = SortType.valueOf(sort.toUpperCase());
+            switch (sortType) {
+                case NEW: {
+                    return productDao.findByCategoryAndStatusWithLimitOrderByTimeCreateDesc(categoryId, true, limit, offset);
+                }
+                case CHEAP: {
+                    return productDao.findByCategoryAndStatusWithLimitOrderByPriceAsc(categoryId, true, limit, offset);
+                }
+                case EXPENSIVE: {
+                    return productDao.findByCategoryAndStatusWithLimitOrderByPriceDesc(categoryId, true, limit, offset);
+                }
+                default: {
+                    return productDao.findByCategoryAndStatusWithLimit(categoryId, true, limit, offset);
+                }
             }
-            case EXPENSIVE: {
-                return productDao.findByCategoryAndStatusWithLimitOrderByPriceDesc(categoryId, true, limit, offset);
-            }
-            default: {
-                return productDao.findByCategoryAndStatusWithLimit(categoryId, true, limit, offset);
-            }
+        } catch (IllegalArgumentException e) {
+            logger.error(e);
+            return productDao.findByCategoryAndStatusWithLimit(categoryId, true, limit, offset);
         }
     }
 }

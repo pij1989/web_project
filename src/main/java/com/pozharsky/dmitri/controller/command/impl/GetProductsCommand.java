@@ -62,12 +62,14 @@ public class GetProductsCommand implements Command {
                 if (roleType == User.RoleType.USER) {
                     amountProduct = productService.defineAmountActiveProductByCategory(categoryId);
                     products = productService.findActiveProductsByCategoryAndPerPage(categoryId, page, perPage, sort);
+                    request.setAttribute(RequestAttribute.SORT_TYPE, sort);
                     router = new Router(PagePath.PRODUCTS_USER);
                 }
             }
-            session.setAttribute(SessionAttribute.PRODUCTS, products);
-            session.setAttribute(SessionAttribute.AMOUNT_PRODUCT, amountProduct);
+            request.setAttribute(RequestAttribute.PRODUCTS, products);
+            request.setAttribute(RequestAttribute.AMOUNT_PRODUCT, amountProduct);
             session.setAttribute(SessionAttribute.SELECTED_CATEGORY, categoryId);
+            //TODO: change session to request
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;
         } catch (ServiceException e) {

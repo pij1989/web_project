@@ -17,6 +17,7 @@ public enum CommandType {
     GET_PRODUCTS(new GetProductsCommand()),
     SEARCH_PRODUCT(new SearchProductCommand()),
     VIEW_PRODUCT(new ViewProductCommand()),
+    FILTER_PRODUCT(new FilterProductCommand()),
     GET_CATEGORIES(new GetCategoriesCommand()),
     DELETE_CATEGORY(new DeleteCategoryCommand()),
     CREATE_CATEGORY(new CreateCategoryCommand()),

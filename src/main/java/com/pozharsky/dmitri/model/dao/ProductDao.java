@@ -15,6 +15,7 @@ import java.util.Optional;
 
 public class ProductDao extends AbstractDao<Product> {
     private static final Logger logger = LogManager.getLogger(ProductDao.class);
+    private static final String PERCENT = "%";
     private static final String CREATE_PRODUCT_SQL = "INSERT INTO products (product_name, description, price, amount, status, image, time_create, category_id) VALUES (?,?,?,?,?,?,?,?);";
     private static final String FIND_ALL_PRODUCT_SQL = "SELECT id,product_name,price,amount,description,status,image,time_create,category_id FROM products;";
     private static final String FIND_PRODUCT_BY_CATEGORY_SQL = "SELECT id,product_name,price,amount,description,status,image,time_create,category_id FROM products WHERE category_id = ?;";
@@ -23,6 +24,7 @@ public class ProductDao extends AbstractDao<Product> {
     private static final String FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE category_id = ? AND status = ? LIMIT ? OFFSET ?;";
     private static final String FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_ORDER_BY_PRICE_ASC_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE category_id = ? AND status = ? ORDER BY price ASC LIMIT ? OFFSET ?;";
     private static final String FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_ORDER_BY_PRICE_DESC_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE category_id = ? AND status = ? ORDER BY price DESC LIMIT ? OFFSET ?;";
+    private static final String FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_ORDER_BY_CREATE_TIME_DESC_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE category_id = ? AND status = ? ORDER BY time_create DESC LIMIT ? OFFSET ?;";
     private static final String FIND_PRODUCT_BY_ID_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE id = ?";
     private static final String FIND_PRODUCT_BY_NAME_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE product_name LIKE ?";
     private static final String FIND_WITH_ORDER_BY_CREATE_TIME_DESC_AND_LIMIT_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products ORDER BY time_create DESC LIMIT ?";
@@ -78,47 +80,20 @@ public class ProductDao extends AbstractDao<Product> {
     }
 
     public List<Product> findByCategoryAndStatusWithLimit(long categoryId, boolean status, int limit, int offset) throws DaoException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_SQL)) {
-            preparedStatement.setLong(1, categoryId);
-            preparedStatement.setBoolean(2, status);
-            preparedStatement.setInt(3, limit);
-            preparedStatement.setInt(4, offset);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return createListProductFromResultSet(resultSet);
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new DaoException(e);
-        }
+        return findByCategoryAndStatusWithLimit(categoryId, status, limit, offset, FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_SQL);
     }
 
     public List<Product> findByCategoryAndStatusWithLimitOrderByPriceAsc(long categoryId, boolean status, int limit, int offset) throws DaoException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_ORDER_BY_PRICE_ASC_SQL)) {
-            preparedStatement.setLong(1, categoryId);
-            preparedStatement.setBoolean(2, status);
-            preparedStatement.setInt(3, limit);
-            preparedStatement.setInt(4, offset);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return createListProductFromResultSet(resultSet);
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new DaoException(e);
-        }
+        return findByCategoryAndStatusWithLimit(categoryId, status, limit, offset, FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_ORDER_BY_PRICE_ASC_SQL);
     }
 
     public List<Product> findByCategoryAndStatusWithLimitOrderByPriceDesc(long categoryId, boolean status, int limit, int offset) throws DaoException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_ORDER_BY_PRICE_DESC_SQL)) {
-            preparedStatement.setLong(1, categoryId);
-            preparedStatement.setBoolean(2, status);
-            preparedStatement.setInt(3, limit);
-            preparedStatement.setInt(4, offset);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return createListProductFromResultSet(resultSet);
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new DaoException(e);
-        }
+        return findByCategoryAndStatusWithLimit(categoryId, status, limit, offset, FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_ORDER_BY_PRICE_DESC_SQL);
     }
 
+    public List<Product> findByCategoryAndStatusWithLimitOrderByTimeCreateDesc(long categoryId, boolean status, int limit, int offset) throws DaoException {
+        return findByCategoryAndStatusWithLimit(categoryId, status, limit, offset, FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_ORDER_BY_CREATE_TIME_DESC_SQL);
+    }
 
     public List<Product> findByCategory(long categoryId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CATEGORY_SQL)) {
@@ -133,7 +108,7 @@ public class ProductDao extends AbstractDao<Product> {
 
     public List<Product> findByProductName(String productName) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_NAME_SQL)) {
-            preparedStatement.setString(1, "%" + productName + "%");
+            preparedStatement.setString(1, PERCENT + productName + PERCENT);
             ResultSet resultSet = preparedStatement.executeQuery();
             return createListProductFromResultSet(resultSet);
         } catch (SQLException e) {
@@ -202,7 +177,7 @@ public class ProductDao extends AbstractDao<Product> {
 
     @Override
     public boolean delete(Product entity) throws DaoException {
-        return false;
+        throw new UnsupportedOperationException("Operation 'delete product' is unsupported");
     }
 
     public boolean deleteByCategory(long categoryId) throws DaoException {
@@ -278,7 +253,7 @@ public class ProductDao extends AbstractDao<Product> {
 
     public int countProductBySearchNameAndStatus(String searchProduct, boolean status) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(COUNT_PRODUCT_BY_SEARCH_NAME_AND_STATUS_SQL)) {
-            preparedStatement.setString(1, "%" + searchProduct + "%");
+            preparedStatement.setString(1, PERCENT + searchProduct + PERCENT);
             preparedStatement.setBoolean(2, status);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
@@ -324,6 +299,20 @@ public class ProductDao extends AbstractDao<Product> {
         byte[] image = product.getImage();
         if (image.length != 0) {
             resultSet.updateBytes(ColumnName.IMAGE, product.getImage());
+        }
+    }
+
+    private List<Product> findByCategoryAndStatusWithLimit(long categoryId, boolean status, int limit, int offset, String sqlQuery) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            preparedStatement.setLong(1, categoryId);
+            preparedStatement.setBoolean(2, status);
+            preparedStatement.setInt(3, limit);
+            preparedStatement.setInt(4, offset);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return createListProductFromResultSet(resultSet);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
         }
     }
 }

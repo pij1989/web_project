@@ -19,14 +19,27 @@
     <c:choose>
         <c:when test="${not empty products}">
             <div class="py-1 mb-2" style="line-height: 1;border-bottom: 1px solid #e5e5e5;">
-                <nav class="nav d-flex justify-content-start">
-                    <div style="padding-top: 10px;">Sorted by:</div>
-                    <form action="${pageContext.request.contextPath}/controller">
+                <nav class="nav d-flex justify-content-start pb-2">
+                    <div class="px-2">Sorted by:</div>
+                    <form id="sortForm" action="${pageContext.request.contextPath}/controller">
                         <input type="hidden" name="command" value="get_products">
                         <input type="hidden" name="categoryId" value="<c:out value="${selectedCategory}"/>">
-                        <input type="submit" name="sort" value="popular" class="btn btn-link text-secondary">
-                        <input type="submit" name="sort" value="cheap" class="btn btn-link text-secondary">
-                        <input type="submit" name="sort" value="expensive" class="btn btn-link text-secondary">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sort" id="sortNew" value="new"
+                                   <c:if test="${sortType eq 'new'}">checked</c:if>>
+                            <label class="form-check-label" for="sortNew">New</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sort" id="sortCheap" value="cheap"
+                                   <c:if test="${sortType eq 'cheap'}">checked</c:if>>
+                            <label class="form-check-label" for="sortCheap">Cheap</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="sort" id="sortExpensive"
+                                   value="expensive"
+                                   <c:if test="${sortType eq 'expensive'}">checked</c:if>>
+                            <label class="form-check-label" for="sortExpensive">Expensive</label>
+                        </div>
                     </form>
                 </nav>
             </div>
@@ -72,7 +85,8 @@
                 </div>
 
                 <div class="col-3 px-1">
-                    <form>
+                    <form action="${pageContext.request.contextPath}/controller">
+                        <input type="hidden" name="command" value="filter_product">
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div>
@@ -81,13 +95,15 @@
                                         <div class="col">
                                             <div style="display: flex">
                                                 <label for="from" class="col">From</label>
-                                                <input type="text" id="from" class="form-control">
+                                                <input type="text" name="priceFrom" id="from" class="form-control"
+                                                       required pattern="^[0-9]+\.[0-9]+$">
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div style="display: flex">
                                                 <label for="to" class="col">To</label>
-                                                <input type="text" id="to" class="form-control">
+                                                <input type="text" name="priceTo" id="to" class="form-control"
+                                                       required pattern="^[0-9]+\.[0-9]+$">
                                             </div>
                                         </div>
                                     </div>
@@ -95,14 +111,15 @@
                             </li>
                             <li class="list-group-item">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
-                                           value="option1">
-                                    <label class="form-check-label" for="inlineCheckbox1">In stock</label>
+                                    <input class="form-check-input" name="inStock" type="checkbox" id="inStock"
+                                           value="true">
+                                    <label class="form-check-label" for="inStock">In stock</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
-                                           value="option2">
-                                    <label class="form-check-label" for="inlineCheckbox2">Not available</label>
+                                    <input class="form-check-input" name="notAvailable" type="checkbox"
+                                           id="notAvailable"
+                                           value="true">
+                                    <label class="form-check-label" for="notAvailable">Not available</label>
                                 </div>
                             </li>
                             <li class="list-group-item" style="text-align: center">
@@ -129,6 +146,7 @@
               id="paginationForm">
             <input type="hidden" name="command" value="get_products">
             <input type="hidden" name="categoryId" value="<c:out value="${selectedCategory}"/>">
+            <input type="hidden" name="sort" value="<c:out value="${sortType}"/>">
             <div class="form-row">
                 <ctg:pagination amountItem="${amountProduct}"/>
             </div>

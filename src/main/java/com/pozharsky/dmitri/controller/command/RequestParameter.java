@@ -34,6 +34,10 @@ public class RequestParameter {
     public static final String AMOUNT_PRODUCT = "amountProduct";
     public static final String ORDER_PRODUCT_ID = "orderProductId";
     public static final String SORT = "sort";
+    public static final String PRICE_FROM = "priceFrom";
+    public static final String PRICE_TO = "priceTo";
+    public static final String IN_STOCK = "inStock";
+    public static final String NOT_AVAILABLE = "notAvailable";
 
     private RequestParameter() {
     }

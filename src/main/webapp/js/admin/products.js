@@ -9,6 +9,7 @@ const PREVIOUS = 'previous';
 const VALUE_ATTRIBUTE = 'value';
 const PAGE_NUMBER = 1;
 const SELECT_CATEGORY_FORM = 'selectCategoryForm';
+const SORT_FORM = 'sortForm';
 
 const paginationForm = document.getElementById(PAGINATION_FORM);
 const page = document.getElementById(PAGE);
@@ -16,6 +17,20 @@ const next = document.getElementById(NEXT);
 const previous = document.getElementById(PREVIOUS);
 const currentPage = document.getElementById(ACTIVE);
 const selectCategoryForm = document.getElementById(SELECT_CATEGORY_FORM);
+const sortForm = document.getElementById(SORT_FORM);
+
+const addChangeEventToForm = form => {
+    if (form != null) {
+        form.addEventListener(CHANGE, (event) => {
+            const currentTarget = event.currentTarget;
+            HTMLFormElement.prototype.submit.call(currentTarget);
+        });
+    }
+};
+
+addChangeEventToForm(selectCategoryForm);
+
+addChangeEventToForm(sortForm);
 
 if (paginationForm != null) {
     const formElements = paginationForm.elements;
@@ -59,11 +74,4 @@ if (next != null && previous != null) {
             HTMLFormElement.prototype.submit.call(paginationForm);
         });
     }
-}
-
-if (selectCategoryForm != null) {
-    selectCategoryForm.addEventListener(CHANGE, (event) => {
-        const currentTarget = event.currentTarget;
-        HTMLFormElement.prototype.submit.call(currentTarget);
-    });
 }
