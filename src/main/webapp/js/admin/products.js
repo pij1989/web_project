@@ -1,6 +1,8 @@
 const PAGINATION_FORM = 'paginationForm';
 const CHANGE = 'change';
 const CLICK = 'click';
+const SUBMIT = 'submit';
+const WAS_VALIDATED = 'was-validated';
 const BUTTON_TYPE = 'button';
 const PAGE = 'page';
 const NEXT = 'next';
@@ -10,6 +12,7 @@ const VALUE_ATTRIBUTE = 'value';
 const PAGE_NUMBER = 1;
 const SELECT_CATEGORY_FORM = 'selectCategoryForm';
 const SORT_FORM = 'sortForm';
+const FILTER_FORM = 'filterForm';
 
 const paginationForm = document.getElementById(PAGINATION_FORM);
 const page = document.getElementById(PAGE);
@@ -18,6 +21,7 @@ const previous = document.getElementById(PREVIOUS);
 const currentPage = document.getElementById(ACTIVE);
 const selectCategoryForm = document.getElementById(SELECT_CATEGORY_FORM);
 const sortForm = document.getElementById(SORT_FORM);
+const filterForm = document.getElementById(FILTER_FORM);
 
 const addChangeEventToForm = form => {
     if (form != null) {
@@ -31,6 +35,16 @@ const addChangeEventToForm = form => {
 addChangeEventToForm(selectCategoryForm);
 
 addChangeEventToForm(sortForm);
+
+if(filterForm != null){
+    filterForm.addEventListener(SUBMIT,event =>{
+        if (filterForm.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        filterForm.classList.add(WAS_VALIDATED);
+    })
+}
 
 if (paginationForm != null) {
     const formElements = paginationForm.elements;

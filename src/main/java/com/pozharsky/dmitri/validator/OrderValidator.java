@@ -7,6 +7,9 @@ public class OrderValidator {
     }
 
     public static boolean isValidAmountProduct(String amountProduct) {
-        return amountProduct.matches(AMOUNT_REGEX);
+        if (amountProduct != null) {
+            return amountProduct.matches(AMOUNT_REGEX);
+        }
+        return false;
     }
 }

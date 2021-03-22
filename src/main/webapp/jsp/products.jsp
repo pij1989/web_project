@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="col-3 px-1">
-                    <form action="${pageContext.request.contextPath}/controller">
+                    <form id="filterForm" action="${pageContext.request.contextPath}/controller" novalidate>
                         <input type="hidden" name="command" value="filter_product">
                         <ul class="list-group">
                             <li class="list-group-item">
@@ -93,18 +93,14 @@
                                     <h5>Price:</h5>
                                     <div class="form-row">
                                         <div class="col">
-                                            <div style="display: flex">
-                                                <label for="from" class="col">From</label>
-                                                <input type="text" name="priceFrom" id="from" class="form-control"
-                                                       required pattern="^[0-9]+\.[0-9]+$">
-                                            </div>
+                                            <input type="text" name="priceFrom" id="from" class="form-control"
+                                                   placeholder="from"
+                                                   pattern="^[0-9]+\.[0-9]+$">
                                         </div>
                                         <div class="col">
-                                            <div style="display: flex">
-                                                <label for="to" class="col">To</label>
-                                                <input type="text" name="priceTo" id="to" class="form-control"
-                                                       required pattern="^[0-9]+\.[0-9]+$">
-                                            </div>
+                                            <input type="text" name="priceTo" id="to" class="form-control"
+                                                   placeholder="to"
+                                                   pattern="^[0-9]+\.[0-9]+$">
                                         </div>
                                     </div>
                                 </div>

@@ -43,6 +43,13 @@ public class ProductValidator {
         return isValid;
     }
 
+    public static boolean isValidPrice(String price) {
+        if (price != null) {
+            return price.matches(PRICE_REGEX);
+        }
+        return false;
+    }
+
     private static boolean validateDateTime(String dateTime) {
         try {
             LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);

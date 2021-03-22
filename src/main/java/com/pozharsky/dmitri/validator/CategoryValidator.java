@@ -7,6 +7,9 @@ public class CategoryValidator {
     }
 
     public static boolean isCategoryName(String categoryName) {
-        return categoryName.matches(NAME_REGEX);
+        if (categoryName != null) {
+            return categoryName.matches(NAME_REGEX);
+        }
+        return false;
     }
 }

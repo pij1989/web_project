@@ -15,11 +15,17 @@ public class UserValidator {
     }
 
     public static boolean isEmail(String email) {
-        return email.matches(EMAIL_REGEX);
+        if (email != null) {
+            return email.matches(EMAIL_REGEX);
+        }
+        return false;
     }
 
     public static boolean isPassword(String password) {
-        return password.matches(PASSWORD_REGEX);
+        if (password != null) {
+            return password.matches(PASSWORD_REGEX);
+        }
+        return false;
     }
 
     public static boolean isValidRegistrationForm(Map<String, String> form) {
