@@ -296,7 +296,9 @@ public class ProductServiceImpl implements ProductService {
             } else {
                 products = productDao.findProductByCategoryIdAndStatusBetweenPrice(categoryId, true, priceFrom, priceTo);
             }
-
+            if (sort != null) {
+                products = sortProducts(products, sort);
+            }
             return products;
         } catch (DaoException e) {
             logger.error(e);
@@ -345,22 +347,32 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    private void sortProducts(List<Product> products, String sort) {
+    private List<Product> sortProducts(List<Product> products, String sort) {
         try {
             SortType sortType = SortType.valueOf(sort.toUpperCase());
             switch (sortType) {
                 case NEW: {
-                    products = products.stream().sorted(Comparator.comparing(Product::getCreatingTime)).collect(Collectors.toList());
+                    return products.stream()
+                            .sorted(Comparator.comparing(Product::getCreatingTime).reversed())
+                            .collect(Collectors.toList());
                 }
                 case CHEAP: {
-                    products = products.stream().sorted(Comparator.comparing(Product::getPrice)).collect(Collectors.toList());
+                    return products.stream()
+                            .sorted(Comparator.comparing(Product::getPrice))
+                            .collect(Collectors.toList());
                 }
                 case EXPENSIVE: {
-                    products = products.stream().sorted(Comparator.comparing(Product::getPrice).reversed()).collect(Collectors.toList());
+                    return products.stream()
+                            .sorted(Comparator.comparing(Product::getPrice).reversed())
+                            .collect(Collectors.toList());
+                }
+                default: {
+                    return products;
                 }
             }
         } catch (IllegalArgumentException e) {
             logger.error(e);
+            return products;
         }
     }
 

@@ -31,14 +31,16 @@ public class FilterProductCommand implements Command {
         }
         try {
             Map<String, String> filterForm = requestParameterToMap(request, PRICE_FROM, PRICE_TO, IN_STOCK);
-            String sort = request.getParameter(RequestAttribute.SORT_TYPE);
+            String sort = request.getParameter(SORT);
             HttpSession session = request.getSession();
-            logger.debug("Price from: " + filterForm.get(PRICE_FROM) + " Price to: " + filterForm.get(PRICE_TO) + " In stock: " + filterForm.get(IN_STOCK));
+            logger.debug("Price from: " + filterForm.get(PRICE_FROM) + " Price to: " + filterForm.get(PRICE_TO) +
+                    " In stock: " + filterForm.get(IN_STOCK) + " Sort: " + sort);
             ProductService productService = ProductServiceImpl.getInstance();
-            List<Product> products = productService.filterActiveProduct(categoryId, filterForm,sort);
+            List<Product> products = productService.filterActiveProduct(categoryId, filterForm, sort);
             request.setAttribute(RequestAttribute.PRODUCTS, products);
             request.setAttribute(RequestAttribute.FILTER_PRODUCT_FORM, filterForm);
             request.setAttribute(RequestAttribute.WITH_FILTER, true);
+            request.setAttribute(RequestAttribute.SORT_TYPE, sort);
             Router router = new Router(PagePath.PRODUCTS_USER);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;

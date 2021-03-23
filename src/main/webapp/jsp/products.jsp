@@ -18,15 +18,21 @@
     <c:import url="fragment/navigation.jsp"/>
     <c:choose>
         <c:when test="${not empty products}">
-
-            <c:if test="${}">
-
-            </c:if>
             <div class="py-1 mb-2" style="line-height: 1;border-bottom: 1px solid #e5e5e5;">
                 <nav class="nav d-flex justify-content-start pb-2">
                     <div class="px-2">Sorted by:</div>
                     <form id="sortForm" action="${pageContext.request.contextPath}/controller">
-                        <input type="hidden" name="command" value="get_products">
+                        <c:choose>
+                            <c:when test="${withFilter}">
+                                <input type="hidden" name="command" value="filter_product">
+                                <input type="hidden" name="priceFrom" value="${filterProductForm['priceFrom']}">
+                                <input type="hidden" name="priceTo" value="${filterProductForm['priceTo']}">
+                                <input type="hidden" name="inStock" value="${filterProductForm['inStock']}">
+                            </c:when>
+                            <c:otherwise>
+                                <input type="hidden" name="command" value="get_products">
+                            </c:otherwise>
+                        </c:choose>
                         <input type="hidden" name="categoryId" value="<c:out value="${selectedCategory}"/>">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="sort" id="sortNew" value="new"
@@ -89,7 +95,8 @@
                 </div>
 
                 <div class="col-3 px-1">
-                    <form id="filterForm" class="needs-validation <c:if test="${not empty filterProductForm}"/>" action="${pageContext.request.contextPath}/controller" novalidate>
+                    <form id="filterForm" class="needs-validation <c:if test="${not empty filterProductForm}"/>"
+                          action="${pageContext.request.contextPath}/controller" novalidate>
                         <input type="hidden" name="command" value="filter_product">
                         <input type="hidden" name="categoryId" value="<c:out value="${selectedCategory}"/>">
                         <ul class="list-group">
@@ -99,13 +106,16 @@
                                     <div class="form-row">
                                         <div class="col">
                                             <label for="from">From</label>
-                                            <input type="text" name="priceFrom" value="${filterProductForm['priceFrom']}" id="from" class="form-control"
+                                            <input type="text" name="priceFrom"
+                                                   value="${filterProductForm['priceFrom']}" id="from"
+                                                   class="form-control"
                                                    placeholder="0000.00"
                                                    pattern="^[0-9]{1,4}\.[0-9]{2}$">
                                         </div>
                                         <div class="col">
                                             <label for="to">To</label>
-                                            <input type="text" name="priceTo" value="${filterProductForm['priceTo']}" id="to" class="form-control"
+                                            <input type="text" name="priceTo" value="${filterProductForm['priceTo']}"
+                                                   id="to" class="form-control"
                                                    placeholder="0000.00"
                                                    pattern="^[0-9]{1,4}\.[0-9]{2}$">
                                         </div>
@@ -114,7 +124,8 @@
                             </li>
                             <li class="list-group-item">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" name="inStock" type="checkbox" id="inStock" value="true"
+                                    <input class="form-check-input" name="inStock" type="checkbox" id="inStock"
+                                           value="true"
                                            <c:if test="${filterProductForm['inStock']}">checked</c:if> />
                                     <label class="form-check-label" for="inStock">In stock</label>
                                 </div>
