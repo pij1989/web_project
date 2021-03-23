@@ -13,8 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+
+import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
 public class CreateProductCommand implements Command {
     private static final Logger logger = LogManager.getLogger(CreateProductCommand.class);
@@ -22,15 +23,8 @@ public class CreateProductCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         try {
-            String productName = request.getParameter(RequestParameter.PRODUCT_NAME);
-            String category = request.getParameter(RequestParameter.CATEGORY);
-            String price = request.getParameter(RequestParameter.PRICE);
-            String amount = request.getParameter(RequestParameter.AMOUNT);
-            String isActive = request.getParameter(RequestParameter.IS_ACTIVE_PRODUCT);
-            String description = request.getParameter(RequestParameter.DESCRIPTION);
-            String creatingTime = request.getParameter(RequestParameter.TIME_CREATE);
-            logger.debug("Product name: " + productName + " Category: " + category + " Price: " + price +
-                    " isActive: " + isActive + " Description: " + description + " Creating time: " + creatingTime);
+            Map<String, String> productForm = requestParameterToMap(request, PRODUCT_NAME, CATEGORY, PRICE, AMOUNT,
+                    IS_ACTIVE_PRODUCT, DESCRIPTION, TIME_CREATE);
             Part part;
             try {
                 part = request.getPart(RequestParameter.IMAGE);
@@ -39,14 +33,6 @@ public class CreateProductCommand implements Command {
                 logger.fatal("Impossible receive part of form", e);
                 throw new RuntimeException(e);
             }
-            Map<String, String> productForm = new HashMap<>();
-            productForm.put(RequestParameter.PRODUCT_NAME, productName);
-            productForm.put(RequestParameter.CATEGORY, category);
-            productForm.put(RequestParameter.PRICE, price);
-            productForm.put(RequestParameter.AMOUNT, amount);
-            productForm.put(RequestParameter.IS_ACTIVE_PRODUCT, isActive);
-            productForm.put(RequestParameter.DESCRIPTION, description);
-            productForm.put(RequestParameter.TIME_CREATE, creatingTime);
             ProductService productService = ProductServiceImpl.getInstance();
             boolean result = productService.createProduct(productForm, part);
             HttpSession session = request.getSession();

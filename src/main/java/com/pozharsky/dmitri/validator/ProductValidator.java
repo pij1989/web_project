@@ -43,6 +43,19 @@ public class ProductValidator {
         return isValid;
     }
 
+    public static boolean isValidFilterProductForm(Map<String, String> filterForm) {
+        boolean isValid = true;
+        String priceFrom = filterForm.get(RequestParameter.PRICE_FROM);
+        if (!priceFrom.matches(PRICE_REGEX) && !priceFrom.equals(EMPTY)) {
+            isValid = false;
+        }
+        String priceTo = filterForm.get(RequestParameter.PRICE_TO);
+        if (!priceTo.matches(PRICE_REGEX) && !priceTo.equals(EMPTY)) {
+            isValid = false;
+        }
+        return isValid;
+    }
+
     public static boolean isValidPrice(String price) {
         if (price != null) {
             return price.matches(PRICE_REGEX);

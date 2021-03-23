@@ -14,9 +14,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.Part;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
 public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LogManager.getLogger(ProductServiceImpl.class);
@@ -275,6 +277,36 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> filterActiveProduct(long categoryId, Map<String, String> filterForm, String sort) throws ServiceException {
+        List<Product> products = new ArrayList<>();
+        if (!ProductValidator.isValidFilterProductForm(filterForm)) {
+            return products;
+        }
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            ProductDao productDao = new ProductDao();
+            transactionManager.init(productDao);
+            String stringPriceFrom = filterForm.get(PRICE_FROM);
+            String stringPriceTo = filterForm.get(PRICE_TO);
+            BigDecimal priceFrom = definePriceFrom(categoryId, productDao, stringPriceFrom);
+            BigDecimal priceTo = definePriceTo(categoryId, productDao, stringPriceTo);
+            boolean inStock = Boolean.parseBoolean(filterForm.get(IN_STOCK));
+            if (inStock) {
+                products = productDao.findProductByCategoryIdAndStatusAndAmountGtBetweenPrice(categoryId, true, 0, priceFrom, priceTo);
+            } else {
+                products = productDao.findProductByCategoryIdAndStatusBetweenPrice(categoryId, true, priceFrom, priceTo);
+            }
+
+            return products;
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
     public List<Product> findLastAddProduct(int limit) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
@@ -311,5 +343,32 @@ public class ProductServiceImpl implements ProductService {
             logger.error(e);
             return productDao.findByCategoryAndStatusWithLimit(categoryId, true, limit, offset);
         }
+    }
+
+    private void sortProducts(List<Product> products, String sort) {
+        try {
+            SortType sortType = SortType.valueOf(sort.toUpperCase());
+            switch (sortType) {
+                case NEW: {
+                    products = products.stream().sorted(Comparator.comparing(Product::getCreatingTime)).collect(Collectors.toList());
+                }
+                case CHEAP: {
+                    products = products.stream().sorted(Comparator.comparing(Product::getPrice)).collect(Collectors.toList());
+                }
+                case EXPENSIVE: {
+                    products = products.stream().sorted(Comparator.comparing(Product::getPrice).reversed()).collect(Collectors.toList());
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            logger.error(e);
+        }
+    }
+
+    private BigDecimal definePriceFrom(long categoryId, ProductDao productDao, String stringPriceFrom) throws DaoException {
+        return stringPriceFrom.isBlank() ? productDao.minProductPriceByCategoryId(categoryId) : new BigDecimal(stringPriceFrom);
+    }
+
+    private BigDecimal definePriceTo(long categoryId, ProductDao productDao, String stringPriceTo) throws DaoException {
+        return stringPriceTo.isBlank() ? productDao.maxProductPriceByCategoryId(categoryId) : new BigDecimal(stringPriceTo);
     }
 }

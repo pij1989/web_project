@@ -5,6 +5,7 @@ import com.pozharsky.dmitri.model.entity.Product;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,10 +29,14 @@ public class ProductDao extends AbstractDao<Product> {
     private static final String FIND_PRODUCT_BY_ID_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE id = ?";
     private static final String FIND_PRODUCT_BY_NAME_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE product_name LIKE ?";
     private static final String FIND_WITH_ORDER_BY_CREATE_TIME_DESC_AND_LIMIT_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products ORDER BY time_create DESC LIMIT ?";
+    private static final String FIND_PRODUCT_BY_CATEGORY_ID_AND_STATUS_BETWEEN_PRICE_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE category_id = ? AND status = ? AND price BETWEEN ? AND ?;";
+    private static final String FIND_PRODUCT_BY_CATEGORY_ID_AND_STATUS_AND_AMOUNT_GT_BETWEEN_PRICE_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE category_id = ? AND status = ? AND amount > ? AND price BETWEEN ? AND ?;";
     private static final String COUNT_ALL_PRODUCT_SQL = "SELECT count(*) FROM products";
     private static final String COUNT_PRODUCT_BY_CATEGORY_SQL = "SELECT count(category_id) FROM products WHERE category_id = ?";
     private static final String COUNT_PRODUCT_BY_CATEGORY_AND_STATUS_SQL = "SELECT count(category_id) FROM products WHERE category_id = ? AND status = ?";
     private static final String COUNT_PRODUCT_BY_SEARCH_NAME_AND_STATUS_SQL = "SELECT count(product_name) FROM products WHERE product_name LIKE ? AND status = ?";
+    private static final String MAX_PRODUCT_PRICE_BY_CATEGORY_ID_SQL = "SELECT max(price) FROM products WHERE category_id = ?";
+    private static final String MIN_PRODUCT_PRICE_BY_CATEGORY_ID_SQL = "SELECT min(price) FROM products WHERE category_id = ?";
     private static final String INCREASE_AMOUNT_BY_ID_SQL = "UPDATE  products SET amount = amount + ? WHERE id = ?";
     private static final String DECREASE_AMOUNT_BY_ID_SQL = "UPDATE products SET amount = amount - ? WHERE id = ? AND amount >= ?";
     private static final String DELETE_PRODUCT_BY_CATEGORY_SQL = "DELETE FROM products WHERE category_id = ?";
@@ -127,6 +132,36 @@ public class ProductDao extends AbstractDao<Product> {
             throw new DaoException(e);
         }
     }
+
+    public List<Product> findProductByCategoryIdAndStatusBetweenPrice(long categoryId, boolean status, BigDecimal priceFrom, BigDecimal priceTo) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CATEGORY_ID_AND_STATUS_BETWEEN_PRICE_SQL)) {
+            preparedStatement.setLong(1, categoryId);
+            preparedStatement.setBoolean(2, status);
+            preparedStatement.setBigDecimal(3, priceFrom);
+            preparedStatement.setBigDecimal(4, priceTo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return createListProductFromResultSet(resultSet);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    public List<Product> findProductByCategoryIdAndStatusAndAmountGtBetweenPrice(long categoryId, boolean status, int amount, BigDecimal priceFrom, BigDecimal priceTo) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CATEGORY_ID_AND_STATUS_AND_AMOUNT_GT_BETWEEN_PRICE_SQL)) {
+            preparedStatement.setLong(1, categoryId);
+            preparedStatement.setBoolean(2, status);
+            preparedStatement.setInt(3, amount);
+            preparedStatement.setBigDecimal(4, priceFrom);
+            preparedStatement.setBigDecimal(5, priceTo);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return createListProductFromResultSet(resultSet);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
 
     @Override
     public Optional<Product> findById(long id) throws DaoException {
@@ -258,6 +293,30 @@ public class ProductDao extends AbstractDao<Product> {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return resultSet.getInt(1);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    public BigDecimal maxProductPriceByCategoryId(long categoryId) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(MAX_PRODUCT_PRICE_BY_CATEGORY_ID_SQL)) {
+            preparedStatement.setLong(1, categoryId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getBigDecimal(1);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    public BigDecimal minProductPriceByCategoryId(long categoryId) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(MIN_PRODUCT_PRICE_BY_CATEGORY_ID_SQL)) {
+            preparedStatement.setLong(1, categoryId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getBigDecimal(1);
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);

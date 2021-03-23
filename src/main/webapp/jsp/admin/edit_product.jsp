@@ -70,7 +70,7 @@
                             <input type="text" name="price" value="<c:out value="${product.price}"/>"
                                    class="form-control" id="price"
                                    placeholder="<fmt:message key="product.price.placeholder"/>" required
-                                   pattern="^[0-9]+\.[0-9]+$"
+                                   pattern="^[0-9]{1,4}\.[0-9]{2}$"
                             />
                         </div>
 

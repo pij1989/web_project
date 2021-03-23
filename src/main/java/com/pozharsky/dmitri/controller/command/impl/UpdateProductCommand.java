@@ -1,6 +1,9 @@
 package com.pozharsky.dmitri.controller.command.impl;
 
-import com.pozharsky.dmitri.controller.command.*;
+import com.pozharsky.dmitri.controller.command.Command;
+import com.pozharsky.dmitri.controller.command.PagePath;
+import com.pozharsky.dmitri.controller.command.Router;
+import com.pozharsky.dmitri.controller.command.SessionAttribute;
 import com.pozharsky.dmitri.exception.CommandException;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.entity.Product;
@@ -14,9 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
 public class UpdateProductCommand implements Command {
     private static final Logger logger = LogManager.getLogger(UpdateProductCommand.class);
@@ -24,30 +28,17 @@ public class UpdateProductCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         try {
-            String productId = request.getParameter(RequestParameter.PRODUCT_ID);
-            String productName = request.getParameter(RequestParameter.PRODUCT_NAME);
-            String category = request.getParameter(RequestParameter.CATEGORY);
-            String price = request.getParameter(RequestParameter.PRICE);
-            String amount = request.getParameter(RequestParameter.AMOUNT);
-            String isActive = request.getParameter(RequestParameter.IS_ACTIVE_PRODUCT);
-            String description = request.getParameter(RequestParameter.DESCRIPTION);
-            String creatingTime = request.getParameter(RequestParameter.TIME_CREATE);
+            String productId = request.getParameter(PRODUCT_ID);
+            Map<String, String> productForm = requestParameterToMap(request, PRODUCT_NAME, CATEGORY, PRICE, AMOUNT,
+                    IS_ACTIVE_PRODUCT, DESCRIPTION, TIME_CREATE);
             HttpSession session = request.getSession();
             Part part;
             try {
-                part = request.getPart(RequestParameter.IMAGE);
+                part = request.getPart(IMAGE);
             } catch (IOException | ServletException e) {
                 logger.fatal("Impossible receive part of form", e);
                 throw new RuntimeException(e);
             }
-            Map<String, String> productForm = new HashMap<>();
-            productForm.put(RequestParameter.PRODUCT_NAME, productName);
-            productForm.put(RequestParameter.CATEGORY, category);
-            productForm.put(RequestParameter.PRICE, price);
-            productForm.put(RequestParameter.AMOUNT, amount);
-            productForm.put(RequestParameter.IS_ACTIVE_PRODUCT, isActive);
-            productForm.put(RequestParameter.DESCRIPTION, description);
-            productForm.put(RequestParameter.TIME_CREATE, creatingTime);
             ProductService productService = ProductServiceImpl.getInstance();
             Optional<Product> optionalProduct = productService.updateProduct(productForm, productId, part);
             if (optionalProduct.isPresent()) {

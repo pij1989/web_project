@@ -11,6 +11,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
+
 public class ProductCreator {
     private static final Logger logger = LogManager.getLogger(ProductCreator.class);
 
@@ -19,15 +21,15 @@ public class ProductCreator {
 
     public static Product createProduct(Map<String, String> productForm, Part part) {
         try {
-            String productName = productForm.get(RequestParameter.PRODUCT_NAME);
-            String price = productForm.get(RequestParameter.PRICE);
-            String amount = productForm.get(RequestParameter.AMOUNT);
-            String isActive = productForm.get(RequestParameter.IS_ACTIVE_PRODUCT);
-            String description = productForm.get(RequestParameter.DESCRIPTION);
-            String creatingTime = productForm.get(RequestParameter.TIME_CREATE);
-            String category = productForm.get(RequestParameter.CATEGORY);
+            String productName = productForm.get(PRODUCT_NAME);
+            String price = productForm.get(PRICE);
+            String amount = productForm.get(AMOUNT);
+            String isActive = productForm.get(IS_ACTIVE_PRODUCT);
+            String description = productForm.get(DESCRIPTION);
+            String creatingTime = productForm.get(TIME_CREATE);
+            String category = productForm.get(CATEGORY);
             byte[] image = part.getInputStream().readAllBytes();
-            BigDecimal productPrice = BigDecimal.valueOf(Double.parseDouble(price));
+            BigDecimal productPrice = new BigDecimal(price);
             int productAmount = Integer.parseInt(amount);
             boolean status = Boolean.parseBoolean(isActive);
             LocalDateTime productCreatingTime = LocalDateTime.parse(creatingTime);
