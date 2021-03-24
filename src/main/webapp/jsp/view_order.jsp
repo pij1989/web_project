@@ -109,7 +109,8 @@
                 <tr>
                     <td colspan="4">
                         <div class="d-flex justify-content-end">
-                            <form>
+                            <form action="${pageContext.request.contextPath}/controller">
+                                <input type="hidden" name="command" value="arrange_order">
                                 <button type="submit" id="submit" class="btn btn-primary">Arrange order</button>
                             </form>
                         </div>

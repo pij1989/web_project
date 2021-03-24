@@ -151,7 +151,7 @@
     </c:choose>
 
     <c:if test="${not empty products}">
-        <c:if test="${!withFilter}">
+        <c:if test="${not withFilter}">
             <form class="form-inline" action="${pageContext.request.contextPath}/controller"
                   id="paginationForm">
                 <input type="hidden" name="command" value="get_products">
@@ -166,6 +166,6 @@
 </main>
 <c:import url="fragment/footer.jsp"/>
 <c:import url="fragment/bootstrap_script.jsp"/>
-<script src="${pageContext.request.contextPath}/js/admin/products.js"></script>
+<script src="${pageContext.request.contextPath}/js/products.js"></script>
 </body>
 </html>

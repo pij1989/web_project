@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchProductCommand implements Command {
@@ -19,24 +20,24 @@ public class SearchProductCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
-        String page = request.getParameter(RequestParameter.PAGE);
-        String perPage = request.getParameter(RequestParameter.PER_PAGE);
         try {
             String searchProduct = request.getParameter(RequestParameter.SEARCH_PRODUCT);
             HttpSession session = request.getSession();
             ProductService productService = ProductServiceImpl.getInstance();
-            List<Product> products = productService.searchProduct(searchProduct);
             User.RoleType role = (User.RoleType) session.getAttribute(SessionAttribute.ROLE);
             Router router = null;
+            List<Product> products = new ArrayList<>();
             if (role == User.RoleType.ADMIN) {
-                router = new Router(PagePath.RESULT_SEARCH_PRODUCTS, Router.Type.REDIRECT);
+                products = productService.searchProduct(searchProduct);
+                router = new Router(PagePath.RESULT_SEARCH_PRODUCTS_ADMIN);
             } else {
                 if (role == User.RoleType.USER) {
-                    router = new Router(PagePath.PRODUCTS_USER);
+                    products = productService.searchActiveProduct(searchProduct);
+                    router = new Router(PagePath.RESULT_SEARCH_PRODUCTS_USER);
                 }
             }
-            session.setAttribute(SessionAttribute.PRODUCTS, products);
-            session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+            request.setAttribute(RequestAttribute.SEARCH_PRODUCT, searchProduct);
+            request.setAttribute(RequestAttribute.PRODUCTS, products);
             return router;
         } catch (ServiceException e) {
             logger.error(e);

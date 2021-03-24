@@ -28,6 +28,7 @@ public class ProductDao extends AbstractDao<Product> {
     private static final String FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_ORDER_BY_CREATE_TIME_DESC_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE category_id = ? AND status = ? ORDER BY time_create DESC LIMIT ? OFFSET ?;";
     private static final String FIND_PRODUCT_BY_ID_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE id = ?";
     private static final String FIND_PRODUCT_BY_NAME_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE product_name LIKE ?";
+    private static final String FIND_PRODUCT_BY_NAME_AND_STATUS_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE product_name LIKE ? AND status = ?";
     private static final String FIND_WITH_ORDER_BY_CREATE_TIME_DESC_AND_LIMIT_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products ORDER BY time_create DESC LIMIT ?";
     private static final String FIND_PRODUCT_BY_CATEGORY_ID_AND_STATUS_BETWEEN_PRICE_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE category_id = ? AND status = ? AND price BETWEEN ? AND ?;";
     private static final String FIND_PRODUCT_BY_CATEGORY_ID_AND_STATUS_AND_AMOUNT_GT_BETWEEN_PRICE_SQL = "SELECT id, product_name, price, amount, description, status, image, time_create, category_id FROM products WHERE category_id = ? AND status = ? AND amount > ? AND price BETWEEN ? AND ?;";
@@ -114,6 +115,18 @@ public class ProductDao extends AbstractDao<Product> {
     public List<Product> findByProductName(String productName) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_NAME_SQL)) {
             preparedStatement.setString(1, PERCENT + productName + PERCENT);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return createListProductFromResultSet(resultSet);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    public List<Product> findByProductNameAndStatus(String productName,boolean status) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_NAME_AND_STATUS_SQL)) {
+            preparedStatement.setString(1, PERCENT + productName + PERCENT);
+            preparedStatement.setBoolean(2, status);
             ResultSet resultSet = preparedStatement.executeQuery();
             return createListProductFromResultSet(resultSet);
         } catch (SQLException e) {

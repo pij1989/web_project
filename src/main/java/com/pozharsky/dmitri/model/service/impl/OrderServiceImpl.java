@@ -237,6 +237,22 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    @Override
+    public boolean changeOrderStatus(long orderId, Order.StatusType orderStatusType) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            OrderDao orderDao = new OrderDao();
+            transactionManager.initTransaction(orderDao);
+            return orderDao.updateOrderStatusById(orderId, orderStatusType);
+        } catch (DaoException e) {
+            logger.error(e);
+            transactionManager.rollback();
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.endTransaction();
+        }
+    }
+
     private BigDecimal calculateCost(int amount, BigDecimal price) {
         return price.multiply(new BigDecimal(amount));
     }

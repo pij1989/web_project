@@ -22,4 +22,6 @@ public interface OrderService {
     Optional<OrderProduct> deleteProductFromOrder(String orderProductId, Order order) throws ServiceException;
 
     Optional<OrderProduct> changeAmountProductInOrder(String orderProductId, String amountProduct, Order order) throws ServiceException;
+
+    boolean changeOrderStatus(long orderId, Order.StatusType orderStatusType) throws ServiceException;
 }

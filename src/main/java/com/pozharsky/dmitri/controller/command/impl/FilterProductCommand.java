@@ -33,8 +33,6 @@ public class FilterProductCommand implements Command {
             Map<String, String> filterForm = requestParameterToMap(request, PRICE_FROM, PRICE_TO, IN_STOCK);
             String sort = request.getParameter(SORT);
             HttpSession session = request.getSession();
-            logger.debug("Price from: " + filterForm.get(PRICE_FROM) + " Price to: " + filterForm.get(PRICE_TO) +
-                    " In stock: " + filterForm.get(IN_STOCK) + " Sort: " + sort);
             ProductService productService = ProductServiceImpl.getInstance();
             List<Product> products = productService.filterActiveProduct(categoryId, filterForm, sort);
             request.setAttribute(RequestAttribute.PRODUCTS, products);

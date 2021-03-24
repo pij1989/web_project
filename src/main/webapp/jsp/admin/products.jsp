@@ -111,6 +111,6 @@
     </div>
 </div>
 <c:import url="../fragment/bootstrap_script.jsp"/>
-<script src="${pageContext.request.contextPath}/js/admin/products.js"></script>
+<script src="${pageContext.request.contextPath}/js/products.js"></script>
 </body>
 </html>

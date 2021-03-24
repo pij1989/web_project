@@ -44,6 +44,8 @@ public class RoleControlSecurityFilter implements Filter {
         getCommandMap.put(CommandType.VIEW_PRODUCT, List.of(User.RoleType.USER));
         getCommandMap.put(CommandType.FILTER_PRODUCT, List.of(User.RoleType.USER));
         getCommandMap.put(CommandType.VIEW_ORDER, List.of(User.RoleType.USER));
+        getCommandMap.put(CommandType.ARRANGE_ORDER, List.of(User.RoleType.USER));
+        getCommandMap.put(CommandType.CANCEL_ARRANGE_ORDER, List.of(User.RoleType.USER));
         getCommandMap.put(CommandType.GET_USERS, List.of(User.RoleType.ADMIN));
         getCommandMap.put(CommandType.GET_CATEGORIES, List.of(User.RoleType.ADMIN));
         getCommandMap.put(CommandType.LOGOUT, List.of(User.RoleType.ADMIN, User.RoleType.USER));

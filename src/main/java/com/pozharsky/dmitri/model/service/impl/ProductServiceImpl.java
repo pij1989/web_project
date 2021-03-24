@@ -277,6 +277,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> searchActiveProduct(String searchProduct) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            ProductDao productDao = new ProductDao();
+            transactionManager.init(productDao);
+            return productDao.findByProductNameAndStatus(searchProduct, true);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
     public List<Product> filterActiveProduct(long categoryId, Map<String, String> filterForm, String sort) throws ServiceException {
         List<Product> products = new ArrayList<>();
         if (!ProductValidator.isValidFilterProductForm(filterForm)) {

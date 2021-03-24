@@ -8,6 +8,7 @@ public class RequestAttribute {
     public static final String WITH_FILTER = "withFilter";
     public static final String FILTER_PRODUCT_FORM = "filterProductForm";
     public static final String PRODUCTS = "products";
+    public static final String SEARCH_PRODUCT = "searchProduct";
 
     private RequestAttribute() {
     }

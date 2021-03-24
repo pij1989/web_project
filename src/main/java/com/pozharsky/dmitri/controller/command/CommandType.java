@@ -30,6 +30,8 @@ public enum CommandType {
     ADD_REVIEW(new AddReviewCommand()),
     ADD_PRODUCT_TO_ORDER(new AddProductToOrder()),
     VIEW_ORDER(new ViewOrderCommand()),
+    ARRANGE_ORDER(new ArrangeOrderCommand()),
+    CANCEL_ARRANGE_ORDER(new CancelArrangeOrderCommand()),
     TO_ADMIN_PAGE_COMMAND(new ToAdminPageCommand()),
     TO_MAIN_PAGE_COMMAND(new ToMainPageCommand()),
     TO_CREATE_PRODUCT_PAGE_COMMAND(new ToCreatProductPageCommand()),

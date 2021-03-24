@@ -18,6 +18,7 @@ public class OrderDao extends AbstractDao<Order> {
     private static final String FIND_ORDER_BY_USER_ID_STATUS_SQL = "SELECT o.id, o.time_create, o.cost, os.order_status_name, o.user_id FROM orders AS o JOIN orders_status AS os on o.order_status_id = os.id WHERE o.user_id = ? AND os.order_status_name = ?;";
     private static final String INCREASE_COST_BY_ID = "UPDATE orders SET cost = cost + ? WHERE id = ?";
     private static final String DECREASE_COST_BY_ID = "UPDATE orders SET cost = cost - ? WHERE id = ?";
+    private static final String UPDATE_ORDER_STATUS_BY_ID = "UPDATE orders SET order_status_id = ? WHERE id = ?";
 
     public Optional<Long> create(Order order) throws DaoException {
         try (PreparedStatement orderPreparedStatement = connection.prepareStatement(CREATE_ORDER_SQL, Statement.RETURN_GENERATED_KEYS);
@@ -69,6 +70,20 @@ public class OrderDao extends AbstractDao<Order> {
             preparedStatement.setBigDecimal(1, cost);
             preparedStatement.setLong(2, orderId);
             preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    public boolean updateOrderStatusById(long orderId, Order.StatusType statusType) throws DaoException {
+        try (PreparedStatement orderPreparedStatement = connection.prepareStatement(UPDATE_ORDER_STATUS_BY_ID);
+             PreparedStatement statusPreparedStatement = connection.prepareStatement(FIND_STATUS_ID_BY_NAME_SQL)) {
+            long orderStatusId = findStatusId(statusPreparedStatement, statusType);
+            orderPreparedStatement.setLong(1, orderStatusId);
+            orderPreparedStatement.setLong(2, orderId);
+            int resultUpdate = orderPreparedStatement.executeUpdate();
+            return resultUpdate > 0;
         } catch (SQLException e) {
             logger.error(e);
             throw new DaoException(e);

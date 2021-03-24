@@ -23,7 +23,7 @@
                     <input type="hidden" name="command" value="search_product">
                     <input class="form-control mr-sm-2" type="search" name="searchProduct"
                            placeholder="<fmt:message key="products.search.placeholder"/>"
-                           aria-label="Search" size="30">
+                           aria-label="Search" size="30" value="<c:out value="${searchProduct}"/>">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><span><i
                             class="fas fa-search"></i></span> <fmt:message key="header.button.search"/>
                     </button>
@@ -82,6 +82,6 @@
     </div>
 </div>
 <c:import url="../fragment/bootstrap_script.jsp"/>
-<script src="${pageContext.request.contextPath}/js/admin/products.js"></script>
+<script src="${pageContext.request.contextPath}/js/products.js"></script>
 </body>
 </html>

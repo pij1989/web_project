@@ -16,13 +16,18 @@
         <form class="form-inline py-2" action="${pageContext.request.contextPath}/controller">
             <input type="hidden" name="command" value="search_product">
             <input class="form-control mr-2" id="searchField" type="search" placeholder="Search"
-                   aria-label="Search" name="searchProduct">
+                   aria-label="Search" name="searchProduct" value="<c:out value="${searchProduct}"/>">
             <button class="btn btn-outline-primary my-2 mr-2" type="submit"><span><i
                     class="fas fa-search"></i></span> <fmt:message key="header.button.search"/>
             </button>
         </form>
         <form class="form-inline py-2" action="${pageContext.request.contextPath}/controller">
-            <input type="hidden" name="command" value="view_order"/>
+            <c:if test="${empty order or order.statusType eq 'NEW'}">
+                <input type="hidden" name="command" value="view_order"/>
+            </c:if>
+            <c:if test="${order.statusType eq 'PROCESSING'}">
+                <input type="hidden" name="command" value="arrange_order">
+            </c:if>
             <button class="btn btn-outline-primary my-2" type="submit">
                 <ctg:cart/>
             </button>
