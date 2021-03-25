@@ -2,14 +2,14 @@ package com.pozharsky.dmitri.model.service.impl;
 
 import com.pozharsky.dmitri.exception.DaoException;
 import com.pozharsky.dmitri.exception.ServiceException;
-import com.pozharsky.dmitri.model.dao.OrderDao;
-import com.pozharsky.dmitri.model.dao.OrderProductDao;
-import com.pozharsky.dmitri.model.dao.ProductDao;
-import com.pozharsky.dmitri.model.dao.TransactionManager;
+import com.pozharsky.dmitri.model.creator.DeliveryCreator;
+import com.pozharsky.dmitri.model.dao.*;
+import com.pozharsky.dmitri.model.entity.Delivery;
 import com.pozharsky.dmitri.model.entity.Order;
 import com.pozharsky.dmitri.model.entity.OrderProduct;
 import com.pozharsky.dmitri.model.entity.Product;
 import com.pozharsky.dmitri.model.service.OrderService;
+import com.pozharsky.dmitri.validator.DeliveryValidator;
 import com.pozharsky.dmitri.validator.OrderValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class OrderServiceImpl implements OrderService {
@@ -238,12 +239,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean changeOrderStatus(long orderId, Order.StatusType orderStatusType) throws ServiceException {
+    public boolean confirmOrder(long orderId, Map<String, String> deliveryForm, Order.StatusType orderStatusType) throws ServiceException {
+        if (!DeliveryValidator.isValidDeliveryForm(deliveryForm)) {
+            return false;
+        }
         TransactionManager transactionManager = new TransactionManager();
         try {
+            boolean isConfirm = false;
             OrderDao orderDao = new OrderDao();
-            transactionManager.initTransaction(orderDao);
-            return orderDao.updateOrderStatusById(orderId, orderStatusType);
+            DeliveryDao deliveryDao = new DeliveryDao();
+            transactionManager.initTransaction(orderDao, deliveryDao);
+            Delivery delivery = DeliveryCreator.createDelivery(deliveryForm, orderId);
+            if (deliveryDao.create(delivery)) {
+                isConfirm = orderDao.updateOrderStatusById(orderId, orderStatusType);
+            }
+            transactionManager.commit();
+            return isConfirm;
         } catch (DaoException e) {
             logger.error(e);
             transactionManager.rollback();

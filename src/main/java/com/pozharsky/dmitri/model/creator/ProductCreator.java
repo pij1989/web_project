@@ -1,6 +1,5 @@
 package com.pozharsky.dmitri.model.creator;
 
-import com.pozharsky.dmitri.controller.command.RequestParameter;
 import com.pozharsky.dmitri.model.entity.Product;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

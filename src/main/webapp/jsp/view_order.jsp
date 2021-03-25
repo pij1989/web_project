@@ -88,7 +88,7 @@
                                     </div>
                                     <input type="text" class="form-control" maxlength="5" name="amountProduct"
                                            value="<c:out value="${orderProduct.amount}"/>" required
-                                           pattern="^[0-9]{1,5}$"/>
+                                           pattern="^(?!0)[0-9]{1,5}$"/>
                                     <div class="input-group-append">
                                         <span class="input-group-text"><i class="fas fa-plus"></i></span>
                                     </div>

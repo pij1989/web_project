@@ -6,6 +6,7 @@ import com.pozharsky.dmitri.model.entity.OrderProduct;
 import com.pozharsky.dmitri.model.entity.Product;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface OrderService {
@@ -23,5 +24,5 @@ public interface OrderService {
 
     Optional<OrderProduct> changeAmountProductInOrder(String orderProductId, String amountProduct, Order order) throws ServiceException;
 
-    boolean changeOrderStatus(long orderId, Order.StatusType orderStatusType) throws ServiceException;
+    boolean confirmOrder(long orderId, Map<String, String> deliveryForm, Order.StatusType orderStatusType) throws ServiceException;
 }

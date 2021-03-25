@@ -1,7 +1,7 @@
 package com.pozharsky.dmitri.validator;
 
 public class PageValidator {
-    private static final String PAGE_REGEX = "^[0-9]{1,5}$";
+    private static final String PAGE_REGEX = "^(?!0)[0-9]{1,5}$";
 
     private PageValidator() {
     }

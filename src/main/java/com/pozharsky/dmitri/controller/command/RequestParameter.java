@@ -38,6 +38,10 @@ public class RequestParameter {
     public static final String PRICE_TO = "priceTo";
     public static final String IN_STOCK = "inStock";
     public static final String NOT_AVAILABLE = "notAvailable";
+    public static final String CITY = "city";
+    public static final String STREET = "street";
+    public static final String HOME_NUMBER  ="homeNumber";
+    public static final String PHONE = "phone";
 
     private RequestParameter() {
     }

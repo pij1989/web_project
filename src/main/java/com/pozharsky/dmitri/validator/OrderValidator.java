@@ -1,7 +1,7 @@
 package com.pozharsky.dmitri.validator;
 
 public class OrderValidator {
-    private static final String AMOUNT_REGEX = "^[0-9]{1,5}$";
+    private static final String AMOUNT_REGEX = "^(?!0)[0-9]{1,5}$";
 
     private OrderValidator() {
     }

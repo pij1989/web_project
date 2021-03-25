@@ -20,48 +20,56 @@
     <div class="row" style="line-height: 1;border-bottom: 1px solid #e5e5e5;">
         <div class="col-6">
             <h4 class="mb-3">Delivery</h4>
-            <form>
+            <form id="deliveryForm" class="needs-validation <c:if test="${not empty deliveryForm}">was-validated</c:if>" action="${pageContext.request.contextPath}/controller" method="post" novalidate>
+                <input type="hidden" name="command" value="confirm_order">
                 <div class="row">
                     <div class="col-6 mb-3">
                         <label for="firstName">First name</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                        <input type="text" class="form-control" id="firstName" name="firstName" value="<c:out value="${deliveryForm['firstName']}"/>"
+                               placeholder="Enter first name" required pattern="[a-zA-Zа-яА-Я]+">
                     </div>
                     <div class="col-6 mb-3">
                         <label for="lastName">Last name</label>
-                        <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                        <input type="text" class="form-control" id="lastName" name="lastName" value="<c:out value="${deliveryForm['lastName']}"/>"
+                               placeholder="Enter last name" required pattern="[a-zA-Zа-яА-Я]+">
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label for="telephone">Telephone</label>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                    <div class="row">
+                        <div class="col-4 mb-3">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" id="city" name="city" value="<c:out value="${deliveryForm['city']}"/>"
+                                   placeholder="Minsk" required pattern="^[A-ZА-Я](?:(-?|\s?)[a-zA-Zа-яА-Я]+)*$">
                         </div>
-                        <input type="text" class="form-control" id="telephone" placeholder="+375 (29) 0000000" required>
+                        <div class="col-4 mb-3">
+                            <label for="street">Street</label>
+                            <input type="text" class="form-control" id="street" name="street" value="<c:out value="${deliveryForm['street']}"/>"
+                                   placeholder="Kalinovskogo" required pattern="^([0-9]+|[A-ZА-Я])(?:(-?|\s?)[a-zA-Zа-яА-Я0-9]+)*$">
+                        </div>
+                        <div class="col-4 mb-3">
+                            <label for="homeNumber">Home number</label>
+                            <input type="text" class="form-control" id="homeNumber" name="homeNumber" value="<c:out value="${deliveryForm['homeNumber']}"/>"
+                                   placeholder="45" required pattern="^(?!0)[0-9]{1,3}(\/(?!0)[0-9]){0,1}$">
+                        </div>
                     </div>
-                </div>
 
-                <div class="d-block my-3">
-                    <div class="custom-control custom-radio">
-                        <input id="courier" name="delivery" value="courier" type="radio" class="custom-control-input"
-                               checked required>
-                        <label class="custom-control-label" for="courier">Courier - 6 Br</label>
-                    </div>
-                    <div class="custom-control custom-radio">
-                        <input id="self" name="delivery" value="self-delivery" type="radio" class="custom-control-input"
-                               required>
-                        <label class="custom-control-label" for="self">Self-delivery - 0 Br</label>
+                    <div class="mb-3">
+                        <label for="phone">Telephone</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="phone" name="phone" value="<c:out value="${deliveryForm['phone']}"/>"
+                                   placeholder="+375(00)0000000" required
+                                   pattern="^[+]{1}([375]){3}[(]{1}[0-9]{2}[)]{1}[0-9]{7}$">
+                        </div>
+                        <small id="phoneHelp" class="form-text text-muted">Phone number should have next format:
+                            +375(00)0000000</small>
                     </div>
                 </div>
-
-                <div class="mb-3">
-                    <label for="address">Address</label>
-                    <input type="text" class="form-control" id="address" placeholder="г. Минск, ул. Тростенецкая, 17"
-                           required>
-                </div>
+                <c:remove var="deliveryForm" scope="session"/>
             </form>
-
             <h4 class="mb-3">Payment</h4>
             <div class="mb-3">
                 You can do payment only when you will receive your order
@@ -69,8 +77,7 @@
         </div>
         <div class="col-6">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span class="text-muted">Cart</span>
-                <%--                <span class="badge badge-secondary badge-pill">3</span>--%>
+                <span>Cart</span>
             </h4>
             <ul class="list-group mb-3">
                 <c:forEach var="orderProduct" items="${orderProducts}">
@@ -100,24 +107,17 @@
         </div>
     </div>
     <div class="mt-3 mb-3 d-flex justify-content-end">
-        <span class="pr-1">Total cost with delivery:</span>
-        <strong> <ctg:formatCurrency value="${order.cost}" locale="${locale}"/></strong>
-    </div>
-    <div class="mb-3 d-flex justify-content-end">
-        <form action="${pageContext.request.contextPath}/controller" method="post">
-            <input type="hidden" name="command" value=" ">
-            <button type="submit" id="confirmOrder" class="btn btn-primary">Confirm order</button>
-        </form>
+        <button type="button" id="confirmOrder" class="btn btn-primary">Confirm order</button>
     </div>
     <div class="mb-3 d-flex justify-content-end">
         <form action="${pageContext.request.contextPath}/controller">
             <input type="hidden" name="command" value="cancel_arrange_order">
-            <button type="submit" id="cancelOrder" class="btn btn-primary">Cancel order</button>
+            <button type="submit" id="cancelOrder" class="btn btn-danger">Cancel order</button>
         </form>
     </div>
 </main>
 <c:import url="fragment/footer.jsp"/>
 <c:import url="fragment/bootstrap_script.jsp"/>
-<script src="${pageContext.request.contextPath}/js/view_order.js"></script>
+<script src="${pageContext.request.contextPath}/js/arrange_order.js"></script>
 </body>
 </html>

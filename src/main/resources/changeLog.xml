@@ -190,4 +190,21 @@
             alter table `order_products` change `amount` `amount_product` int not null;
         </sql>
     </changeSet>
+
+    <changeSet id="18" author="Dmitri">
+        <sql>
+            create table `deliveries` (
+            `id` bigint not null primary key auto_increment,
+            `first_name` varchar(128),
+            `last_name` varchar(128),
+            `city` varchar(128) not null,
+            `street` varchar(128) not null,
+            `home_number` varchar(5) null,
+            `phone_number` varchar(15) not null,
+            `order_id` bigint not null,
+            constraint `deliveries_orders_id_fk`
+            foreign key (`order_id`) references `orders` (`id`))
+            default character set = utf8;
+        </sql>
+    </changeSet>
 </databaseChangeLog>
