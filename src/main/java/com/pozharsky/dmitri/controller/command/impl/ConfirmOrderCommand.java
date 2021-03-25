@@ -31,21 +31,15 @@ public class ConfirmOrderCommand implements Command {
             HttpSession session = request.getSession();
             Order order = (Order) session.getAttribute(SessionAttribute.ORDER);
             OrderService orderService = OrderServiceImpl.getInstance();
-            Order.StatusType statusType = order.getStatusType();
-            if (statusType == Order.StatusType.PROCESSING) {
-                if (orderService.confirmOrder(order.getId(), deliveryForm, statusType)) {
-                    session.removeAttribute(SessionAttribute.ORDER);
-                    session.removeAttribute(SessionAttribute.ORDER_PRODUCTS);
-                    Router router = new Router(PagePath.MAIN);
-                    session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
-                    return router;
-                } else {
-                    session.setAttribute(SessionAttribute.DELIVERY_FORM, deliveryForm);
-                    Router router = new Router(PagePath.ARRANGE_ORDER, Router.Type.REDIRECT);
-                    session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
-                    return router;
-                }
+            if (orderService.confirmOrder(order.getId(), deliveryForm, Order.StatusType.PROCESSING)) {
+                session.removeAttribute(SessionAttribute.ORDER);
+                session.removeAttribute(SessionAttribute.ORDER_PRODUCTS);
+                session.setAttribute(SessionAttribute.CONFIRM_ORDER_SUCCESS, true);
+                Router router = new Router(PagePath.VIEW_ORDER, Router.Type.REDIRECT);
+                session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+                return router;
             } else {
+                session.setAttribute(SessionAttribute.DELIVERY_FORM, deliveryForm);
                 Router router = new Router(PagePath.ARRANGE_ORDER, Router.Type.REDIRECT);
                 session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
                 return router;

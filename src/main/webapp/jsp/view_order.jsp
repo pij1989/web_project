@@ -29,6 +29,12 @@
         </div>
         <c:remove var="deleteProductFromOrderError" scope="session"/>
     </c:if>
+    <c:if test="${confirmOrderSuccess}">
+        <div class="alert alert-success" role="alert" id="successConfirmOrder">
+            Order is confirmed and being processed
+        </div>
+        <c:remove var="confirmOrderSuccess" scope="session"/>
+    </c:if>
     <c:choose>
         <c:when test="${orderIsEmpty or empty orderProducts}">
             <div class="card bg-light m-5" style="max-width: 100%;">

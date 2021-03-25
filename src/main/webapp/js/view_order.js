@@ -1,5 +1,6 @@
 const SUCCESS_DELETE_PRODUCT_FROM_ORDER = 'successDeleteProductFromOrder';
 const ERROR_DELETE_PRODUCT_FROM_ORDER = 'errorDeleteProductFromOrder';
+const SUCCESS_CONFIRM_ORDER = 'successConfirmOrder';
 const CLICK = 'click';
 const CHANGE = 'change';
 const SUBMIT = 'submit';
@@ -50,10 +51,14 @@ forms.forEach((form) => {
 setTimeout(() => {
     let successDeleteProductFromOrder = document.getElementById(SUCCESS_DELETE_PRODUCT_FROM_ORDER);
     let errorDeleteProductFromOrder = document.getElementById(ERROR_DELETE_PRODUCT_FROM_ORDER);
+    let successConfirmOrder = document.getElementById(SUCCESS_CONFIRM_ORDER);
     if (successDeleteProductFromOrder != null) {
         successDeleteProductFromOrder.hidden = true;
     }
     if (errorDeleteProductFromOrder != null) {
         errorDeleteProductFromOrder.hidden = true;
+    }
+    if (successConfirmOrder != null) {
+        successConfirmOrder.hidden = true;
     }
 }, 2000);
