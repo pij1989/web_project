@@ -17,24 +17,32 @@
 <c:import url="fragment/header.jsp"/>
 <main role="main" class="container" style="min-height: calc(100vh - 112px)">
     <c:import url="fragment/navigation.jsp"/>
-    <c:if test="${deleteProductFromOrderSuccess}">
-        <div class="alert alert-success" role="alert" id="successDeleteProductFromOrder">
-            Product is delete from order
-        </div>
-        <c:remove var="deleteProductFromOrderSuccess" scope="session"/>
-    </c:if>
-    <c:if test="${deleteProductFromOrderError}">
-        <div class="alert alert-danger" role="alert" id="errorDeleteProductFromOrder">
-            Error is occurred
-        </div>
-        <c:remove var="deleteProductFromOrderError" scope="session"/>
-    </c:if>
-    <c:if test="${confirmOrderSuccess}">
-        <div class="alert alert-success" role="alert" id="successConfirmOrder">
-            Order is confirmed and being processed
-        </div>
-        <c:remove var="confirmOrderSuccess" scope="session"/>
-    </c:if>
+    <c:choose>
+        <c:when test="${deleteProductFromOrderSuccess}">
+            <div class="alert alert-success" role="alert" id="successDeleteProductFromOrder">
+                Product is delete from order
+            </div>
+            <c:remove var="deleteProductFromOrderSuccess" scope="session"/>
+        </c:when>
+        <c:when test="${deleteProductFromOrderError}">
+            <div class="alert alert-danger" role="alert" id="errorDeleteProductFromOrder">
+                Error is occurred
+            </div>
+            <c:remove var="deleteProductFromOrderError" scope="session"/>
+        </c:when>
+        <c:when test="${confirmOrderSuccess}">
+            <div class="alert alert-success" role="alert" id="successConfirmOrder">
+                Order is confirmed and being processed
+            </div>
+            <c:remove var="confirmOrderSuccess" scope="session"/>
+        </c:when>
+        <c:when test="${confirmOrderError}">
+            <div class="alert alert-danger" role="alert" id="errorConfirmOrder">
+                Error is occurred
+            </div>
+            <c:remove var="confirmOrderError" scope="session"/>
+        </c:when>
+    </c:choose>
     <c:choose>
         <c:when test="${orderIsEmpty or empty orderProducts}">
             <div class="card bg-light m-5" style="max-width: 100%;">

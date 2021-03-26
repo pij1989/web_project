@@ -1,6 +1,7 @@
 const SUCCESS_DELETE_PRODUCT_FROM_ORDER = 'successDeleteProductFromOrder';
 const ERROR_DELETE_PRODUCT_FROM_ORDER = 'errorDeleteProductFromOrder';
 const SUCCESS_CONFIRM_ORDER = 'successConfirmOrder';
+const ERROR_CONFIRM_ORDER = 'errorConfirmOrder';
 const CLICK = 'click';
 const CHANGE = 'change';
 const SUBMIT = 'submit';
@@ -52,6 +53,7 @@ setTimeout(() => {
     let successDeleteProductFromOrder = document.getElementById(SUCCESS_DELETE_PRODUCT_FROM_ORDER);
     let errorDeleteProductFromOrder = document.getElementById(ERROR_DELETE_PRODUCT_FROM_ORDER);
     let successConfirmOrder = document.getElementById(SUCCESS_CONFIRM_ORDER);
+    let errorConfirmOrder = document.getElementById(ERROR_CONFIRM_ORDER);
     if (successDeleteProductFromOrder != null) {
         successDeleteProductFromOrder.hidden = true;
     }
@@ -60,5 +62,8 @@ setTimeout(() => {
     }
     if (successConfirmOrder != null) {
         successConfirmOrder.hidden = true;
+    }
+    if (errorConfirmOrder != null) {
+        errorConfirmOrder.hidden = true;
     }
 }, 2000);

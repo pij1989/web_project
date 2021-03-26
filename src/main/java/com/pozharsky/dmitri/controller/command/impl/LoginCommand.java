@@ -7,9 +7,11 @@ import com.pozharsky.dmitri.model.entity.*;
 import com.pozharsky.dmitri.model.error.ApplicationError;
 import com.pozharsky.dmitri.model.error.ErrorType;
 import com.pozharsky.dmitri.model.service.CategoryService;
+import com.pozharsky.dmitri.model.service.OrderService;
 import com.pozharsky.dmitri.model.service.ProductService;
 import com.pozharsky.dmitri.model.service.UserService;
 import com.pozharsky.dmitri.model.service.impl.CategoryServiceImpl;
+import com.pozharsky.dmitri.model.service.impl.OrderServiceImpl;
 import com.pozharsky.dmitri.model.service.impl.ProductServiceImpl;
 import com.pozharsky.dmitri.model.service.impl.UserServiceImpl;
 import org.apache.logging.log4j.LogManager;
@@ -49,8 +51,16 @@ public class LoginCommand implements Command {
                     if (roleType == User.RoleType.USER) {
                         ProductService productService = ProductServiceImpl.getInstance();
                         CategoryService categoryService = CategoryServiceImpl.getInstance();
-                        List<Product> products = productService.findLastAddProduct(LIMIT);
+                        OrderService orderService = OrderServiceImpl.getInstance();
+                        List<Product> products = productService.findLastAddActiveProduct(LIMIT);
                         List<Category> categories = categoryService.findAllCategory();
+                        Optional<Order> optionalOrder = orderService.findNewOrder(user.getId());
+                        if (optionalOrder.isPresent()) {
+                            Order order = optionalOrder.get();
+                            List<OrderProduct> orderProducts = orderService.findProductInNewOrder(order.getId());
+                            session.setAttribute(SessionAttribute.ORDER, order);
+                            session.setAttribute(SessionAttribute.ORDER_PRODUCTS, orderProducts);
+                        }
                         session.setAttribute(SessionAttribute.LAST_PRODUCTS, products);
                         session.setAttribute(SessionAttribute.CATEGORIES, categories);
                         Router router = new Router(PagePath.MAIN, Router.Type.REDIRECT);

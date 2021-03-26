@@ -23,7 +23,15 @@
                     <img src="data:image/jpg;base64,<ctg:encodeBytes bytes="${product.image}"/>"
                          class="card-img-top" alt=""/>
                     <div class="card-body">
-                        <h5 class="card-title"><c:out value="${product.name}"/></h5>
+                        <form action="${pageContext.request.contextPath}/controller">
+                            <input type="hidden" name="command" value="view_product">
+                            <input type="hidden" name="productId" value="<c:out value="${product.id}"/>">
+                            <button type="submit" class="btn btn-link"
+                                    style="padding-left: 0;padding-right: 0">
+                                <h5 class="card-title"><c:out value="${product.name}"/></h5>
+                            </button>
+                        </form>
+<%--                        <h5 class="card-title"><c:out value="${product.name}"/></h5>--%>
                         <p class="card-text"><c:out value="${product.description}"/></p>
                         <h5 class="card-title"><ctg:formatCurrency value="${product.price}"
                                                                    locale="${locale}"/></h5>

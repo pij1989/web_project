@@ -30,20 +30,27 @@ public class ConfirmOrderCommand implements Command {
                     " Home number: " + deliveryForm.get(HOME_NUMBER) + " Phone: " + deliveryForm.get(PHONE));
             HttpSession session = request.getSession();
             Order order = (Order) session.getAttribute(SessionAttribute.ORDER);
+            Order.StatusType statusType = order.getStatusType();
             OrderService orderService = OrderServiceImpl.getInstance();
-            if (orderService.confirmOrder(order.getId(), deliveryForm, Order.StatusType.PROCESSING)) {
-                session.removeAttribute(SessionAttribute.ORDER);
-                session.removeAttribute(SessionAttribute.ORDER_PRODUCTS);
-                session.setAttribute(SessionAttribute.CONFIRM_ORDER_SUCCESS, true);
-                Router router = new Router(PagePath.VIEW_ORDER, Router.Type.REDIRECT);
-                session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
-                return router;
+            Router router;
+            if (statusType == Order.StatusType.PROCESSING) {
+                if (orderService.confirmOrder(order.getId(), deliveryForm, Order.StatusType.PROCESSING)) {
+                    session.removeAttribute(SessionAttribute.ORDER);
+                    session.removeAttribute(SessionAttribute.ORDER_PRODUCTS);
+                    session.setAttribute(SessionAttribute.CONFIRM_ORDER_SUCCESS, true);
+                    router = new Router(PagePath.VIEW_ORDER, Router.Type.REDIRECT);
+                } else {
+                    session.setAttribute(SessionAttribute.DELIVERY_FORM, deliveryForm);
+                    session.setAttribute(SessionAttribute.CONFIRM_ORDER_ERROR, true);
+                    router = new Router(PagePath.ARRANGE_ORDER, Router.Type.REDIRECT);
+                }
             } else {
-                session.setAttribute(SessionAttribute.DELIVERY_FORM, deliveryForm);
-                Router router = new Router(PagePath.ARRANGE_ORDER, Router.Type.REDIRECT);
-                session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
-                return router;
+                session.setAttribute(SessionAttribute.CONFIRM_ORDER_ERROR, true);
+                order.setStatusType(Order.StatusType.NEW);
+                router = new Router(PagePath.VIEW_ORDER, Router.Type.REDIRECT);
             }
+            session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
+            return router;
         } catch (ServiceException e) {
             logger.error(e);
             throw new CommandException(e);

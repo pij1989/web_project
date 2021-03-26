@@ -67,13 +67,19 @@
                                 <fmt:message key="header.button.sign_in"/>
                             </button>
                         </form>
+                        <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller">
+                            <input type="hidden" name="command" value="to_register_page_command">
+                            <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
+                                <fmt:message key="header.button.sign_up"/>
+                            </button>
+                        </form>
                     </c:when>
                 </c:choose>
-                <c:if test="${role eq 'GUEST' or role eq 'USER'}">
+                <c:if test="${role eq 'USER'}">
                     <form class="form-inline my-2 my-lg-0" action="${pageContext.request.contextPath}/controller">
-                        <input type="hidden" name="command" value="to_register_page_command">
+                        <input type="hidden" name="command" value="get_orders">
                         <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
-                            <fmt:message key="header.button.sign_up"/>
+                            <fmt:message key="header.button.orders"/>
                         </button>
                     </form>
                 </c:if>

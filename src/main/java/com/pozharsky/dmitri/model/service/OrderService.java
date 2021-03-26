@@ -16,6 +16,8 @@ public interface OrderService {
 
     Optional<Order> findNewOrder(long userId) throws ServiceException;
 
+    List<Order> findAllOrdersByUser(long userId) throws ServiceException;
+
     boolean addProductToOrder(String amountProduct, Product product, Order order) throws ServiceException;
 
     List<OrderProduct> findProductInNewOrder(long orderId) throws ServiceException;
@@ -25,4 +27,6 @@ public interface OrderService {
     Optional<OrderProduct> changeAmountProductInOrder(String orderProductId, String amountProduct, Order order) throws ServiceException;
 
     boolean confirmOrder(long orderId, Map<String, String> deliveryForm, Order.StatusType orderStatusType) throws ServiceException;
+
+    boolean deleteOrder(long orderId) throws ServiceException;
 }

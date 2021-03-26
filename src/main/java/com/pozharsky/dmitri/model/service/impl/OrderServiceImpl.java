@@ -105,6 +105,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> findAllOrdersByUser(long userId) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            OrderDao orderDao = new OrderDao();
+            transactionManager.init(orderDao);
+            return orderDao.findByUserId(userId);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
     public boolean addProductToOrder(String amountProduct, Product product, Order order) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
@@ -261,6 +276,21 @@ public class OrderServiceImpl implements OrderService {
             throw new ServiceException(e);
         } finally {
             transactionManager.endTransaction();
+        }
+    }
+
+    @Override
+    public boolean deleteOrder(long orderId) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            OrderDao orderDao = new OrderDao();
+            transactionManager.init(orderDao);
+            return orderDao.deleteById(orderId);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
         }
     }
 

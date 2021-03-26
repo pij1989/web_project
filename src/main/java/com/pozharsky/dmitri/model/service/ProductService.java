@@ -39,5 +39,5 @@ public interface ProductService {
 
     List<Product> filterActiveProduct(long categoryId, Map<String, String> filterForm, String sort) throws ServiceException;
 
-    List<Product> findLastAddProduct(int limit) throws ServiceException;
+    List<Product> findLastAddActiveProduct(int limit) throws ServiceException;
 }

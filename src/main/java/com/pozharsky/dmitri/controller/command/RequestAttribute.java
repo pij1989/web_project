@@ -9,6 +9,7 @@ public class RequestAttribute {
     public static final String FILTER_PRODUCT_FORM = "filterProductForm";
     public static final String PRODUCTS = "products";
     public static final String SEARCH_PRODUCT = "searchProduct";
+    public static final String ORDERS = "orders";
 
     private RequestAttribute() {
     }

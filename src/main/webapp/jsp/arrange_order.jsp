@@ -17,6 +17,12 @@
 <c:import url="fragment/header.jsp"/>
 <main role="main" class="container" style="min-height: calc(100vh - 112px)">
     <c:import url="fragment/navigation.jsp"/>
+    <c:if test="${confirmOrderError}">
+        <div class="alert alert-danger" role="alert" id="errorConfirmOrder">
+            Error is occurred
+        </div>
+        <c:remove var="confirmOrderError" scope="session"/>
+    </c:if>
     <div class="row" style="line-height: 1;border-bottom: 1px solid #e5e5e5;">
         <div class="col-6">
             <h4 class="mb-3">Delivery</h4>

@@ -31,6 +31,11 @@ public class DeleteProductFromOrderCommand implements Command {
                 @SuppressWarnings("unchecked")
                 List<OrderProduct> orderProducts = (List<OrderProduct>) session.getAttribute(SessionAttribute.ORDER_PRODUCTS);
                 orderProducts.remove(orderProduct);
+                if (orderProducts.isEmpty() && order.getStatusType() == Order.StatusType.NEW) {
+                    if (orderService.deleteOrder(order.getId())) {
+                        session.removeAttribute(SessionAttribute.ORDER);
+                    }
+                }
                 session.setAttribute(SessionAttribute.DELETE_PRODUCT_FROM_ORDER_SUCCESS, true);
             } else {
                 session.setAttribute(SessionAttribute.DELETE_PRODUCT_FROM_ORDER_ERROR, true);

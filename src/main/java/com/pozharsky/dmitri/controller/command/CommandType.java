@@ -33,6 +33,7 @@ public enum CommandType {
     ARRANGE_ORDER(new ArrangeOrderCommand()),
     CANCEL_ARRANGE_ORDER(new CancelArrangeOrderCommand()),
     CONFIRM_ORDER(new ConfirmOrderCommand()),
+    GET_ORDERS(new GetOrdersCommand()),
     TO_ADMIN_PAGE_COMMAND(new ToAdminPageCommand()),
     TO_MAIN_PAGE_COMMAND(new ToMainPageCommand()),
     TO_CREATE_PRODUCT_PAGE_COMMAND(new ToCreatProductPageCommand()),

@@ -17,18 +17,20 @@
 <c:import url="fragment/header.jsp"/>
 <main role="main" class="container" style="min-height: calc(100vh - 112px)">
     <c:import url="fragment/navigation.jsp"/>
-    <c:if test="${addReviewSuccess}">
-        <div class="alert alert-success" role="alert" id="successAddReview">
-            Review is created
-        </div>
-        <c:remove var="addReviewSuccess" scope="session"/>
-    </c:if>
-    <c:if test="${addReviewError}">
-        <div class="alert alert-danger" role="alert" id="errorAddReview">
-            Error is occurred
-        </div>
-        <c:remove var="addReviewError" scope="session"/>
-    </c:if>
+    <c:choose>
+        <c:when test="${addReviewSuccess}">
+            <div class="alert alert-success" role="alert" id="successAddReview">
+                Review is created
+            </div>
+            <c:remove var="addReviewSuccess" scope="session"/>
+        </c:when>
+        <c:when test="${addReviewError}">
+            <div class="alert alert-danger" role="alert" id="errorAddReview">
+                Error is occurred
+            </div>
+            <c:remove var="addReviewError" scope="session"/>
+        </c:when>
+    </c:choose>
     <div class="card">
         <h4 class="card-header"><c:out value="${product.name}"/></h4>
         <div class="card-body">
@@ -70,7 +72,12 @@
                         <c:forEach var="orderProduct" items="${orderProducts}">
                             <c:if test="${orderProduct.product.id eq product.id}">
                                 <button type="submit" class="btn btn-outline-primary" disabled>
-                                    In the cart
+                                    <c:if test="${order.statusType eq 'NEW'}">
+                                        <a href="${pageContext.request.contextPath}/controller?command=view_order">In the cart</a>
+                                    </c:if>
+                                    <c:if test="${order.statusType eq 'PROCESSING'}">
+                                        <a href="${pageContext.request.contextPath}/controller?command=arrange_order">In the cart</a>
+                                    </c:if>
                                 </button>
                                 <c:set var="flag" value="false"/>
                             </c:if>
