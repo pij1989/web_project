@@ -1,0 +1,56 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="custom_tag" prefix="ctg" %>
+<fmt:setLocale value="${locale}"/>
+<fmt:setBundle basename="property.text"/>
+<!DOCTYPE html>
+<html>
+<head>
+    <c:import url="fragment/bootstrap_style.jsp"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/view_product.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navigation.css">
+    <title><fmt:message key="products.title"/></title>
+</head>
+<body>
+<c:import url="fragment/header.jsp"/>
+<main role="main" class="container" style="min-height: calc(100vh - 112px)">
+    <c:import url="fragment/navigation.jsp"/>
+    <c:choose>
+        <c:when test="${not empty orders}">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Time creating</th>
+                    <th scope="col">Cost</th>
+                    <th scope="col">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="order" items="${orders}">
+                    <tr>
+                        <td><c:out value="${order.id}"/></td>
+                        <td><ctg:formatLocalDateTime date="${order.creatingTime}" locale="${locale}"/></td>
+                        <td><c:out value="${order.cost}"/></td>
+                        <td><c:out value="${order.statusType}"/></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </c:when>
+        <c:otherwise>
+            <div class="card bg-light m-5" style="max-width: 100%;">
+                <div class="card-body bg-light" style="text-align: center">
+                    <h2>Orders is empty</h2>
+                </div>
+            </div>
+        </c:otherwise>
+    </c:choose>
+</main>
+<c:import url="fragment/footer.jsp"/>
+<c:import url="fragment/bootstrap_script.jsp"/>
+<script src="${pageContext.request.contextPath}/js/view_order.js"></script>
+</body>
+</html>
