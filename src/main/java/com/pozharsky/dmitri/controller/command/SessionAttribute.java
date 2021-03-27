@@ -50,6 +50,7 @@ public class SessionAttribute {
     public static final String DELIVERY_FORM = "deliveryForm";
     public static final String CONFIRM_ORDER_SUCCESS = "confirmOrderSuccess";
     public static final String CONFIRM_ORDER_ERROR = "confirmOrderError";
+    public static final String ORDERS = "orders";
 
     private SessionAttribute() {
     }

@@ -38,7 +38,7 @@ public class ConfirmOrderCommand implements Command {
                     session.removeAttribute(SessionAttribute.ORDER);
                     session.removeAttribute(SessionAttribute.ORDER_PRODUCTS);
                     session.setAttribute(SessionAttribute.CONFIRM_ORDER_SUCCESS, true);
-                    router = new Router(PagePath.VIEW_ORDER, Router.Type.REDIRECT);
+                    router = new Router(PagePath.VIEW_CART, Router.Type.REDIRECT);
                 } else {
                     session.setAttribute(SessionAttribute.DELIVERY_FORM, deliveryForm);
                     session.setAttribute(SessionAttribute.CONFIRM_ORDER_ERROR, true);
@@ -47,7 +47,7 @@ public class ConfirmOrderCommand implements Command {
             } else {
                 session.setAttribute(SessionAttribute.CONFIRM_ORDER_ERROR, true);
                 order.setStatusType(Order.StatusType.NEW);
-                router = new Router(PagePath.VIEW_ORDER, Router.Type.REDIRECT);
+                router = new Router(PagePath.VIEW_CART, Router.Type.REDIRECT);
             }
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;

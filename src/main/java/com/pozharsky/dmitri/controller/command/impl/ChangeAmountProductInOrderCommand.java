@@ -45,9 +45,9 @@ public class ChangeAmountProductInOrderCommand implements Command {
             } else {
                 //TODO: Add error massage to view_order page
             }*/
-            List<OrderProduct> orderProducts = orderService.findProductInNewOrder(order.getId());
+            List<OrderProduct> orderProducts = orderService.findProductInOrder(order.getId());
             session.setAttribute(SessionAttribute.ORDER_PRODUCTS, orderProducts);
-            Router router = new Router(PagePath.VIEW_ORDER, Router.Type.REDIRECT);
+            Router router = new Router(PagePath.VIEW_CART, Router.Type.REDIRECT);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;
         } catch (ServiceException e) {

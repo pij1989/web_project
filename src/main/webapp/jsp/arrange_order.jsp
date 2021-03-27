@@ -101,13 +101,13 @@
                             </div>
                         </div>
                         <div class="text-muted">
-                            <ctg:formatCurrency value="${orderProduct.totalPrice}" locale="${locale}"/>
+                            <ctg:formatCurrency value="${orderProduct.totalPrice}"/>
                         </div>
                     </li>
                 </c:forEach>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total cost</span>
-                    <strong><ctg:formatCurrency value="${order.cost}" locale="${locale}"/></strong>
+                    <strong><ctg:formatCurrency value="${order.cost}"/></strong>
                 </li>
             </ul>
         </div>

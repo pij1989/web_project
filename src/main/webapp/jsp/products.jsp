@@ -20,7 +20,7 @@
         <c:when test="${not empty products}">
             <div class="py-1 mb-2" style="line-height: 1;border-bottom: 1px solid #e5e5e5;">
                 <nav class="nav d-flex justify-content-start pb-2">
-                    <div class="px-2">Sorted by:</div>
+                    <div class="px-2"><fmt:message key="products.sort"/></div>
                     <form id="sortForm" action="${pageContext.request.contextPath}/controller">
                         <c:choose>
                             <c:when test="${withFilter}">
@@ -37,18 +37,18 @@
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="sort" id="sortNew" value="new"
                                    <c:if test="${sortType eq 'new'}">checked</c:if>>
-                            <label class="form-check-label" for="sortNew">New</label>
+                            <label class="form-check-label" for="sortNew"><fmt:message key="products.sort_type.new"/></label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="sort" id="sortCheap" value="cheap"
                                    <c:if test="${sortType eq 'cheap'}">checked</c:if>>
-                            <label class="form-check-label" for="sortCheap">Cheap</label>
+                            <label class="form-check-label" for="sortCheap"><fmt:message key="products.sort_type.cheap"/></label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="sort" id="sortExpensive"
                                    value="expensive"
                                    <c:if test="${sortType eq 'expensive'}">checked</c:if>>
-                            <label class="form-check-label" for="sortExpensive">Expensive</label>
+                            <label class="form-check-label" for="sortExpensive"><fmt:message key="products.sort_type.expensive"/></label>
                         </div>
                     </form>
                 </nav>
@@ -75,8 +75,7 @@
                                             </button>
                                         </form>
                                         <p class="card-text"><c:out value="${product.description}"/></p>
-                                        <h5 class="card-title"><ctg:formatCurrency value="${product.price}"
-                                                                                   locale="${locale}"/></h5>
+                                        <h5 class="card-title"><ctg:formatCurrency value="${product.price}"/></h5>
                                         <c:choose>
                                             <c:when test="${product.amount gt 0}">
                                                 <p><span class="badge badge-success"><fmt:message
@@ -102,10 +101,10 @@
                         <ul class="list-group">
                             <li class="list-group-item">
                                 <div>
-                                    <h5>Price:</h5>
+                                    <h5><fmt:message key="products.filter.price"/></h5>
                                     <div class="form-row">
                                         <div class="col">
-                                            <label for="from">From</label>
+                                            <label for="from"><fmt:message key="products.filter.price.label.from"/></label>
                                             <input type="text" name="priceFrom"
                                                    value="${filterProductForm['priceFrom']}" id="from"
                                                    class="form-control"
@@ -113,7 +112,7 @@
                                                    pattern="^[0-9]{1,4}\.[0-9]{2}$">
                                         </div>
                                         <div class="col">
-                                            <label for="to">To</label>
+                                            <label for="to"><fmt:message key="products.filter.price.label.to"/></label>
                                             <input type="text" name="priceTo" value="${filterProductForm['priceTo']}"
                                                    id="to" class="form-control"
                                                    placeholder="0000.00"
@@ -127,24 +126,23 @@
                                     <input class="form-check-input" name="inStock" type="checkbox" id="inStock"
                                            value="true"
                                            <c:if test="${filterProductForm['inStock']}">checked</c:if> />
-                                    <label class="form-check-label" for="inStock">In stock</label>
+                                    <label class="form-check-label" for="inStock"><fmt:message key="products.filter.in_stock"/></label>
                                 </div>
                             </li>
                             <li class="list-group-item" style="text-align: center">
                                 <button class="btn btn-outline-primary my-2" type="submit">
-                                    Show products
+                                    <fmt:message key="products.filter.button"/>
                                 </button>
                             </li>
                         </ul>
                     </form>
                 </div>
-
             </div>
         </c:when>
         <c:otherwise>
             <div class="card bg-light m-5" style="max-width: 100%;">
                 <div class="card-body bg-light" style="text-align: center">
-                    <h2>Products not found</h2>
+                    <h2><fmt:message key="products.not_found"/></h2>
                 </div>
             </div>
         </c:otherwise>

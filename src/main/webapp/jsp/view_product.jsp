@@ -11,7 +11,7 @@
     <c:import url="fragment/bootstrap_style.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/view_product.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navigation.css">
-    <title><fmt:message key="products.title"/></title>
+    <title><fmt:message key="product.view.title"/></title>
 </head>
 <body>
 <c:import url="fragment/header.jsp"/>
@@ -20,7 +20,7 @@
     <c:choose>
         <c:when test="${addReviewSuccess}">
             <div class="alert alert-success" role="alert" id="successAddReview">
-                Review is created
+                <fmt:message key="product.view.review_add_message"/>
             </div>
             <c:remove var="addReviewSuccess" scope="session"/>
         </c:when>
@@ -51,7 +51,7 @@
             </div>
             <div class="col-6">
                 <div class="card-body">
-                    <h5 class="card-title"><ctg:formatCurrency value="${product.price}" locale="${locale}"/></h5>
+                    <h5 class="card-title"><ctg:formatCurrency value="${product.price}"/></h5>
                     <p class="card-text"><c:out value="${product.description}"/></p>
                     <c:choose>
                         <c:when test="${product.amount gt 0}">
@@ -73,7 +73,7 @@
                             <c:if test="${orderProduct.product.id eq product.id}">
                                 <button type="submit" class="btn btn-outline-primary" disabled>
                                     <c:if test="${order.statusType eq 'NEW'}">
-                                        <a href="${pageContext.request.contextPath}/controller?command=view_order">In the cart</a>
+                                        <a href="${pageContext.request.contextPath}/controller?command=view_cart">In the cart</a>
                                     </c:if>
                                     <c:if test="${order.statusType eq 'PROCESSING'}">
                                         <a href="${pageContext.request.contextPath}/controller?command=arrange_order">In the cart</a>

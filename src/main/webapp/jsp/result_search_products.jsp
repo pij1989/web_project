@@ -38,8 +38,7 @@
                                         </button>
                                     </form>
                                     <p class="card-text"><c:out value="${product.description}"/></p>
-                                    <h5 class="card-title"><ctg:formatCurrency value="${product.price}"
-                                                                               locale="${locale}"/></h5>
+                                    <h5 class="card-title"><ctg:formatCurrency value="${product.price}"/></h5>
                                     <c:choose>
                                         <c:when test="${product.amount gt 0}">
                                             <p><span class="badge badge-success"><fmt:message

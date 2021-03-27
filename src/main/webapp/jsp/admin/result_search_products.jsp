@@ -41,8 +41,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title"><c:out value="${product.name}"/></h5>
                                             <p class="card-text"><c:out value="${product.description}"/></p>
-                                            <h5 class="card-title"><ctg:formatCurrency value="${product.price}"
-                                                                                       locale="${locale}"/></h5>
+                                            <h5 class="card-title"><ctg:formatCurrency value="${product.price}"/></h5>
                                             <h5 class="card-title"><fmt:message key="products.amount"/> <c:out
                                                     value="${product.amount}"/></h5>
                                             <c:choose>

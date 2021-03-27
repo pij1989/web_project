@@ -47,7 +47,7 @@ public class AddProductToOrder implements Command {
             }
             boolean isAdd = orderService.addProductToOrder(amountProduct, product, order);
             if (isAdd) {
-                List<OrderProduct> orderProducts = orderService.findProductInNewOrder(order.getId());
+                List<OrderProduct> orderProducts = orderService.findProductInOrder(order.getId());
                 session.setAttribute(SessionAttribute.ORDER_PRODUCTS, orderProducts);
             }
             session.setAttribute(SessionAttribute.ORDER, order);

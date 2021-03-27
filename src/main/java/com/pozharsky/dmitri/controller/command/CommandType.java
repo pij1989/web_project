@@ -29,6 +29,7 @@ public enum CommandType {
     CHANGE_PASSWORD(new ChangePasswordCommand()),
     ADD_REVIEW(new AddReviewCommand()),
     ADD_PRODUCT_TO_ORDER(new AddProductToOrder()),
+    VIEW_CART(new ViewCartCommand()),
     VIEW_ORDER(new ViewOrderCommand()),
     ARRANGE_ORDER(new ArrangeOrderCommand()),
     CANCEL_ARRANGE_ORDER(new CancelArrangeOrderCommand()),

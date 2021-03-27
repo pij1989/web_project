@@ -25,16 +25,22 @@
                     <th scope="col">Id</th>
                     <th scope="col">Time creating</th>
                     <th scope="col">Cost</th>
-                    <th scope="col">Status</th>
+                    <th scope="col" style="text-align: end">Status</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="order" items="${orders}">
                     <tr>
-                        <td><c:out value="${order.id}"/></td>
+                        <td>
+                            <form action="${pageContext.request.contextPath}/controller">
+                                <input type="hidden" name="command" value="view_order">
+                                <input type="hidden" name="orderId" value="<c:out value="${order.id}"/>">
+                                <button type="submit" class="btn btn-link"><c:out value="${order.id}"/></button>
+                            </form>
+                        </td>
                         <td><ctg:formatLocalDateTime date="${order.creatingTime}" locale="${locale}"/></td>
-                        <td><c:out value="${order.cost}"/></td>
-                        <td><c:out value="${order.statusType}"/></td>
+                        <td><ctg:formatCurrency value="${order.cost}"/></td>
+                        <td style="text-align: end"><c:out value="${order.statusType}"/></td>
                     </tr>
                 </c:forEach>
                 </tbody>

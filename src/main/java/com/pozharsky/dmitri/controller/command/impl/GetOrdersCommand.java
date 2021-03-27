@@ -23,8 +23,8 @@ public class GetOrdersCommand implements Command {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute(SessionAttribute.USER);
             OrderService orderService = OrderServiceImpl.getInstance();
-            List<Order> orders = orderService.findAllOrdersByUser(user.getId());
-            request.setAttribute(RequestAttribute.ORDERS, orders);
+            List<Order> orders = orderService.findNotNewOrders(user.getId());
+            session.setAttribute(SessionAttribute.ORDERS, orders);
             Router router = new Router(PagePath.ORDERS);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;

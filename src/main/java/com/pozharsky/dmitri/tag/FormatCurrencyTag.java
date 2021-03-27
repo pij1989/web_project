@@ -10,21 +10,17 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 public class FormatCurrencyTag extends TagSupport {
+    private static final String DEFAULT_LOCALE = "ru-BY";
     private BigDecimal value;
-    private Locale locale;
-    private static final BigDecimal COURSE = BigDecimal.valueOf(2.6);
 
     public void setValue(BigDecimal value) {
         this.value = value;
     }
 
-    public void setLocale(Locale locale) {
-        this.locale = locale;
-    }
-
     @Override
     public int doStartTag() throws JspException {
         try {
+            Locale locale = Locale.forLanguageTag(DEFAULT_LOCALE);
             String result = FormatCurrencyUtil.formatCurrency(value, locale);
             JspWriter out = pageContext.getOut();
             out.write(result);

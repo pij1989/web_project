@@ -40,7 +40,7 @@ public class DeleteProductFromOrderCommand implements Command {
             } else {
                 session.setAttribute(SessionAttribute.DELETE_PRODUCT_FROM_ORDER_ERROR, true);
             }
-            Router router = new Router(PagePath.VIEW_ORDER, Router.Type.REDIRECT);
+            Router router = new Router(PagePath.VIEW_CART, Router.Type.REDIRECT);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;
         } catch (ServiceException e) {

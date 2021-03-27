@@ -57,7 +57,7 @@ public class LoginCommand implements Command {
                         Optional<Order> optionalOrder = orderService.findNewOrder(user.getId());
                         if (optionalOrder.isPresent()) {
                             Order order = optionalOrder.get();
-                            List<OrderProduct> orderProducts = orderService.findProductInNewOrder(order.getId());
+                            List<OrderProduct> orderProducts = orderService.findProductInOrder(order.getId());
                             session.setAttribute(SessionAttribute.ORDER, order);
                             session.setAttribute(SessionAttribute.ORDER_PRODUCTS, orderProducts);
                         }

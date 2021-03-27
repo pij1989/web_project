@@ -57,7 +57,22 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-   /* @Override
+    @Override
+    public Optional<Order> findOrderById(long orderId) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            OrderDao orderDao = new OrderDao();
+            transactionManager.init(orderDao);
+            return orderDao.findById(orderId);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    /* @Override
     public boolean addNewOrder(String amountProduct, Product product, long userId) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
@@ -105,12 +120,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findAllOrdersByUser(long userId) throws ServiceException {
+    public List<Order> findNotNewOrders(long userId) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             OrderDao orderDao = new OrderDao();
             transactionManager.init(orderDao);
-            return orderDao.findByUserId(userId);
+            return orderDao.findByUserIdAndNotStatus(userId, Order.StatusType.NEW);
         } catch (DaoException e) {
             logger.error(e);
             throw new ServiceException(e);
@@ -153,7 +168,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderProduct> findProductInNewOrder(long orderId) throws ServiceException {
+    public List<OrderProduct> findProductInOrder(long orderId) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
             OrderProductDao orderProductDao = new OrderProductDao();
@@ -265,8 +280,9 @@ public class OrderServiceImpl implements OrderService {
             DeliveryDao deliveryDao = new DeliveryDao();
             transactionManager.initTransaction(orderDao, deliveryDao);
             Delivery delivery = DeliveryCreator.createDelivery(deliveryForm, orderId);
+            LocalDateTime localDateTime = LocalDateTime.now();
             if (deliveryDao.create(delivery)) {
-                isConfirm = orderDao.updateOrderStatusById(orderId, orderStatusType);
+                isConfirm = orderDao.updateOrderStatusById(orderId, localDateTime, orderStatusType);
             }
             transactionManager.commit();
             return isConfirm;

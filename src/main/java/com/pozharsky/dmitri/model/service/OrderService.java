@@ -14,13 +14,15 @@ public interface OrderService {
 
 //    boolean addNewOrder(String amountProduct, Product product, long userId) throws ServiceException;
 
+    Optional<Order> findOrderById(long orderId) throws ServiceException;
+
     Optional<Order> findNewOrder(long userId) throws ServiceException;
 
-    List<Order> findAllOrdersByUser(long userId) throws ServiceException;
+    List<Order> findNotNewOrders(long userId) throws ServiceException;
 
     boolean addProductToOrder(String amountProduct, Product product, Order order) throws ServiceException;
 
-    List<OrderProduct> findProductInNewOrder(long orderId) throws ServiceException;
+    List<OrderProduct> findProductInOrder(long orderId) throws ServiceException;
 
     Optional<OrderProduct> deleteProductFromOrder(String orderProductId, Order order) throws ServiceException;
 

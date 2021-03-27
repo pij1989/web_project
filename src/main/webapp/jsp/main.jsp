@@ -15,7 +15,7 @@
 <c:import url="fragment/header.jsp"/>
 <main role="main" class="container" style="min-height: calc(100vh - 112px)">
     <c:import url="fragment/navigation.jsp"/>
-    <h4 class="mb-3">Last add products</h4>
+    <h4 class="mb-3"><fmt:message key="main.message"/></h4>
     <div class="row">
         <c:forEach var="product" items="${lastProducts}">
             <div class="col-md-4">
@@ -31,10 +31,8 @@
                                 <h5 class="card-title"><c:out value="${product.name}"/></h5>
                             </button>
                         </form>
-<%--                        <h5 class="card-title"><c:out value="${product.name}"/></h5>--%>
                         <p class="card-text"><c:out value="${product.description}"/></p>
-                        <h5 class="card-title"><ctg:formatCurrency value="${product.price}"
-                                                                   locale="${locale}"/></h5>
+                        <h5 class="card-title"><ctg:formatCurrency value="${product.price}"/></h5>
                     </div>
                 </div>
             </div>

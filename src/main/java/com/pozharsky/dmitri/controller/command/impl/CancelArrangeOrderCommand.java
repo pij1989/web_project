@@ -20,7 +20,7 @@ public class CancelArrangeOrderCommand implements Command {
         if (statusType == Order.StatusType.PROCESSING) {
             order.setStatusType(Order.StatusType.NEW);
         }
-        Router router = new Router(PagePath.VIEW_ORDER);
+        Router router = new Router(PagePath.VIEW_CART);
         session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
         return router;
     }
