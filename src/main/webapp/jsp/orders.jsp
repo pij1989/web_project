@@ -11,7 +11,7 @@
     <c:import url="fragment/bootstrap_style.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/view_product.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navigation.css">
-    <title><fmt:message key="products.title"/></title>
+    <title><fmt:message key="orders.title"/></title>
 </head>
 <body>
 <c:import url="fragment/header.jsp"/>
@@ -22,10 +22,10 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Time creating</th>
-                    <th scope="col">Cost</th>
-                    <th scope="col" style="text-align: end">Status</th>
+                    <th scope="col"><fmt:message key="orders.table.head.id"/></th>
+                    <th scope="col"><fmt:message key="orders.table.head.time"/></th>
+                    <th scope="col"><fmt:message key="orders.table.head.cost"/></th>
+                    <th scope="col" style="text-align: end"><fmt:message key="orders.table.head.status"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,7 +49,7 @@
         <c:otherwise>
             <div class="card bg-light m-5" style="max-width: 100%;">
                 <div class="card-body bg-light" style="text-align: center">
-                    <h2>Orders is empty</h2>
+                    <h2><fmt:message key="orders.empty_message"/></h2>
                 </div>
             </div>
         </c:otherwise>

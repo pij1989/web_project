@@ -11,7 +11,7 @@
     <c:import url="fragment/bootstrap_style.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/view_product.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navigation.css">
-    <title><fmt:message key="products.title"/></title>
+    <title><fmt:message key="cart.title"/></title>
 </head>
 <body>
 <c:import url="fragment/header.jsp"/>
@@ -20,25 +20,25 @@
     <c:choose>
         <c:when test="${deleteProductFromOrderSuccess}">
             <div class="alert alert-success" role="alert" id="successDeleteProductFromOrder">
-                Product is delete from order
+                <fmt:message key="cart.delete_product_message"/>
             </div>
             <c:remove var="deleteProductFromOrderSuccess" scope="session"/>
         </c:when>
         <c:when test="${deleteProductFromOrderError}">
             <div class="alert alert-danger" role="alert" id="errorDeleteProductFromOrder">
-                Error is occurred
+                <fmt:message key="cart.error_message"/>
             </div>
             <c:remove var="deleteProductFromOrderError" scope="session"/>
         </c:when>
         <c:when test="${confirmOrderSuccess}">
             <div class="alert alert-success" role="alert" id="successConfirmOrder">
-                Order is confirmed and being processed
+                <fmt:message key="cart.order_confirm_message"/>
             </div>
             <c:remove var="confirmOrderSuccess" scope="session"/>
         </c:when>
         <c:when test="${confirmOrderError}">
             <div class="alert alert-danger" role="alert" id="errorConfirmOrder">
-                Error is occurred
+                <fmt:message key="cart.error_message"/>
             </div>
             <c:remove var="confirmOrderError" scope="session"/>
         </c:when>
@@ -47,7 +47,7 @@
         <c:when test="${orderIsEmpty or empty orderProducts}">
             <div class="card bg-light m-5" style="max-width: 100%;">
                 <div class="card-body bg-light" style="text-align: center">
-                    <h2>Cart is empty</h2>
+                    <h2> <fmt:message key="cart.empty_message"/></h2>
                 </div>
             </div>
         </c:when>
@@ -55,10 +55,10 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Product</th>
+                    <th scope="col"><fmt:message key="cart.table.head.product"/></th>
                     <th scope="col"></th>
-                    <th scope="col" class="pl-5">Amount</th>
-                    <th scope="col" style="text-align: end">Cost</th>
+                    <th scope="col" class="pl-5"><fmt:message key="cart.table.head.amount"/></th>
+                    <th scope="col" style="text-align: end"><fmt:message key="cart.table.head.cost"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,7 +85,7 @@
                                 <input type="hidden" name="orderProductId"
                                        value="<c:out value="${orderProduct.id}"/>">
                                 <button class="btn btn-outline-danger mx-2 my-2 my-sm-0" type="submit">
-                                    <span><i class="fas fa-trash"></i> Delete</span>
+                                    <span><i class="fas fa-trash"></i> <fmt:message key="cart.button.delete"/></span>
                                 </button>
                             </form>
                         </td>
@@ -116,7 +116,7 @@
                 <tr>
                     <td colspan="4">
                         <div class="d-flex justify-content-end">
-                            <h5>Total cost: <ctg:formatCurrency value="${order.cost}"/></h5>
+                            <h5><fmt:message key="cart.total_cost"/> <ctg:formatCurrency value="${order.cost}"/></h5>
                         </div>
                     </td>
                 </tr>
@@ -125,7 +125,9 @@
                         <div class="d-flex justify-content-end">
                             <form action="${pageContext.request.contextPath}/controller">
                                 <input type="hidden" name="command" value="arrange_order">
-                                <button type="submit" id="submit" class="btn btn-primary">Arrange order</button>
+                                <button type="submit" id="submit" class="btn btn-primary">
+                                    <fmt:message key="cart.button.arrange_order"/>
+                                </button>
                             </form>
                         </div>
                     </td>

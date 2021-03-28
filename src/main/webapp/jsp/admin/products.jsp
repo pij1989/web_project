@@ -27,7 +27,7 @@
                                    placeholder="<fmt:message key="products.search.placeholder"/>"
                                    aria-label="Search" size="30">
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><span><i
-                                    class="fas fa-search"></i></span> <fmt:message key="header.button.search"/>
+                                    class="fas fa-search"></i></span> <fmt:message key="navigation.button.search"/>
                             </button>
                         </form>
                     </div>

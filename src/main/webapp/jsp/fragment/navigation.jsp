@@ -15,10 +15,10 @@
     <div class="collapse navbar-collapse" id="navigation">
         <form class="form-inline py-2" action="${pageContext.request.contextPath}/controller">
             <input type="hidden" name="command" value="search_product">
-            <input class="form-control mr-2" id="searchField" type="search" placeholder="<fmt:message key="header.button.search">"
+            <input class="form-control mr-2" id="searchField" type="search" placeholder="<fmt:message key="navigation.placeholder.search"/>"
                    aria-label="Search" name="searchProduct" value="<c:out value="${searchProduct}"/>">
             <button class="btn btn-outline-primary my-2 mr-2" type="submit"><span><i
-                    class="fas fa-search"></i></span> <fmt:message key="header.button.search"/>
+                    class="fas fa-search"></i></span> <fmt:message key="navigation.button.search"/>
             </button>
         </form>
         <form class="form-inline py-2" action="${pageContext.request.contextPath}/controller">

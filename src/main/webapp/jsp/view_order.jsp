@@ -11,7 +11,7 @@
     <c:import url="fragment/bootstrap_style.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/view_product.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navigation.css">
-    <title><fmt:message key="products.title"/></title>
+    <title><fmt:message key="order.title"/></title>
 </head>
 <body>
 <c:import url="fragment/header.jsp"/>
@@ -22,9 +22,9 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Product</th>
-                    <th scope="col" style="text-align: end">Amount</th>
-                    <th scope="col" style="text-align: end">Cost</th>
+                    <th scope="col"><fmt:message key="order.table.head.product"/></th>
+                    <th scope="col" style="text-align: end"><fmt:message key="order.table.head.amount"/></th>
+                    <th scope="col" style="text-align: end"><fmt:message key="order.table.head.cost"/></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,7 +53,7 @@
                 <tr>
                     <td colspan="4">
                         <div class="d-flex justify-content-end">
-                            <h5>Total cost: <ctg:formatCurrency value="${order.cost}"/></h5>
+                            <h5><fmt:message key="order.button.total_cost"/> <ctg:formatCurrency value="${order.cost}"/></h5>
                         </div>
                     </td>
                 </tr>
@@ -63,7 +63,7 @@
         <c:otherwise>
             <div class="card bg-light m-5" style="max-width: 100%;">
                 <div class="card-body bg-light" style="text-align: center">
-                    <h2>Order is empty</h2>
+                    <h2><fmt:message key="order.empty_message"/></h2>
                 </div>
             </div>
         </c:otherwise>
