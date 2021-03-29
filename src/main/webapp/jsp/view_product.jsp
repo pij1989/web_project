@@ -137,7 +137,8 @@
                         <span class="fa fa-star checked-rate"></span>
                     </c:forEach>
                 </div>
-                <h5 class="card-title"><c:out value="${review.username}"/></h5>
+                <h5 class="card-title"><c:out value="${review.user.username}"/></h5>
+                <h6 class="card-subtitle mb-2 text-muted"><c:out value="${review.user.email}"/></h6>
                 <h6 class="card-subtitle mb-2 text-muted">
                     <ctg:formatLocalDateTime date="${review.creatingTime}" locale="${locale}"/>
                 </h6>

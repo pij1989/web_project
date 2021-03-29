@@ -11,7 +11,7 @@
     <c:import url="fragment/bootstrap_style.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/view_product.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navigation.css">
-    <title><fmt:message key="products.title"/></title>
+    <title><fmt:message key="cart.title"/></title>
 </head>
 <body>
 <c:import url="fragment/header.jsp"/>
@@ -19,71 +19,83 @@
     <c:import url="fragment/navigation.jsp"/>
     <c:if test="${confirmOrderError}">
         <div class="alert alert-danger" role="alert" id="errorConfirmOrder">
-            Error is occurred
+            <fmt:message key="cart.error_message"/>
         </div>
         <c:remove var="confirmOrderError" scope="session"/>
     </c:if>
     <div class="row" style="line-height: 1;border-bottom: 1px solid #e5e5e5;">
         <div class="col-6">
-            <h4 class="mb-3">Delivery</h4>
-            <form id="deliveryForm" class="needs-validation <c:if test="${not empty deliveryForm}">was-validated</c:if>" action="${pageContext.request.contextPath}/controller" method="post" novalidate>
+            <h4 class="mb-3"><fmt:message key="cart.delivery.title"/></h4>
+            <form id="deliveryForm" class="needs-validation <c:if test="${not empty deliveryForm}">was-validated</c:if>"
+                  action="${pageContext.request.contextPath}/controller" method="post" novalidate>
                 <input type="hidden" name="command" value="confirm_order">
                 <div class="row">
                     <div class="col-6 mb-3">
-                        <label for="firstName">First name</label>
-                        <input type="text" class="form-control" id="firstName" name="firstName" value="<c:out value="${deliveryForm['firstName']}"/>"
-                               placeholder="Enter first name" required pattern="[a-zA-Zа-яА-Я]+">
+                        <label for="firstName"><fmt:message key="cart.delivery.form.first_name"/></label>
+                        <input type="text" class="form-control" id="firstName" name="firstName"
+                               value="<c:out value="${deliveryForm['firstName']}"/>"
+                               placeholder="<fmt:message key="cart.delivery.form.placeholder.first_name"/>"
+                               required pattern="[a-zA-Zа-яА-Я]+">
                     </div>
                     <div class="col-6 mb-3">
-                        <label for="lastName">Last name</label>
-                        <input type="text" class="form-control" id="lastName" name="lastName" value="<c:out value="${deliveryForm['lastName']}"/>"
-                               placeholder="Enter last name" required pattern="[a-zA-Zа-яА-Я]+">
+                        <label for="lastName"><fmt:message key="cart.delivery.form.last_name"/></label>
+                        <input type="text" class="form-control" id="lastName" name="lastName"
+                               value="<c:out value="${deliveryForm['lastName']}"/>"
+                               placeholder="<fmt:message key="cart.delivery.form.placeholder.last_name"/>"
+                               required pattern="[a-zA-Zа-яА-Я]+">
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <div class="row">
                         <div class="col-4 mb-3">
-                            <label for="city">City</label>
-                            <input type="text" class="form-control" id="city" name="city" value="<c:out value="${deliveryForm['city']}"/>"
-                                   placeholder="Minsk" required pattern="^[A-ZА-Я](?:(-?|\s?)[a-zA-Zа-яА-Я]+)*$">
+                            <label for="city"><fmt:message key="cart.delivery.form.city"/></label>
+                            <input type="text" class="form-control" id="city" name="city"
+                                   value="<c:out value="${deliveryForm['city']}"/>"
+                                   placeholder="<fmt:message key="cart.delivery.form.placeholder.city"/>"
+                                   required pattern="^[A-ZА-Я](?:(-?|\s?)[a-zA-Zа-яА-Я]+)*$">
                         </div>
                         <div class="col-4 mb-3">
-                            <label for="street">Street</label>
-                            <input type="text" class="form-control" id="street" name="street" value="<c:out value="${deliveryForm['street']}"/>"
-                                   placeholder="Kalinovskogo" required pattern="^([0-9]+|[A-ZА-Я])(?:(-?|\s?)[a-zA-Zа-яА-Я0-9]+)*$">
+                            <label for="street"><fmt:message key="cart.delivery.form.street"/></label>
+                            <input type="text" class="form-control" id="street" name="street"
+                                   value="<c:out value="${deliveryForm['street']}"/>"
+                                   placeholder="<fmt:message key="cart.delivery.form.placeholder.street"/>"
+                                   required pattern="^([0-9]+|[A-ZА-Я])(?:(-?|\s?)[a-zA-Zа-яА-Я0-9]+)*$">
                         </div>
                         <div class="col-4 mb-3">
-                            <label for="homeNumber">Home number</label>
-                            <input type="text" class="form-control" id="homeNumber" name="homeNumber" value="<c:out value="${deliveryForm['homeNumber']}"/>"
+                            <label for="homeNumber"><fmt:message key="cart.delivery.form.home_number"/></label>
+                            <input type="text" class="form-control" id="homeNumber" name="homeNumber"
+                                   value="<c:out value="${deliveryForm['homeNumber']}"/>"
                                    placeholder="45" required pattern="^(?!0)[0-9]{1,3}(\/(?!0)[0-9]){0,1}$">
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="phone">Telephone</label>
+                        <label for="phone"><fmt:message key="cart.delivery.form.telephone"/></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-phone"></i></span>
                             </div>
-                            <input type="text" class="form-control" id="phone" name="phone" value="<c:out value="${deliveryForm['phone']}"/>"
+                            <input type="text" class="form-control" id="phone" name="phone"
+                                   value="<c:out value="${deliveryForm['phone']}"/>"
                                    placeholder="+375(00)0000000" required
                                    pattern="^[+]{1}([375]){3}[(]{1}[0-9]{2}[)]{1}[0-9]{7}$">
                         </div>
-                        <small id="phoneHelp" class="form-text text-muted">Phone number should have next format:
-                            +375(00)0000000</small>
+                        <small id="phoneHelp" class="form-text text-muted">
+                            <fmt:message key="cart.delivery.form.help.phone"/>
+                        </small>
                     </div>
                 </div>
                 <c:remove var="deliveryForm" scope="session"/>
             </form>
-            <h4 class="mb-3">Payment</h4>
+            <h4 class="mb-3"><fmt:message key="cart.payment.title"/></h4>
             <div class="mb-3">
-                You can do payment only when you will receive your order
+                <fmt:message key="cart.payment.message"/>
             </div>
         </div>
         <div class="col-6">
             <h4 class="d-flex justify-content-between align-items-center mb-3">
-                <span>Cart</span>
+                <span><fmt:message key="cart.title"/> </span>
             </h4>
             <ul class="list-group mb-3">
                 <c:forEach var="orderProduct" items="${orderProducts}">
@@ -106,19 +118,23 @@
                     </li>
                 </c:forEach>
                 <li class="list-group-item d-flex justify-content-between">
-                    <span>Total cost</span>
+                    <span><fmt:message key="cart.total_cost"/></span>
                     <strong><ctg:formatCurrency value="${order.cost}"/></strong>
                 </li>
             </ul>
         </div>
     </div>
     <div class="mt-3 mb-3 d-flex justify-content-end">
-        <button type="button" id="confirmOrder" class="btn btn-primary">Confirm order</button>
+        <button type="button" id="confirmOrder" class="btn btn-primary">
+            <fmt:message key="cart.button.confirm_order"/>
+        </button>
     </div>
     <div class="mb-3 d-flex justify-content-end">
         <form action="${pageContext.request.contextPath}/controller">
             <input type="hidden" name="command" value="cancel_arrange_order">
-            <button type="submit" id="cancelOrder" class="btn btn-danger">Cancel order</button>
+            <button type="submit" id="cancelOrder" class="btn btn-danger">
+                <fmt:message key="cart.button.cancel_order"/>
+            </button>
         </form>
     </div>
 </main>

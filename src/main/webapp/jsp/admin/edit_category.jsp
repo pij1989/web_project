@@ -74,10 +74,10 @@
                                     src="data:image/jpg;base64,<ctg:encodeBytes bytes="${product.image}"/>"
                                     style="width: 50%"/></td>
                             <td><c:out value="${product.name}"/></td>
-                            <td><c:out value="${product.price}"/></td>
+                            <td><ctg:formatCurrency value="${product.price}"/></td>
                             <td><c:out value="${product.amount}"/></td>
                             <td><c:out value="${product.description}"/></td>
-                            <td><c:out value="${product.creatingTime}"/></td>
+                            <td><ctg:formatLocalDateTime date="${product.creatingTime}" locale="${locale}"/></td>
                         </tr>
                         <c:set var="i" value="${i+1}"/>
                     </c:forEach>

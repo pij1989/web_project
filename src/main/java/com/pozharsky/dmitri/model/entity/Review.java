@@ -7,19 +7,18 @@ public class Review extends Entity {
     private String comment;
     private int rating;
     private LocalDateTime creatingTime;
-    private long userId;
-    private long productId;
-    private String username;
+    private User user;
+    private Product product;
 
     public Review() {
     }
 
-    public Review(String comment, int rating, LocalDateTime creatingTime, long userId, long productId) {
+    public Review(String comment, int rating, LocalDateTime creatingTime, User user, Product product) {
         this.comment = comment;
         this.rating = rating;
         this.creatingTime = creatingTime;
-        this.userId = userId;
-        this.productId = productId;
+        this.user = user;
+        this.product = product;
     }
 
     public long getId() {
@@ -54,28 +53,20 @@ public class Review extends Entity {
         this.creatingTime = creatingTime;
     }
 
-    public long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public long getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Override
@@ -87,12 +78,11 @@ public class Review extends Entity {
 
         if (id != review.id) return false;
         if (rating != review.rating) return false;
-        if (userId != review.userId) return false;
-        if (productId != review.productId) return false;
         if (comment != null ? !comment.equals(review.comment) : review.comment != null) return false;
         if (creatingTime != null ? !creatingTime.equals(review.creatingTime) : review.creatingTime != null)
             return false;
-        return username != null ? username.equals(review.username) : review.username == null;
+        if (user != null ? !user.equals(review.user) : review.user != null) return false;
+        return product != null ? product.equals(review.product) : review.product == null;
     }
 
     @Override
@@ -101,9 +91,8 @@ public class Review extends Entity {
         result = 31 * result + (comment != null ? comment.hashCode() : 0);
         result = 31 * result + rating;
         result = 31 * result + (creatingTime != null ? creatingTime.hashCode() : 0);
-        result = 31 * result + (int) (userId ^ (userId >>> 32));
-        result = 31 * result + (int) (productId ^ (productId >>> 32));
-        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (user != null ? user.hashCode() : 0);
+        result = 31 * result + (product != null ? product.hashCode() : 0);
         return result;
     }
 
@@ -114,9 +103,8 @@ public class Review extends Entity {
         sb.append(", comment='").append(comment).append('\'');
         sb.append(", rating=").append(rating);
         sb.append(", creatingTime=").append(creatingTime);
-        sb.append(", userId=").append(userId);
-        sb.append(", productId=").append(productId);
-        sb.append(", username='").append(username).append('\'');
+        sb.append(", user=").append(user);
+        sb.append(", product=").append(product);
         sb.append('}');
         return sb.toString();
     }

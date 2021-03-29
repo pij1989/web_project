@@ -24,3 +24,10 @@
 .create-item {
     text-align: center;
 }
+
+.checked-rate {
+    color: orange;
+}
+.view-product-btn{
+    text-align: center;
+}

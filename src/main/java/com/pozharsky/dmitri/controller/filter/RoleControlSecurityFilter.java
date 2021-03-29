@@ -51,6 +51,7 @@ public class RoleControlSecurityFilter implements Filter {
         postCommandMap.put(CommandType.CONFIRM_ORDER, List.of(User.RoleType.USER));
         getCommandMap.put(CommandType.GET_USERS, List.of(User.RoleType.ADMIN));
         getCommandMap.put(CommandType.GET_CATEGORIES, List.of(User.RoleType.ADMIN));
+        getCommandMap.put(CommandType.GET_REVIEWS, List.of(User.RoleType.ADMIN));
         getCommandMap.put(CommandType.LOGOUT, List.of(User.RoleType.ADMIN, User.RoleType.USER));
         getCommandMap.put(CommandType.EDIT_CATEGORY, List.of(User.RoleType.ADMIN));
         getCommandMap.put(CommandType.EDIT_PRODUCT, List.of(User.RoleType.ADMIN));
@@ -66,6 +67,7 @@ public class RoleControlSecurityFilter implements Filter {
         postCommandMap.put(CommandType.UPDATE_CATEGORY, List.of(User.RoleType.ADMIN));
         postCommandMap.put(CommandType.UPDATE_PRODUCT, List.of(User.RoleType.ADMIN));
         postCommandMap.put(CommandType.ADD_REVIEW, List.of(User.RoleType.USER));
+        postCommandMap.put(CommandType.DELETE_REVIEW, List.of(User.RoleType.ADMIN));
         postCommandMap.put(CommandType.ADD_PRODUCT_TO_ORDER, List.of(User.RoleType.USER));
         postCommandMap.put(CommandType.DELETE_PRODUCT_FROM_ORDER, List.of(User.RoleType.USER));
         postCommandMap.put(CommandType.CHANGE_AMOUNT_PRODUCT_IN_ORDER, List.of(User.RoleType.USER));

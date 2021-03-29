@@ -18,6 +18,7 @@ public class PagePath {
     public static final String ACTIVATE_REGISTRATION = "/jsp/activate_registration.jsp";
     public static final String CHANGE_PASSWORD = "/jsp/change_password.jsp";
     public static final String CATEGORIES = "/jsp/admin/categories.jsp";
+    public static final String REVIEWS = "/jsp/admin/reviews.jsp";
     public static final String EDIT_CATEGORY = "/jsp/admin/edit_category.jsp";
     public static final String EDIT_PRODUCT = "/jsp/admin/edit_product.jsp";
     public static final String CREATE_USER = "/jsp/admin/create_user.jsp";

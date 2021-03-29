@@ -26,17 +26,15 @@ public class AddReviewCommand implements Command {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute(SessionAttribute.USER);
             Product product = (Product) session.getAttribute(SessionAttribute.PRODUCT);
-            long userId = user.getId();
             long productId = product.getId();
             ReviewService reviewService = ReviewServiceImpl.getInstance();
-            Optional<Review> optionalReview = reviewService.createReview(comment, rating, userId, productId);
+            Optional<Review> optionalReview = reviewService.createReview(comment, rating, user, product);
             if (optionalReview.isPresent()) {
                 Review review = optionalReview.get();
                 @SuppressWarnings("unchecked")
                 List<Review> reviews = (List<Review>) session.getAttribute(SessionAttribute.REVIEWS);
                 if (reviews != null) {
-                    String username = user.getUsername();
-                    review.setUsername(username);
+                    review.setUser(user);
                     reviews.add(review);
                 } else {
                     reviews = reviewService.findReviewByProduct(productId);

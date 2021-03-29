@@ -43,6 +43,7 @@ public class RequestParameter {
     public static final String HOME_NUMBER  ="homeNumber";
     public static final String PHONE = "phone";
     public static final String ORDER_ID = "orderId";
+    public static final String REVIEW_ID = "reviewId";
 
     private RequestParameter() {
     }
