@@ -32,51 +32,62 @@
                     <c:remove var="deleteReviewError" scope="session"/>
                 </c:when>
             </c:choose>
-            <div class="d-flex justify-content-center">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Time creating</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">User email</th>
-                        <th scope="col">Product</th>
-                        <th scope="col">Rating</th>
-                        <th scope="col">Comment</th>
-                        <th scope="col"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="review" items="${reviews}">
-                        <tr>
-                            <td><ctg:formatLocalDateTime date="${review.creatingTime}" locale="${locale}"/></td>
-                            <td><c:out value="${review.user.username}"/></td>
-                            <td><c:out value="${review.user.email}"/></td>
-                            <td><c:out value="${review.product.name}"/></td>
-                            <td>
-                                <c:forEach var="i" begin="1" end="${review.rating}">
-                                    <span class="fa fa-star checked-rate"></span>
-                                </c:forEach>
-                            </td>
-                            <td class="w-25"><c:out value="${review.comment}"/></td>
+            <c:choose>
+                <c:when test="${not empty reviews}">
+                    <div class="d-flex justify-content-center">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Time creating</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">User email</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Rating</th>
+                                <th scope="col">Comment</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:forEach var="review" items="${reviews}">
+                                <tr>
+                                    <td><ctg:formatLocalDateTime date="${review.creatingTime}" locale="${locale}"/></td>
+                                    <td><c:out value="${review.user.username}"/></td>
+                                    <td><c:out value="${review.user.email}"/></td>
+                                    <td><c:out value="${review.product.name}"/></td>
+                                    <td>
+                                        <c:forEach var="i" begin="1" end="${review.rating}">
+                                            <span class="fa fa-star checked-rate"></span>
+                                        </c:forEach>
+                                    </td>
+                                    <td class="w-25"><c:out value="${review.comment}"/></td>
 
-                            <td>
-                                <div class="d-flex justify-content-end">
-                                    <form method="post" action="${pageContext.request.contextPath}/controller">
-                                        <input type="hidden" name="command" value="delete_review">
-                                        <input type="hidden" name="reviewId" value="<c:out value="${review.id}"/>">
-                                        <button class="btn btn-outline-danger mx-2 my-2 my-sm-0" type="submit">
+                                    <td>
+                                        <div class="d-flex justify-content-end">
+                                            <form method="post" action="${pageContext.request.contextPath}/controller">
+                                                <input type="hidden" name="command" value="delete_review">
+                                                <input type="hidden" name="reviewId" value="<c:out value="${review.id}"/>">
+                                                <button class="btn btn-outline-danger mx-2 my-2 my-sm-0" type="submit">
                                             <span><i class="fas fa-trash"></i> <fmt:message
                                                     key="reviews.button.delete"/></span>
-                                        </button>
-                                    </form>
-                                </div>
-                            </td>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
 
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
+                                </tr>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="card bg-light m-5" style="max-width: 100%;">
+                        <div class="card-body bg-light" style="text-align: center">
+                            <h2><fmt:message key="reviews.empty_message"/></h2>
+                        </div>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </main>
     </div>
 </div>

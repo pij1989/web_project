@@ -29,6 +29,10 @@ class ColumnName {
     static final String AMOUNT_PRODUCT = "amount_product";
     static final String ORDER_ID = "order_id";
     static final String TOTAL_PRICE = "total_price";
+    static final String CITY = "city";
+    static final String STREET = "street";
+    static final String HOME_NUMBER = "home_number";
+    static final String PHONE_NUMBER = "phone_number";
 
     private ColumnName() {
     }

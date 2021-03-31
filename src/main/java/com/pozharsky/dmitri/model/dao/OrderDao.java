@@ -15,13 +15,15 @@ import java.util.Optional;
 public class OrderDao extends AbstractDao<Order> {
     private static final Logger logger = LogManager.getLogger(OrderDao.class);
     private static final String CREATE_ORDER_SQL = "INSERT INTO orders(time_create, cost, order_status_id, user_id) VALUES (?,?,?,?);";
+    private static final String FIND_ALL_ORDER_SQL = "SELECT o.id, o.time_create, o.cost, os.order_status_name, o.user_id FROM orders AS o JOIN orders_status AS os on o.order_status_id = os.id;";
     private static final String FIND_ORDER_BY_ID_SQL = "SELECT o.id, o.time_create, o.cost, os.order_status_name, o.user_id FROM orders AS o JOIN orders_status AS os on o.order_status_id = os.id WHERE o.id = ?;";
     private static final String FIND_STATUS_ID_BY_NAME_SQL = "SELECT id FROM orders_status WHERE order_status_name = ?;";
     private static final String FIND_ORDER_BY_USER_ID_STATUS_SQL = "SELECT o.id, o.time_create, o.cost, os.order_status_name, o.user_id FROM orders AS o JOIN orders_status AS os on o.order_status_id = os.id WHERE o.user_id = ? AND os.order_status_name = ?;";
     private static final String FIND_ORDER_BY_USER_ID_AND_NOT_STATUS_SQL = "SELECT o.id, o.time_create, o.cost, os.order_status_name, o.user_id FROM orders AS o JOIN orders_status AS os on o.order_status_id = os.id WHERE o.user_id = ? AND NOT os.order_status_name = ? ORDER BY time_create DESC;";
     private static final String INCREASE_COST_BY_ID = "UPDATE orders SET cost = cost + ? WHERE id = ?";
     private static final String DECREASE_COST_BY_ID = "UPDATE orders SET cost = cost - ? WHERE id = ?";
-    private static final String UPDATE_ORDER_STATUS_BY_ID = "UPDATE orders SET order_status_id = ?, time_create = ? WHERE id = ?";
+    private static final String UPDATE_ORDER_STATUS_AND_TIME_CREATE_BY_ID = "UPDATE orders SET order_status_id = ?, time_create = ? WHERE id = ?";
+    private static final String UPDATE_ORDER_STATUS_BY_ID = "UPDATE orders SET order_status_id = ? WHERE id = ?";
     private static final String DELETE_ORDER_BY_ID = "DELETE FROM orders WHERE id = ?";
 
     public Optional<Long> create(Order order) throws DaoException {
@@ -47,27 +49,11 @@ public class OrderDao extends AbstractDao<Order> {
     }
 
     public List<Order> findByUserIdAndStatus(long userId, Order.StatusType statusType) throws DaoException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_ORDER_BY_USER_ID_STATUS_SQL)) {
-            preparedStatement.setLong(1, userId);
-            preparedStatement.setString(2, statusType.toString());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return createListOrderFromResultSet(resultSet);
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new DaoException(e);
-        }
+        return findOrdersByUserIdAndStatus(userId, statusType, FIND_ORDER_BY_USER_ID_STATUS_SQL);
     }
 
     public List<Order> findByUserIdAndNotStatus(long userId, Order.StatusType statusType) throws DaoException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_ORDER_BY_USER_ID_AND_NOT_STATUS_SQL)) {
-            preparedStatement.setLong(1, userId);
-            preparedStatement.setString(2, statusType.toString());
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return createListOrderFromResultSet(resultSet);
-        } catch (SQLException e) {
-            logger.error(e);
-            throw new DaoException(e);
-        }
+        return findOrdersByUserIdAndStatus(userId, statusType, FIND_ORDER_BY_USER_ID_AND_NOT_STATUS_SQL);
     }
 
     public void increaseCostById(BigDecimal cost, long orderId) throws DaoException {
@@ -92,13 +78,27 @@ public class OrderDao extends AbstractDao<Order> {
         }
     }
 
-    public boolean updateOrderStatusById(long orderId, LocalDateTime localDateTime, Order.StatusType statusType) throws DaoException {
+    public boolean updateStatusAndTimeCreateById(long orderId, LocalDateTime localDateTime, Order.StatusType statusType) throws DaoException {
+        try (PreparedStatement orderPreparedStatement = connection.prepareStatement(UPDATE_ORDER_STATUS_AND_TIME_CREATE_BY_ID);
+             PreparedStatement statusPreparedStatement = connection.prepareStatement(FIND_STATUS_ID_BY_NAME_SQL)) {
+            long orderStatusId = findStatusId(statusPreparedStatement, statusType);
+            orderPreparedStatement.setLong(1, orderStatusId);
+            orderPreparedStatement.setTimestamp(2, Timestamp.valueOf(localDateTime));
+            orderPreparedStatement.setLong(3, orderId);
+            int resultUpdate = orderPreparedStatement.executeUpdate();
+            return resultUpdate > 0;
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
+    }
+
+    public boolean updateStatusById(long orderId, Order.StatusType statusType) throws DaoException {
         try (PreparedStatement orderPreparedStatement = connection.prepareStatement(UPDATE_ORDER_STATUS_BY_ID);
              PreparedStatement statusPreparedStatement = connection.prepareStatement(FIND_STATUS_ID_BY_NAME_SQL)) {
             long orderStatusId = findStatusId(statusPreparedStatement, statusType);
             orderPreparedStatement.setLong(1, orderStatusId);
-            orderPreparedStatement.setTimestamp(2,Timestamp.valueOf(localDateTime));
-            orderPreparedStatement.setLong(3, orderId);
+            orderPreparedStatement.setLong(2, orderId);
             int resultUpdate = orderPreparedStatement.executeUpdate();
             return resultUpdate > 0;
         } catch (SQLException e) {
@@ -125,7 +125,13 @@ public class OrderDao extends AbstractDao<Order> {
 
     @Override
     public List<Order> findAll() throws DaoException {
-        return null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_ORDER_SQL)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return createListOrderFromResultSet(resultSet);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
     }
 
     @Override
@@ -173,5 +179,17 @@ public class OrderDao extends AbstractDao<Order> {
             orders.add(order);
         }
         return orders;
+    }
+
+    private List<Order> findOrdersByUserIdAndStatus(long userId, Order.StatusType statusType, String findOrderByUserIdStatusSql) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(findOrderByUserIdStatusSql)) {
+            preparedStatement.setLong(1, userId);
+            preparedStatement.setString(2, statusType.toString());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return createListOrderFromResultSet(resultSet);
+        } catch (SQLException e) {
+            logger.error(e);
+            throw new DaoException(e);
+        }
     }
 }

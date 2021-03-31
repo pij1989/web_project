@@ -1,6 +1,9 @@
 package com.pozharsky.dmitri.controller.command.impl;
 
-import com.pozharsky.dmitri.controller.command.*;
+import com.pozharsky.dmitri.controller.command.Command;
+import com.pozharsky.dmitri.controller.command.PagePath;
+import com.pozharsky.dmitri.controller.command.Router;
+import com.pozharsky.dmitri.controller.command.SessionAttribute;
 import com.pozharsky.dmitri.exception.CommandException;
 import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.entity.Order;
@@ -12,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GetOrdersCommand implements Command {
@@ -22,10 +26,20 @@ public class GetOrdersCommand implements Command {
         try {
             HttpSession session = request.getSession();
             User user = (User) session.getAttribute(SessionAttribute.USER);
+            User.RoleType roleType = user.getRoleType();
             OrderService orderService = OrderServiceImpl.getInstance();
-            List<Order> orders = orderService.findNotNewOrders(user.getId());
+            List<Order> orders = new ArrayList<>();
+            Router router = null;
+            if (roleType == User.RoleType.USER) {
+                orders = orderService.findNotNewOrders(user.getId());
+                router = new Router(PagePath.ORDERS_USER);
+            } else {
+                if (roleType == User.RoleType.ADMIN) {
+                    orders = orderService.findAllOrders();
+                    router = new Router(PagePath.ORDERS_ADMIN);
+                }
+            }
             session.setAttribute(SessionAttribute.ORDERS, orders);
-            Router router = new Router(PagePath.ORDERS);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;
         } catch (ServiceException e) {

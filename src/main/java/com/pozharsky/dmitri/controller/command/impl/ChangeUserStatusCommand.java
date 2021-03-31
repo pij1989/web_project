@@ -25,14 +25,16 @@ public class ChangeUserStatusCommand implements Command {
             HttpSession session = request.getSession();
             logger.debug("User id: " + userId + " Status: " + status);
             UserService userService = UserServiceImpl.getInstance();
-            boolean result = userService.changeUserStatus(Long.parseLong(userId), User.StatusType.valueOf(status));
+            long id = Long.parseLong(userId);
+            User.StatusType statusType = User.StatusType.valueOf(status);
+            boolean result = userService.changeUserStatus(id, statusType);
             if (result) {
                 @SuppressWarnings("unchecked")
                 List<User> users = (List<User>) session.getAttribute(SessionAttribute.USERS);
                 List<User> updateUsers = users.stream()
                         .peek(user -> {
-                            if (user.getId() == Long.parseLong(userId)) {
-                                user.setStatusType(User.StatusType.valueOf(status));
+                            if (user.getId() == id) {
+                                user.setStatusType(statusType);
                             }
                         })
                         .collect(Collectors.toList());

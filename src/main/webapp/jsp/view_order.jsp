@@ -53,7 +53,7 @@
                 <tr>
                     <td colspan="4">
                         <div class="d-flex justify-content-end">
-                            <h5><fmt:message key="order.button.total_cost"/> <ctg:formatCurrency value="${order.cost}"/></h5>
+                            <h5><fmt:message key="order.button.total_cost"/> <ctg:formatCurrency value="${viewOrder.cost}"/></h5>
                         </div>
                     </td>
                 </tr>

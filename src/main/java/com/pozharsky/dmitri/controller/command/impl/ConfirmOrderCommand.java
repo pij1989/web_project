@@ -34,7 +34,7 @@ public class ConfirmOrderCommand implements Command {
             OrderService orderService = OrderServiceImpl.getInstance();
             Router router;
             if (statusType == Order.StatusType.PROCESSING) {
-                if (orderService.confirmOrder(order.getId(), deliveryForm, Order.StatusType.PROCESSING)) {
+                if (orderService.confirmNewOrder(order.getId(), deliveryForm, Order.StatusType.PROCESSING)) {
                     session.removeAttribute(SessionAttribute.ORDER);
                     session.removeAttribute(SessionAttribute.ORDER_PRODUCTS);
                     session.setAttribute(SessionAttribute.CONFIRM_ORDER_SUCCESS, true);

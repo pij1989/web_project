@@ -121,6 +121,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> findUserById(long id) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            UserDao userDao = new UserDao();
+            transactionManager.init(userDao);
+            return userDao.findById(id);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
     public Optional<User> findUserByEmail(String email) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {

@@ -207,4 +207,34 @@
             default character set = utf8;
         </sql>
     </changeSet>
+
+    <changeSet id="19" author="Dmitri">
+        <sql>
+            alter table `deliveries`
+            drop foreign key `deliveries_orders_id_fk`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="20" author="Dmitri">
+        <sql>
+            alter table `deliveries`
+            add constraint `deliveries_orders_id_fk`
+            foreign key (`order_id`) references `orders` (`id`) on delete cascade;
+        </sql>
+    </changeSet>
+
+    <changeSet id="21" author="Dmitri">
+        <sql>
+            alter table `order_products`
+            drop foreign key `order_products_orders_id_fk`;
+        </sql>
+    </changeSet>
+
+    <changeSet id="22" author="Dmitri">
+        <sql>
+            alter table `order_products`
+            add constraint `order_products_orders_id_fk`
+            foreign key (`order_id`) references `orders` (`id`) on delete cascade;
+        </sql>
+    </changeSet>
 </databaseChangeLog>

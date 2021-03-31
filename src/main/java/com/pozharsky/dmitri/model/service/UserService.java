@@ -15,6 +15,8 @@ public interface UserService {
 
     boolean changeUserStatus(long id, User.StatusType statusType) throws ServiceException;
 
+    Optional<User> findUserById(long id) throws ServiceException;
+
     Optional<User> findUserByEmail(String email) throws ServiceException;
 
     List<User> findAllUsers() throws ServiceException;

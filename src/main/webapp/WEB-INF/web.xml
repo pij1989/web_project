@@ -15,10 +15,10 @@
         <error-code>404</error-code>
         <location>/jsp/errors/error404.jsp</location>
     </error-page>
-    <error-page>
+   <!-- <error-page>
         <error-code>500</error-code>
         <location>/jsp/errors/error500.jsp</location>
-    </error-page>
+    </error-page>-->
     <jsp-config>
         <taglib>
             <taglib-uri>custom_tag</taglib-uri>

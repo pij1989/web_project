@@ -11,6 +11,9 @@ public class RequestAttribute {
     public static final String SEARCH_PRODUCT = "searchProduct";
     public static final String ORDER_PRODUCTS = "orderProducts";
     public static final String ORDER = "order";
+    public static final String VIEW_ORDER = "viewOrder";
+    public static final String DELIVERY = "delivery";
+    public static final String USER = "user";
 
     private RequestAttribute() {
     }

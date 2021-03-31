@@ -53,6 +53,8 @@ public class SessionAttribute {
     public static final String ORDERS = "orders";
     public static final String DELETE_REVIEW_SUCCESS = "deleteReviewSuccess";
     public static final String DELETE_REVIEW_ERROR = "deleteReviewError";
+    public static final String DELETE_ORDER_SUCCESS = "deleteOrderSuccess";
+    public static final String DELETE_ORDER_ERROR = "deleteOrderError";
 
     private SessionAttribute() {
     }

@@ -43,9 +43,9 @@ public class RoleControlSecurityFilter implements Filter {
         getCommandMap.put(CommandType.SEARCH_PRODUCT, List.of(User.RoleType.ADMIN, User.RoleType.USER));
         getCommandMap.put(CommandType.VIEW_PRODUCT, List.of(User.RoleType.USER));
         getCommandMap.put(CommandType.FILTER_PRODUCT, List.of(User.RoleType.USER));
-        getCommandMap.put(CommandType.GET_ORDERS, List.of(User.RoleType.USER));
+        getCommandMap.put(CommandType.GET_ORDERS, List.of(User.RoleType.USER, User.RoleType.ADMIN));
         getCommandMap.put(CommandType.VIEW_CART, List.of(User.RoleType.USER));
-        getCommandMap.put(CommandType.VIEW_ORDER, List.of(User.RoleType.USER));
+        getCommandMap.put(CommandType.VIEW_ORDER, List.of(User.RoleType.USER, User.RoleType.ADMIN));
         getCommandMap.put(CommandType.ARRANGE_ORDER, List.of(User.RoleType.USER));
         getCommandMap.put(CommandType.CANCEL_ARRANGE_ORDER, List.of(User.RoleType.USER));
         postCommandMap.put(CommandType.CONFIRM_ORDER, List.of(User.RoleType.USER));
@@ -71,6 +71,8 @@ public class RoleControlSecurityFilter implements Filter {
         postCommandMap.put(CommandType.ADD_PRODUCT_TO_ORDER, List.of(User.RoleType.USER));
         postCommandMap.put(CommandType.DELETE_PRODUCT_FROM_ORDER, List.of(User.RoleType.USER));
         postCommandMap.put(CommandType.CHANGE_AMOUNT_PRODUCT_IN_ORDER, List.of(User.RoleType.USER));
+        postCommandMap.put(CommandType.CHANGE_ORDER_STATUS, List.of(User.RoleType.ADMIN));
+        postCommandMap.put(CommandType.DELETE_ORDER, List.of(User.RoleType.ADMIN));
     }
 
     @Override

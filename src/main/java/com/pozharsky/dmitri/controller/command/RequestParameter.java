@@ -44,6 +44,7 @@ public class RequestParameter {
     public static final String PHONE = "phone";
     public static final String ORDER_ID = "orderId";
     public static final String REVIEW_ID = "reviewId";
+    public static final String ORDER_STATUS = "orderStatus";
 
     private RequestParameter() {
     }

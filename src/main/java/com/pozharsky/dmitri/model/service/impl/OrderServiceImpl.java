@@ -58,6 +58,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> findAllOrders() throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            OrderDao orderDao = new OrderDao();
+            transactionManager.init(orderDao);
+            return orderDao.findAll();
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
     public Optional<Order> findOrderById(long orderId) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
@@ -183,6 +198,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Optional<Delivery> findOrderDelivery(long orderId) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            DeliveryDao deliveryDao = new DeliveryDao();
+            transactionManager.init(deliveryDao);
+            return deliveryDao.findByOrderId(orderId);
+        } catch (DaoException e) {
+            logger.error(e);
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.end();
+        }
+    }
+
+    @Override
     public Optional<OrderProduct> deleteProductFromOrder(String orderProductId, Order order) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {
@@ -269,7 +299,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean confirmOrder(long orderId, Map<String, String> deliveryForm, Order.StatusType orderStatusType) throws ServiceException {
+    public boolean confirmNewOrder(long orderId, Map<String, String> deliveryForm, Order.StatusType orderStatusType) throws ServiceException {
         if (!DeliveryValidator.isValidDeliveryForm(deliveryForm)) {
             return false;
         }
@@ -282,10 +312,29 @@ public class OrderServiceImpl implements OrderService {
             Delivery delivery = DeliveryCreator.createDelivery(deliveryForm, orderId);
             LocalDateTime localDateTime = LocalDateTime.now();
             if (deliveryDao.create(delivery)) {
-                isConfirm = orderDao.updateOrderStatusById(orderId, localDateTime, orderStatusType);
+                isConfirm = orderDao.updateStatusAndTimeCreateById(orderId, localDateTime, orderStatusType);
             }
             transactionManager.commit();
             return isConfirm;
+        } catch (DaoException e) {
+            logger.error(e);
+            transactionManager.rollback();
+            throw new ServiceException(e);
+        } finally {
+            transactionManager.endTransaction();
+        }
+    }
+
+    @Override
+    public boolean changeOrderStatus(long orderId, Order.StatusType statusType) throws ServiceException {
+        TransactionManager transactionManager = new TransactionManager();
+        try {
+            boolean isChange;
+            OrderDao orderDao = new OrderDao();
+            transactionManager.initTransaction(orderDao);
+            isChange = orderDao.updateStatusById(orderId, statusType);
+            transactionManager.commit();
+            return isChange;
         } catch (DaoException e) {
             logger.error(e);
             transactionManager.rollback();
