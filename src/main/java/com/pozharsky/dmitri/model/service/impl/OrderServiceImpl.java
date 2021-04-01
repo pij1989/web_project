@@ -337,8 +337,8 @@ public class OrderServiceImpl implements OrderService {
             if (statusType == Order.StatusType.CANCELED) {
                 canceledOrder(orderId, statusType, orderProductDao, productDao, orderDao);
             }
-            if (statusType == Order.StatusType.PROCESSING) {
-                processOrder(orderId, statusType, orderProductDao, productDao, orderDao);
+            if (statusType == Order.StatusType.PROCESSING || statusType == Order.StatusType.DELIVERED) {
+                processOrder(orderId, orderProductDao, productDao, orderDao);
             }
             isChange = orderDao.updateStatusById(orderId, statusType);
             transactionManager.commit();
@@ -408,13 +408,13 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    private void processOrder(long orderId, Order.StatusType statusType, OrderProductDao orderProductDao,
+    private void processOrder(long orderId, OrderProductDao orderProductDao,
                               ProductDao productDao, OrderDao orderDao) throws DaoException {
         Optional<Order> optionalOrder = orderDao.findById(orderId);
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
             Order.StatusType status = order.getStatusType();
-            if (status != statusType && status == Order.StatusType.CANCELED) {
+            if (status == Order.StatusType.CANCELED) {
                 List<OrderProduct> orderProducts = orderProductDao.findByOrderId(orderId);
                 for (OrderProduct orderProduct : orderProducts) {
                     long productId = orderProduct.getProduct().getId();
@@ -423,16 +423,5 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
         }
-    }
-
-    private boolean compareOrderStatus(long orderId, Order.StatusType statusType, OrderDao orderDao) throws DaoException {
-        Optional<Order> optionalOrder = orderDao.findById(orderId);
-        boolean isCompared = false;
-        if (optionalOrder.isPresent()) {
-            Order order = optionalOrder.get();
-            Order.StatusType status = order.getStatusType();
-            isCompared = (statusType == Order.StatusType.PROCESSING && status == Order.StatusType.CANCELED);
-        }
-        return isCompared;
     }
 }

@@ -74,12 +74,11 @@
                                                 <input type="hidden" name="orderId"
                                                        value="<c:out value="${order.id}"/>">
                                                 <select name="orderStatus" class="form-control"
-                                                        style="width: 143px;" <c:if test="${order.statusType eq 'NEW'}">disabled</c:if>>
-                                                    <option
-                                                            <c:if test="${order.statusType eq 'NEW'}">selected</c:if>
-                                                            disabled>
-                                                        NEW
-                                                    </option>
+                                                        style="width: 143px;"
+                                                        <c:if test="${order.statusType eq 'NEW'}">disabled</c:if>>
+                                                    <c:if test="${order.statusType eq 'NEW'}">
+                                                        <option selected disabled>NEW</option>
+                                                    </c:if>
                                                     <option
                                                             <c:if test="${order.statusType eq 'PROCESSING'}">selected</c:if>
                                                             value="PROCESSING">
@@ -104,7 +103,8 @@
                                         <div class="d-flex justify-content-end">
                                             <form action="${pageContext.request.contextPath}/controller">
                                                 <input type="hidden" name="command" value="view_order">
-                                                <input type="hidden" name="orderId" value="<c:out value="${order.id}"/>">
+                                                <input type="hidden" name="orderId"
+                                                       value="<c:out value="${order.id}"/>">
                                                 <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
                                                     <span><i class="far fa-eye"></i> View</span>
                                                 </button>
@@ -113,17 +113,19 @@
                                     </td>
 
                                     <td>
-                                        <div class="d-flex justify-content-end">
-                                            <form method="post" action="${pageContext.request.contextPath}/controller">
-                                                <input type="hidden" name="command" value="delete_order">
-                                                <input type="hidden" name="orderId" value="<c:out value="${order.id}"/>">
-                                                <button class="btn btn-outline-danger mx-2 my-2 my-sm-0" type="submit">
-                                                    <span><i class="fas fa-trash"></i> Delete</span>
-                                                </button>
-                                            </form>
-                                        </div>
+                                        <c:if test="${order.statusType eq 'CANCELED' or order.statusType eq'DELIVERED'}">
+                                            <div class="d-flex justify-content-end">
+                                                <form method="post" action="${pageContext.request.contextPath}/controller">
+                                                    <input type="hidden" name="command" value="delete_order">
+                                                    <input type="hidden" name="orderId"
+                                                           value="<c:out value="${order.id}"/>">
+                                                    <button class="btn btn-outline-danger mx-2 my-2 my-sm-0" type="submit">
+                                                        <span><i class="fas fa-trash"></i> Delete</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </c:if>
                                     </td>
-
                                 </tr>
                             </c:forEach>
                             </tbody>

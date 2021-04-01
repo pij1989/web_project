@@ -15,7 +15,7 @@ import java.util.Optional;
 public class OrderDao extends AbstractDao<Order> {
     private static final Logger logger = LogManager.getLogger(OrderDao.class);
     private static final String CREATE_ORDER_SQL = "INSERT INTO orders(time_create, cost, order_status_id, user_id) VALUES (?,?,?,?);";
-    private static final String FIND_ALL_ORDER_SQL = "SELECT o.id, o.time_create, o.cost, os.order_status_name, o.user_id FROM orders AS o JOIN orders_status AS os on o.order_status_id = os.id;";
+    private static final String FIND_ALL_ORDER_SQL = "SELECT o.id, o.time_create, o.cost, os.order_status_name, o.user_id FROM orders AS o JOIN orders_status AS os on o.order_status_id = os.id ORDER BY time_create DESC;";
     private static final String FIND_ORDER_BY_ID_SQL = "SELECT o.id, o.time_create, o.cost, os.order_status_name, o.user_id FROM orders AS o JOIN orders_status AS os on o.order_status_id = os.id WHERE o.id = ?;";
     private static final String FIND_STATUS_ID_BY_NAME_SQL = "SELECT id FROM orders_status WHERE order_status_name = ?;";
     private static final String FIND_ORDER_BY_USER_ID_STATUS_SQL = "SELECT o.id, o.time_create, o.cost, os.order_status_name, o.user_id FROM orders AS o JOIN orders_status AS os on o.order_status_id = os.id WHERE o.user_id = ? AND os.order_status_name = ?;";
