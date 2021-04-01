@@ -74,10 +74,10 @@
                                                 <input type="hidden" name="orderId"
                                                        value="<c:out value="${order.id}"/>">
                                                 <select name="orderStatus" class="form-control"
-                                                        style="width: 143px;">
+                                                        style="width: 143px;" <c:if test="${order.statusType eq 'NEW'}">disabled</c:if>>
                                                     <option
                                                             <c:if test="${order.statusType eq 'NEW'}">selected</c:if>
-                                                            value="NEW">
+                                                            disabled>
                                                         NEW
                                                     </option>
                                                     <option
@@ -86,9 +86,14 @@
                                                         PROCESSING
                                                     </option>
                                                     <option
-                                                            <c:if test="${order.statusType eq 'DELIVERY'}">selected</c:if>
-                                                            value="DELIVERY">
-                                                        DELIVERY
+                                                            <c:if test="${order.statusType eq 'DELIVERED'}">selected</c:if>
+                                                            value="DELIVERED">
+                                                        DELIVERED
+                                                    </option>
+                                                    <option
+                                                            <c:if test="${order.statusType eq 'CANCELED'}">selected</c:if>
+                                                            value="CANCELED">
+                                                        CANCELED
                                                     </option>
                                                 </select>
                                             </div>

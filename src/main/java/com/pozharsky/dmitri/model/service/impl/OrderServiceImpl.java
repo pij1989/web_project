@@ -330,8 +330,16 @@ public class OrderServiceImpl implements OrderService {
         TransactionManager transactionManager = new TransactionManager();
         try {
             boolean isChange;
+            ProductDao productDao = new ProductDao();
+            OrderProductDao orderProductDao = new OrderProductDao();
             OrderDao orderDao = new OrderDao();
-            transactionManager.initTransaction(orderDao);
+            transactionManager.initTransaction(orderDao, productDao, orderProductDao);
+            if (statusType == Order.StatusType.CANCELED) {
+                canceledOrder(orderId, statusType, orderProductDao, productDao, orderDao);
+            }
+            if (statusType == Order.StatusType.PROCESSING) {
+                processOrder(orderId, statusType, orderProductDao, productDao, orderDao);
+            }
             isChange = orderDao.updateStatusById(orderId, statusType);
             transactionManager.commit();
             return isChange;
@@ -381,5 +389,50 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal difTotalPrice = calculateCost(difAmountProduct, price);
         orderDao.increaseCostById(difTotalPrice, orderId);
         return difTotalPrice;
+    }
+
+    private void canceledOrder(long orderId, Order.StatusType statusType, OrderProductDao orderProductDao,
+                               ProductDao productDao, OrderDao orderDao) throws DaoException {
+        Optional<Order> optionalOrder = orderDao.findById(orderId);
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            Order.StatusType status = order.getStatusType();
+            if (status != statusType) {
+                List<OrderProduct> orderProducts = orderProductDao.findByOrderId(orderId);
+                for (OrderProduct orderProduct : orderProducts) {
+                    long productId = orderProduct.getProduct().getId();
+                    int amountProduct = orderProduct.getAmount();
+                    productDao.increaseAmountById(amountProduct, productId);
+                }
+            }
+        }
+    }
+
+    private void processOrder(long orderId, Order.StatusType statusType, OrderProductDao orderProductDao,
+                              ProductDao productDao, OrderDao orderDao) throws DaoException {
+        Optional<Order> optionalOrder = orderDao.findById(orderId);
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            Order.StatusType status = order.getStatusType();
+            if (status != statusType && status == Order.StatusType.CANCELED) {
+                List<OrderProduct> orderProducts = orderProductDao.findByOrderId(orderId);
+                for (OrderProduct orderProduct : orderProducts) {
+                    long productId = orderProduct.getProduct().getId();
+                    int amountProduct = orderProduct.getAmount();
+                    productDao.decreaseAmountById(amountProduct, productId);
+                }
+            }
+        }
+    }
+
+    private boolean compareOrderStatus(long orderId, Order.StatusType statusType, OrderDao orderDao) throws DaoException {
+        Optional<Order> optionalOrder = orderDao.findById(orderId);
+        boolean isCompared = false;
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            Order.StatusType status = order.getStatusType();
+            isCompared = (statusType == Order.StatusType.PROCESSING && status == Order.StatusType.CANCELED);
+        }
+        return isCompared;
     }
 }

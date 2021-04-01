@@ -105,10 +105,9 @@
 
                         <div class="form-group">
                             <label for="uploadImage"><fmt:message key="product.upload_image.label"/></label>
-                            <input type="file" name="image" class="form-control-file" id="uploadImage">
+                            <input type="file" name="image" class="form-control-file" id="uploadImage"
+                                   accept="image/png, image/jpeg">
                         </div>
-                        <%--                        <c:remove var="productForm" scope="session"/>--%>
-
                         <div class="create-item">
                             <button type="submit" id="submit" class="btn btn-primary">
                                 <fmt:message key="product.edit.submit"/>

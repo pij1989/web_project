@@ -8,7 +8,8 @@ public class Order extends Entity {
     public enum StatusType {
         NEW,
         PROCESSING,
-        DELIVERY
+        DELIVERED,
+        CANCELED
     }
 
     private long id;

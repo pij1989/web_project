@@ -99,9 +99,11 @@
                                         <label for="username"><fmt:message key="registration.username.label"/></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text bg-white"><i class="fas fa-user"></i></span>
+                                                <span class="input-group-text bg-white"><i
+                                                        class="fas fa-user"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" value="<c:out value="${user.username}"/>"
+                                            <input type="text" class="form-control"
+                                                   value="<c:out value="${user.username}"/>"
                                                    id="username" disabled>
                                         </div>
                                     </div>
@@ -111,7 +113,8 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text bg-white"><i class="fas fa-envelope"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" value="<c:out value="${user.email}"/>"
+                                            <input type="text" class="form-control"
+                                                   value="<c:out value="${user.email}"/>"
                                                    id="email" disabled>
                                         </div>
                                     </div>
@@ -135,14 +138,7 @@
                                     <div class="d-flex">
                                         <img src="data:image/jpg;base64,<ctg:encodeBytes bytes="${orderProduct.product.image}"/>"
                                              style="width: 50%"/>
-                                        <form action="${pageContext.request.contextPath}/controller">
-                                            <input type="hidden" name="command" value="view_product">
-                                            <input type="hidden" name="productId"
-                                                   value="<c:out value="${orderProduct.product.id}"/>">
-                                            <button type="submit" class="btn btn-link px-0 ml-1">
-                                                <p><c:out value="${orderProduct.product.name}"/></p>
-                                            </button>
-                                        </form>
+                                        <p class="pl-2"><c:out value="${orderProduct.product.name}"/></p>
                                     </div>
                                 </td>
 

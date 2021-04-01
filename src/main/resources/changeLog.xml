@@ -7,7 +7,7 @@
 
     <changeSet id="1" author="Dmitri">
         <sql>
-            create table if not exists `roles`(
+            create table `roles`(
             `id` int not null primary key auto_increment,
             `role_name` enum ('ADMIN','USER','GUEST'))
             default character set = utf8;
@@ -25,7 +25,7 @@
 
     <changeSet id="3" author="Dmitri">
         <sql>
-            create table if not exists `status`(
+            create table `status`(
             `id` int not null primary key auto_increment,
             `status_name` enum ('ACTIVE','BLOCKED','WAIT_ACTIVE'))
             default character set = utf8;
@@ -42,7 +42,7 @@
 
     <changeSet id="5" author="Dmitri">
         <sql>
-            create table if not exists `users`(
+            create table `users`(
             `id` bigint not null primary key auto_increment,
             `first_name` varchar(128) not null,
             `last_name` varchar(128) not null,
@@ -61,7 +61,7 @@
 
     <changeSet id="6" author="Dmitri">
         <sql>
-            create table if not exists `tokens`(
+            create table `tokens`(
             `id` bigint not null primary key auto_increment,
             `token_value` varchar(128) not null,
             `time_create` datetime not null,
@@ -83,7 +83,7 @@
 
     <changeSet id="8" author="Dmitri">
         <sql>
-            create table if not exists `categories`(
+            create table `categories`(
             `id` bigint not null primary key auto_increment,
             `category_name` varchar(128) not null)
             default character set = utf8;
@@ -92,7 +92,7 @@
 
     <changeSet id="9" author="Dmitri">
         <sql>
-            create table if not exists `products`(
+            create table `products`(
             `id` bigint not null primary key auto_increment,
             `product_name` varchar(255) not null,
             `description` text,
@@ -116,7 +116,7 @@
 
     <changeSet id="11" author="Dmitri">
         <sql>
-            create table if not exists `reviews` (
+            create table `reviews` (
             `id` bigint not null primary key auto_increment,
             `comment` text not null,
             `rating` int not null,
@@ -133,65 +133,54 @@
 
     <changeSet id="12" author="Dmitri">
         <sql>
-            create table if not exists `orders` (
-            `id` bigint not null primary key auto_increment,
-            `time_create` datetime not null,
-            `cost` decimal(10,2) not null,
-            `order_status_id` int not null,
-            `user_id` bigint not null,
-            constraint `orders_users_id_fk`
-            foreign key (`user_id`) references `users` (`id`))
+            create table `orders_status`(
+            `id` int not null primary key auto_increment,
+            `order_status_name` enum ('NEW','PROCESSING','DELIVERED','CANCELED'))
             default character set = utf8;
         </sql>
     </changeSet>
 
     <changeSet id="13" author="Dmitri">
         <sql>
-            create table if not exists `orders_status`(
-            `id` int not null primary key auto_increment,
-            `order_status_name` enum ('NEW','PROCESSING','DELIVERY'))
-            default character set = utf8;
+            insert into `orders_status` (`order_status_name`) values ('NEW');
+            insert into `orders_status` (`order_status_name`) values ('PROCESSING');
+            insert into `orders_status` (`order_status_name`) values ('DELIVERED');
+            insert into `orders_status` (`order_status_name`) values ('CANCELED');
         </sql>
     </changeSet>
 
     <changeSet id="14" author="Dmitri">
         <sql>
-            insert into `orders_status` (`order_status_name`) values ('NEW');
-            insert into `orders_status` (`order_status_name`) values ('PROCESSING');
-            insert into `orders_status` (`order_status_name`) values ('DELIVERY');
+            create table `orders` (
+            `id` bigint not null primary key auto_increment,
+            `time_create` datetime not null,
+            `cost` decimal(10,2) not null,
+            `order_status_id` int not null,
+            `user_id` bigint not null,
+            constraint `orders_users_id_fk`
+            foreign key (`user_id`) references `users` (`id`),
+            constraint `orders_orders_status_id_fk`
+            foreign key (`order_status_id`) references `orders_status` (`id`))
+            default character set = utf8;
         </sql>
     </changeSet>
 
     <changeSet id="15" author="Dmitri">
         <sql>
-            alter table `orders`
-            add constraint `orders_orders_status_id_fk`
-            foreign key (`order_status_id`) references `orders_status` (`id`);
-        </sql>
-    </changeSet>
-
-    <changeSet id="16" author="Dmitri">
-        <sql>
-            create table if not exists `order_products` (
+            create table `order_products` (
             `id` bigint not null primary key auto_increment,
-            `amount` int not null,
+            `amount_product` int not null,
             `order_id` bigint not null,
             `product_id` bigint not null,
             constraint `order_products_orders_id_fk`
-            foreign key (`order_id`) references `orders` (`id`),
+            foreign key (`order_id`) references `orders` (`id`) on delete cascade,
             constraint `order_products_products_id_fk`
             foreign key (`product_id`) references `products` (`id`))
             default character set = utf8;
         </sql>
     </changeSet>
 
-    <changeSet id="17" author="Dmitri">
-        <sql>
-            alter table `order_products` change `amount` `amount_product` int not null;
-        </sql>
-    </changeSet>
-
-    <changeSet id="18" author="Dmitri">
+    <changeSet id="16" author="Dmitri">
         <sql>
             create table `deliveries` (
             `id` bigint not null primary key auto_increment,
@@ -203,38 +192,176 @@
             `phone_number` varchar(15) not null,
             `order_id` bigint not null,
             constraint `deliveries_orders_id_fk`
-            foreign key (`order_id`) references `orders` (`id`))
+            foreign key (`order_id`) references `orders` (`id`) on delete cascade)
             default character set = utf8;
         </sql>
     </changeSet>
 
-    <changeSet id="19" author="Dmitri">
+    <changeSet id="17" author="Dmitri">
         <sql>
-            alter table `deliveries`
-            drop foreign key `deliveries_orders_id_fk`;
+            insert into categories(`category_name`) values ('Processor');
+            insert into categories(`category_name`) values ('Motherboard');
+            insert into categories(`category_name`) values ('Videocard');
         </sql>
     </changeSet>
 
-    <changeSet id="20" author="Dmitri">
-        <sql>
-            alter table `deliveries`
-            add constraint `deliveries_orders_id_fk`
-            foreign key (`order_id`) references `orders` (`id`) on delete cascade;
-        </sql>
-    </changeSet>
+    <changeSet id="18" author="Dmitri">
+        <insert tableName="products">
+            <column name="product_name">AMD Ryzen 5 3600</column>
+            <column name="description">Matisse, AM4, 6 core, frequency 4.2/3.6 Ghz, cache 3 MB + 32 MB, technical process 7 nm, TDP 65W</column>
+            <column name="price">634.07</column>
+            <column name="amount">20</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/AMD_Ryzen_5_3600.jpeg"/>
+            <column name="time_create">2021-03-28 10:07:00</column>
+            <column name="category_id">1</column>
+        </insert>
 
-    <changeSet id="21" author="Dmitri">
-        <sql>
-            alter table `order_products`
-            drop foreign key `order_products_orders_id_fk`;
-        </sql>
-    </changeSet>
+        <insert tableName="products">
+            <column name="product_name">Intel Core i5-10400F</column>
+            <column name="description">Comet Lake, LGA1200, 6 core, frequency 4.3/2.9 Ghz, cache 12 MB, technical process 14 nm, TDP 65W</column>
+            <column name="price">477.70</column>
+            <column name="amount">25</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/Intel_Core i5_10400F.jpeg"/>
+            <column name="time_create">2021-03-28 11:09:00</column>
+            <column name="category_id">1</column>
+        </insert>
 
-    <changeSet id="22" author="Dmitri">
-        <sql>
-            alter table `order_products`
-            add constraint `order_products_orders_id_fk`
-            foreign key (`order_id`) references `orders` (`id`) on delete cascade;
-        </sql>
+        <insert tableName="products">
+            <column name="product_name">Intel Core i5-9400F</column>
+            <column name="description">Coffee Lake, LGA1151 v2, 6 core, frequency 4.1/2.9 Ghz, cache 9 MB, technical process 14 nm, TDP 65W</column>
+            <column name="price">448.21</column>
+            <column name="amount">20</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/Intel_Core i5_9400F.jpeg"/>
+            <column name="time_create">2021-03-27 12:11:00</column>
+            <column name="category_id">1</column>
+        </insert>
+
+        <insert tableName="products">
+            <column name="product_name">AMD Ryzen 3 Pro 3200G</column>
+            <column name="description">Picasso, AM4, 4 core, frequency 4/3.6 Ghz, cache 2 MB + 4 MB, technical process 12 nm, TDP 65W</column>
+            <column name="price">343.90</column>
+            <column name="amount">30</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/AMD_Ryzen_PRO.jpeg"/>
+            <column name="time_create">2021-03-27 12:12:00</column>
+            <column name="category_id">1</column>
+        </insert>
+
+        <insert tableName="products">
+            <column name="product_name">Intel Core i7-9700K</column>
+            <column name="description">Coffee Lake, LGA1151 v2, 8 ядер, частота 4.9/3.6 ГГц, кэш 12 МБ, техпроцесс 14 нм, TDP 95W</column>
+            <column name="price">979.58</column>
+            <column name="amount">35</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/Intel_Core i7_9700K.jpeg"/>
+            <column name="time_create">2021-03-28 13:01:00</column>
+            <column name="category_id">1</column>
+        </insert>
+
+        <insert tableName="products">
+            <column name="product_name">Intel Pentium Gold G6600</column>
+            <column name="description">Comet Lake, LGA1200, 2 ядра, частота 4.2 ГГц, кэш 4 МБ, техпроцесс 14 нм, TDP 58W</column>
+            <column name="price">340.32</column>
+            <column name="amount">50</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/Intel Pentium Gold G6600.jpeg"/>
+            <column name="time_create">2021-03-31 14:01:00</column>
+            <column name="category_id">1</column>
+        </insert>
+
+       <insert tableName="products">
+           <column name="product_name">Intel Xeon E-2226G</column>
+           <column name="description">Coffee Lake, LGA1151 v2, 6 ядер, частота 4.7/3.4 ГГц, кэш 12 МБ, техпроцесс 14 нм, TDP 80W</column>
+           <column name="price">848.57</column>
+           <column name="amount">15</column>
+           <column name="status">1</column>
+           <column name="image" type="mediumblob" valueBlobFile="/img/Intel Xeon E-2226G (BOX).jpeg"/>
+           <column name="time_create">2021-03-31 14:03:00</column>
+           <column name="category_id">1</column>
+       </insert>
+
+        <insert tableName="products">
+            <column name="product_name">Gigabyte B450M S2H</column>
+            <column name="description">mATX, сокет AMD AM4, чипсет AMD B450, память 2xDDR4, слоты: 1xPCIe x16, 2xPCIe x1, 1xM.2</column>
+            <column name="price">230.32</column>
+            <column name="amount">15</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/Gigabyte B450M S2H.jpeg"/>
+            <column name="time_create">2021-03-30 15:20:00</column>
+            <column name="category_id">2</column>
+        </insert>
+
+        <insert tableName="products">
+            <column name="product_name">ASRock B460M Pro4</column>
+            <column name="description">mATX, сокет Intel LGA1200, чипсет Intel B460, память 4xDDR4, слоты: 2xPCIe x16, 1xPCIe x1, 2xM.2</column>
+            <column name="price">377.54</column>
+            <column name="amount">10</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/ASRock B460M Pro4.jpeg"/>
+            <column name="time_create">2021-03-31 15:20:00</column>
+            <column name="category_id">2</column>
+        </insert>
+
+        <insert tableName="products">
+            <column name="product_name">ASUS TUF Gaming B550M-Plus</column>
+            <column name="description">mATX, сокет AMD AM4, чипсет AMD B550, память 4xDDR4, слоты: 2xPCIe x16, 1xPCIe x1, 2xM.2</column>
+            <column name="price">495.50</column>
+            <column name="amount">30</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/ASUS TUF Gaming B550M-Plus.jpeg"/>
+            <column name="time_create">2021-03-31 15:23:00</column>
+            <column name="category_id">2</column>
+        </insert>
+
+        <insert tableName="products">
+            <column name="product_name">Palit GeForce GTX 1650 GP 4GB GDDR6 NE6165001BG1-1175A</column>
+            <column name="description">NVIDIA GeForce GTX 1650, базовая частота 1410 МГц, макс. частота 1590 МГц, 896sp, частота памяти 12000 МГц,
+                128 бит, доп. питание: 6 pin, 2 слота, HDMI, DisplayPort</column>
+            <column name="price">740.00</column>
+            <column name="amount">10</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/Palit GeForce GTX 1650 GP 4GB GDDR6 NE6165001BG1-1175A.jpeg"/>
+            <column name="time_create">2021-03-31 14:07:00</column>
+            <column name="category_id">3</column>
+        </insert>
+
+        <insert tableName="products">
+            <column name="product_name">MSI GeForce GTX 1660 Super Ventus XS OC 6GB GDDR6</column>
+            <column name="description">NVIDIA GeForce GTX 1660 Super, базовая частота 1530 МГц, макс. частота 1815 МГц, 1408sp, частота памяти
+                14000 МГц, 192 бит, доп. питание: 8 pin, 2 слота, HDMI, DisplayPort</column>
+            <column name="price">1977.93</column>
+            <column name="amount">15</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/MSI GeForce GTX 1660 Super Ventus XS OC 6GB GDDR6.jpeg"/>
+            <column name="time_create">2021-03-30 17:09:00</column>
+            <column name="category_id">3</column>
+        </insert>
+
+        <insert tableName="products">
+            <column name="product_name">MSI Geforce GTX 1050 Ti OC 4GB GDDR5</column>
+            <column name="description">NVIDIA GeForce GTX 1050 Ti, базовая частота 1341 МГц, макс. частота 1455 МГц, 768sp, частота памяти 7008
+                МГц, 128 бит, доп. питание: нет, 2 слота, DVI, HDMI, DisplayPort</column>
+            <column name="price">803.02</column>
+            <column name="amount">25</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/MSI Geforce GTX 1050 Ti OC 4GB GDDR5 [GTX 1050 TI 4GT OC].jpeg"/>
+            <column name="time_create">2021-03-30 17:25:00</column>
+            <column name="category_id">3</column>
+        </insert>
+
+        <insert tableName="products">
+            <column name="product_name">ASUS Mining Radeon RX 470 4GB GDDR5</column>
+            <column name="description">AMD Radeon RX 470, базовая частота 926 МГц, макс. частота 1206 МГц, 2048sp, частота памяти 7000 МГц, 256
+                бит, доп. питание: 8 pin, 2 слота, DVI</column>
+            <column name="price">932.22</column>
+            <column name="amount">30</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/MSI Geforce GTX 1050 Ti OC 4GB GDDR5 [GTX 1050 TI 4GT OC].jpeg"/>
+            <column name="time_create">2021-03-30 18:43:00</column>
+            <column name="category_id">3</column>
+        </insert>
     </changeSet>
 </databaseChangeLog>
