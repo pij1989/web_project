@@ -8,6 +8,7 @@ public enum CommandType {
     LOGIN(new LoginCommand()),
     REGISTER(new RegistrationCommand()),
     ACTIVATE_REGISTRATION(new ActivateRegistrationCommand()),
+    UNBLOCK_USER(new UnblockUserCommand()),
     LOGOUT(new LogoutCommand()),
     CHANGE_USER_STATUS(new ChangeUserStatusCommand()),
     CREATE_PRODUCT(new CreateProductCommand()),

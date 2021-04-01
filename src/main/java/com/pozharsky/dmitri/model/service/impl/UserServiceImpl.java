@@ -172,12 +172,16 @@ public class UserServiceImpl implements UserService {
             boolean isBlocked = false;
             if (blockingCount.get() == ZERO) {
                 UserDao userDao = new UserDao();
-                transactionManager.initTransaction(userDao);
+                TokenDao tokenDao = new TokenDao();
+                transactionManager.initTransaction(userDao, tokenDao);
                 Optional<User> optionalUser = userDao.findUserByEmail(email);
                 if (optionalUser.isPresent()) {
                     User user = optionalUser.get();
                     if (!user.getStatusType().equals(User.StatusType.BLOCKED)) {
-                        isBlocked = userDao.updateUserStatusById(user.getId(), User.StatusType.BLOCKED);
+                        if (userDao.updateUserStatusById(user.getId(), User.StatusType.BLOCKED)) {
+                            Token token = VerificationTokenCreator.createVerificationToken();
+                            isBlocked = tokenDao.create(token, user.getId());
+                        }
                     } else {
                         isBlocked = true;
                     }

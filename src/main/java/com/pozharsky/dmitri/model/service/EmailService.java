@@ -4,4 +4,6 @@ import com.pozharsky.dmitri.exception.ServiceException;
 
 public interface EmailService {
     void sendActivationEmail(String sendToEmail, String token) throws ServiceException;
+
+    void sendUnblockingEmail(String sendToEmail, String token) throws ServiceException;
 }

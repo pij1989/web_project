@@ -6,14 +6,8 @@ import com.pozharsky.dmitri.exception.ServiceException;
 import com.pozharsky.dmitri.model.entity.*;
 import com.pozharsky.dmitri.model.error.ApplicationError;
 import com.pozharsky.dmitri.model.error.ErrorType;
-import com.pozharsky.dmitri.model.service.CategoryService;
-import com.pozharsky.dmitri.model.service.OrderService;
-import com.pozharsky.dmitri.model.service.ProductService;
-import com.pozharsky.dmitri.model.service.UserService;
-import com.pozharsky.dmitri.model.service.impl.CategoryServiceImpl;
-import com.pozharsky.dmitri.model.service.impl.OrderServiceImpl;
-import com.pozharsky.dmitri.model.service.impl.ProductServiceImpl;
-import com.pozharsky.dmitri.model.service.impl.UserServiceImpl;
+import com.pozharsky.dmitri.model.service.*;
+import com.pozharsky.dmitri.model.service.impl.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -82,6 +76,13 @@ public class LoginCommand implements Command {
                     if (!userService.blockUser(email, blockingCount)) {
                         session.setAttribute(SessionAttribute.MISMATCHED_PASSWORD, true);
                     } else {
+                        TokenService tokenService = TokenServiceImpl.getInstance();
+                        Optional<Token> optionalToken = tokenService.findTokenByUserEmail(email);
+                        if (optionalToken.isPresent()) {
+                            Token token = optionalToken.get();
+                            EmailService emailService = EmailServiceImpl.getInstance();
+                            emailService.sendUnblockingEmail(email, token.getTokenValue());
+                        }
                         session.setAttribute(SessionAttribute.BLOCKED_USER, true);
                     }
                 }
