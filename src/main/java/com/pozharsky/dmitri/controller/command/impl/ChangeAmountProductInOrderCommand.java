@@ -28,25 +28,12 @@ public class ChangeAmountProductInOrderCommand implements Command {
             Order order = (Order) session.getAttribute(SessionAttribute.ORDER);
             OrderService orderService = OrderServiceImpl.getInstance();
             Optional<OrderProduct> optionalOrderProduct = orderService.changeAmountProductInOrder(orderProductId, amountProduct, order);
-            /*if (optionalOrderProduct.isPresent()) {
-                OrderProduct orderProduct = optionalOrderProduct.get();
-                @SuppressWarnings("unchecked")
-                List<OrderProduct> orderProducts = (List<OrderProduct>) session.getAttribute(SessionAttribute.ORDER_PRODUCTS);
-                orderProducts = orderProducts.stream()
-                        .peek(e -> {
-                            if (e.equals(orderProduct)) {
-                                int amount = Integer.parseInt(amountProduct);
-                                e.setAmount(amount);
-                            }
-                        })
-                        .collect(Collectors.toList());
+            if (optionalOrderProduct.isPresent()) {
+                List<OrderProduct> orderProducts = orderService.findProductInOrder(order.getId());
                 session.setAttribute(SessionAttribute.ORDER_PRODUCTS, orderProducts);
-
             } else {
-                //TODO: Add error massage to view_order page
-            }*/
-            List<OrderProduct> orderProducts = orderService.findProductInOrder(order.getId());
-            session.setAttribute(SessionAttribute.ORDER_PRODUCTS, orderProducts);
+                session.setAttribute(SessionAttribute.CHANGE_AMOUNT_PRODUCT_ERROR, true);
+            }
             Router router = new Router(PagePath.VIEW_CART, Router.Type.REDIRECT);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);
             return router;

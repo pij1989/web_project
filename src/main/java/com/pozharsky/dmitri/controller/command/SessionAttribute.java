@@ -55,6 +55,7 @@ public class SessionAttribute {
     public static final String DELETE_REVIEW_ERROR = "deleteReviewError";
     public static final String DELETE_ORDER_SUCCESS = "deleteOrderSuccess";
     public static final String DELETE_ORDER_ERROR = "deleteOrderError";
+    public static final String CHANGE_AMOUNT_PRODUCT_ERROR = "changeAmountError";
 
     private SessionAttribute() {
     }

@@ -78,6 +78,14 @@
             insert into `users`(`first_name`,`last_name`,`username`,`email`,`password`,`role_id`,`status_id`) values(
             'Dmitri','Pozharsky','admin',
             'admin@gmail.com','$2a$10$fD0kiEe4M8J52/kXXh8viuxMf4N7pf3fvOz6A646UNEZRYlgegpCm',1,1);
+
+            insert into `users`(`first_name`,`last_name`,`username`,`email`,`password`,`role_id`,`status_id`) values(
+            'Ivan','Ivanov','vaness',
+            'ivan@gmail.com','$2a$10$CNBz4P5dJ9BB9YHIlZRTw.Gi8U3xdLaKIfrLYi.waXSzgUjQSlKLO',2,1);
+
+            insert into `users`(`first_name`,`last_name`,`username`,`email`,`password`,`role_id`,`status_id`) values(
+            'Petr','Petrov','petro',
+            'petr@gmail.com','$2a$10$CNBz4P5dJ9BB9YHIlZRTw.Gi8U3xdLaKIfrLYi.waXSzgUjQSlKLO',2,1);
         </sql>
     </changeSet>
 
@@ -208,7 +216,9 @@
     <changeSet id="18" author="Dmitri">
         <insert tableName="products">
             <column name="product_name">AMD Ryzen 5 3600</column>
-            <column name="description">Matisse, AM4, 6 core, frequency 4.2/3.6 Ghz, cache 3 MB + 32 MB, technical process 7 nm, TDP 65W</column>
+            <column name="description">Matisse, AM4, 6 core, frequency 4.2/3.6 Ghz, cache 3 MB + 32 MB, technical
+                process 7 nm, TDP 65W
+            </column>
             <column name="price">634.07</column>
             <column name="amount">20</column>
             <column name="status">1</column>
@@ -219,7 +229,9 @@
 
         <insert tableName="products">
             <column name="product_name">Intel Core i5-10400F</column>
-            <column name="description">Comet Lake, LGA1200, 6 core, frequency 4.3/2.9 Ghz, cache 12 MB, technical process 14 nm, TDP 65W</column>
+            <column name="description">Comet Lake, LGA1200, 6 core, frequency 4.3/2.9 Ghz, cache 12 MB, technical
+                process 14 nm, TDP 65W
+            </column>
             <column name="price">477.70</column>
             <column name="amount">25</column>
             <column name="status">1</column>
@@ -230,7 +242,9 @@
 
         <insert tableName="products">
             <column name="product_name">Intel Core i5-9400F</column>
-            <column name="description">Coffee Lake, LGA1151 v2, 6 core, frequency 4.1/2.9 Ghz, cache 9 MB, technical process 14 nm, TDP 65W</column>
+            <column name="description">Coffee Lake, LGA1151 v2, 6 core, frequency 4.1/2.9 Ghz, cache 9 MB, technical
+                process 14 nm, TDP 65W
+            </column>
             <column name="price">448.21</column>
             <column name="amount">20</column>
             <column name="status">1</column>
@@ -241,7 +255,9 @@
 
         <insert tableName="products">
             <column name="product_name">AMD Ryzen 3 Pro 3200G</column>
-            <column name="description">Picasso, AM4, 4 core, frequency 4/3.6 Ghz, cache 2 MB + 4 MB, technical process 12 nm, TDP 65W</column>
+            <column name="description">Picasso, AM4, 4 core, frequency 4/3.6 Ghz, cache 2 MB + 4 MB, technical process
+                12 nm, TDP 65W
+            </column>
             <column name="price">343.90</column>
             <column name="amount">30</column>
             <column name="status">1</column>
@@ -252,7 +268,9 @@
 
         <insert tableName="products">
             <column name="product_name">Intel Core i7-9700K</column>
-            <column name="description">Coffee Lake, LGA1151 v2, 8 ядер, частота 4.9/3.6 ГГц, кэш 12 МБ, техпроцесс 14 нм, TDP 95W</column>
+            <column name="description">Coffee Lake, LGA1151 v2, 8 ядер, частота 4.9/3.6 ГГц, кэш 12 МБ, техпроцесс 14
+                нм, TDP 95W
+            </column>
             <column name="price">979.58</column>
             <column name="amount">35</column>
             <column name="status">1</column>
@@ -263,7 +281,9 @@
 
         <insert tableName="products">
             <column name="product_name">Intel Pentium Gold G6600</column>
-            <column name="description">Comet Lake, LGA1200, 2 ядра, частота 4.2 ГГц, кэш 4 МБ, техпроцесс 14 нм, TDP 58W</column>
+            <column name="description">Comet Lake, LGA1200, 2 ядра, частота 4.2 ГГц, кэш 4 МБ, техпроцесс 14 нм, TDP
+                58W
+            </column>
             <column name="price">340.32</column>
             <column name="amount">50</column>
             <column name="status">1</column>
@@ -272,20 +292,24 @@
             <column name="category_id">1</column>
         </insert>
 
-       <insert tableName="products">
-           <column name="product_name">Intel Xeon E-2226G</column>
-           <column name="description">Coffee Lake, LGA1151 v2, 6 ядер, частота 4.7/3.4 ГГц, кэш 12 МБ, техпроцесс 14 нм, TDP 80W</column>
-           <column name="price">848.57</column>
-           <column name="amount">15</column>
-           <column name="status">1</column>
-           <column name="image" type="mediumblob" valueBlobFile="/img/Intel Xeon E-2226G (BOX).jpeg"/>
-           <column name="time_create">2021-03-31 14:03:00</column>
-           <column name="category_id">1</column>
-       </insert>
+        <insert tableName="products">
+            <column name="product_name">Intel Xeon E-2226G</column>
+            <column name="description">Coffee Lake, LGA1151 v2, 6 ядер, частота 4.7/3.4 ГГц, кэш 12 МБ, техпроцесс 14
+                нм, TDP 80W
+            </column>
+            <column name="price">848.57</column>
+            <column name="amount">15</column>
+            <column name="status">1</column>
+            <column name="image" type="mediumblob" valueBlobFile="/img/Intel Xeon E-2226G (BOX).jpeg"/>
+            <column name="time_create">2021-03-31 14:03:00</column>
+            <column name="category_id">1</column>
+        </insert>
 
         <insert tableName="products">
             <column name="product_name">Gigabyte B450M S2H</column>
-            <column name="description">mATX, сокет AMD AM4, чипсет AMD B450, память 2xDDR4, слоты: 1xPCIe x16, 2xPCIe x1, 1xM.2</column>
+            <column name="description">mATX, сокет AMD AM4, чипсет AMD B450, память 2xDDR4, слоты: 1xPCIe x16, 2xPCIe
+                x1, 1xM.2
+            </column>
             <column name="price">230.32</column>
             <column name="amount">15</column>
             <column name="status">1</column>
@@ -296,7 +320,9 @@
 
         <insert tableName="products">
             <column name="product_name">ASRock B460M Pro4</column>
-            <column name="description">mATX, сокет Intel LGA1200, чипсет Intel B460, память 4xDDR4, слоты: 2xPCIe x16, 1xPCIe x1, 2xM.2</column>
+            <column name="description">mATX, сокет Intel LGA1200, чипсет Intel B460, память 4xDDR4, слоты: 2xPCIe x16,
+                1xPCIe x1, 2xM.2
+            </column>
             <column name="price">377.54</column>
             <column name="amount">10</column>
             <column name="status">1</column>
@@ -307,7 +333,9 @@
 
         <insert tableName="products">
             <column name="product_name">ASUS TUF Gaming B550M-Plus</column>
-            <column name="description">mATX, сокет AMD AM4, чипсет AMD B550, память 4xDDR4, слоты: 2xPCIe x16, 1xPCIe x1, 2xM.2</column>
+            <column name="description">mATX, сокет AMD AM4, чипсет AMD B550, память 4xDDR4, слоты: 2xPCIe x16, 1xPCIe
+                x1, 2xM.2
+            </column>
             <column name="price">495.50</column>
             <column name="amount">30</column>
             <column name="status">1</column>
@@ -318,50 +346,141 @@
 
         <insert tableName="products">
             <column name="product_name">Palit GeForce GTX 1650 GP 4GB GDDR6 NE6165001BG1-1175A</column>
-            <column name="description">NVIDIA GeForce GTX 1650, базовая частота 1410 МГц, макс. частота 1590 МГц, 896sp, частота памяти 12000 МГц,
-                128 бит, доп. питание: 6 pin, 2 слота, HDMI, DisplayPort</column>
+            <column name="description">NVIDIA GeForce GTX 1650, базовая частота 1410 МГц, макс. частота 1590 МГц, 896sp,
+                частота памяти 12000 МГц,
+                128 бит, доп. питание: 6 pin, 2 слота, HDMI, DisplayPort
+            </column>
             <column name="price">740.00</column>
             <column name="amount">10</column>
             <column name="status">1</column>
-            <column name="image" type="mediumblob" valueBlobFile="/img/Palit GeForce GTX 1650 GP 4GB GDDR6 NE6165001BG1-1175A.jpeg"/>
+            <column name="image" type="mediumblob"
+                    valueBlobFile="/img/Palit GeForce GTX 1650 GP 4GB GDDR6 NE6165001BG1-1175A.jpeg"/>
             <column name="time_create">2021-03-31 14:07:00</column>
             <column name="category_id">3</column>
         </insert>
 
         <insert tableName="products">
             <column name="product_name">MSI GeForce GTX 1660 Super Ventus XS OC 6GB GDDR6</column>
-            <column name="description">NVIDIA GeForce GTX 1660 Super, базовая частота 1530 МГц, макс. частота 1815 МГц, 1408sp, частота памяти
-                14000 МГц, 192 бит, доп. питание: 8 pin, 2 слота, HDMI, DisplayPort</column>
+            <column name="description">NVIDIA GeForce GTX 1660 Super, базовая частота 1530 МГц, макс. частота 1815 МГц,
+                1408sp, частота памяти
+                14000 МГц, 192 бит, доп. питание: 8 pin, 2 слота, HDMI, DisplayPort
+            </column>
             <column name="price">1977.93</column>
             <column name="amount">15</column>
             <column name="status">1</column>
-            <column name="image" type="mediumblob" valueBlobFile="/img/MSI GeForce GTX 1660 Super Ventus XS OC 6GB GDDR6.jpeg"/>
+            <column name="image" type="mediumblob"
+                    valueBlobFile="/img/MSI GeForce GTX 1660 Super Ventus XS OC 6GB GDDR6.jpeg"/>
             <column name="time_create">2021-03-30 17:09:00</column>
             <column name="category_id">3</column>
         </insert>
 
         <insert tableName="products">
             <column name="product_name">MSI Geforce GTX 1050 Ti OC 4GB GDDR5</column>
-            <column name="description">NVIDIA GeForce GTX 1050 Ti, базовая частота 1341 МГц, макс. частота 1455 МГц, 768sp, частота памяти 7008
-                МГц, 128 бит, доп. питание: нет, 2 слота, DVI, HDMI, DisplayPort</column>
+            <column name="description">NVIDIA GeForce GTX 1050 Ti, базовая частота 1341 МГц, макс. частота 1455 МГц,
+                768sp, частота памяти 7008
+                МГц, 128 бит, доп. питание: нет, 2 слота, DVI, HDMI, DisplayPort
+            </column>
             <column name="price">803.02</column>
             <column name="amount">25</column>
             <column name="status">1</column>
-            <column name="image" type="mediumblob" valueBlobFile="/img/MSI Geforce GTX 1050 Ti OC 4GB GDDR5 [GTX 1050 TI 4GT OC].jpeg"/>
+            <column name="image" type="mediumblob"
+                    valueBlobFile="/img/MSI Geforce GTX 1050 Ti OC 4GB GDDR5 [GTX 1050 TI 4GT OC].jpeg"/>
             <column name="time_create">2021-03-30 17:25:00</column>
             <column name="category_id">3</column>
         </insert>
 
         <insert tableName="products">
             <column name="product_name">ASUS Mining Radeon RX 470 4GB GDDR5</column>
-            <column name="description">AMD Radeon RX 470, базовая частота 926 МГц, макс. частота 1206 МГц, 2048sp, частота памяти 7000 МГц, 256
-                бит, доп. питание: 8 pin, 2 слота, DVI</column>
+            <column name="description">AMD Radeon RX 470, базовая частота 926 МГц, макс. частота 1206 МГц, 2048sp,
+                частота памяти 7000 МГц, 256
+                бит, доп. питание: 8 pin, 2 слота, DVI
+            </column>
             <column name="price">932.22</column>
             <column name="amount">30</column>
             <column name="status">1</column>
-            <column name="image" type="mediumblob" valueBlobFile="/img/MSI Geforce GTX 1050 Ti OC 4GB GDDR5 [GTX 1050 TI 4GT OC].jpeg"/>
+            <column name="image" type="mediumblob"
+                    valueBlobFile="/img/MSI Geforce GTX 1050 Ti OC 4GB GDDR5 [GTX 1050 TI 4GT OC].jpeg"/>
             <column name="time_create">2021-03-30 18:43:00</column>
             <column name="category_id">3</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="19" author="Dmitri">
+        <insert tableName="reviews">
+            <column name="comment">
+                Наконец-то дождался пока он подешевел! Процессор ТОПовый из среднего ценового сегмента. А по нынешней
+                цене- совсем без конкурентов. В связке с материнкой MSI GAMING PLUS MAX гонится до 4300+ Mhz. Брал его
+                на замену i5 4570, это просто совсем другой уровень функционала и быстродействия. Проц уже не новый,
+                проверенный, брать можно смело, он беспроблемный.
+            </column>
+            <column name="rating">5</column>
+            <column name="time_create">2021-04-10 18:43:00</column>
+            <column name="user_id">2</column>
+            <column name="product_id">1</column>
+        </insert>
+
+        <insert tableName="reviews">
+            <column name="comment">
+                Попался процессор изготовленный на последней неделе 2020 года, судя по всему они уже могут работать при
+                довольно низком напряжении на высокой частоте. Мой экземпляр работал на частоте 4450 при напряжении 1,25
+                и температуры не превышали 60 градусов в стресс тесте под простым башенным кулером ID-Cooling SE-224-XT
+                Basic.
+            </column>
+            <column name="rating">5</column>
+            <column name="time_create">2021-04-21 10:21:00</column>
+            <column name="user_id">3</column>
+            <column name="product_id">1</column>
+        </insert>
+
+        <insert tableName="reviews">
+            <column name="comment">
+                Отличная материнская плата. В работе уже почти пол года и никаких минусов не обнаружил. Перед покупкой
+                очень переживал как она будет работать с процессором Ryzen 7 2700. Так как все кричали что VRM охлад.
+                тут слабый. Думал даже отказаться от покупки 8 ядерника и взять 2600 на 6 ядер. И слава богу не
+                отказался! Кто бы мог подумать, 40-50 градусов. Хорошо что никого не послушал. Так же говорили что из за
+                видеокарты могут быть закрыти сата порты и это не удобно. Ребят, а вы не пробовали сначала ЖД подключить
+                а потом видеокарту. Я таких проблем не испытал. В общем, за такую цену, вообще шик! Всем брать.
+            </column>
+            <column name="rating">5</column>
+            <column name="time_create">2021-05-21 11:21:00</column>
+            <column name="user_id">3</column>
+            <column name="product_id">8</column>
+        </insert>
+
+        <insert tableName="reviews">
+            <column name="comment">
+                Ужас, отпадают usb и кабель интернета. Я даже суток не поиграл
+            </column>
+            <column name="rating">1</column>
+            <column name="time_create">2021-05-21 13:21:00</column>
+            <column name="user_id">2</column>
+            <column name="product_id">8</column>
+        </insert>
+
+        <insert tableName="reviews">
+            <column name="comment">
+                Вполне хорошая видеокарта. Играю в WoT на ультра настройках. Для новинок явно слабовата, но для более
+                старых игр, таких как Batman Arkham Knight и т.п. подойдёт.
+            </column>
+            <column name="rating">4</column>
+            <column name="time_create">2021-04-21 17:25:00</column>
+            <column name="user_id">2</column>
+            <column name="product_id">11</column>
+        </insert>
+
+        <insert tableName="reviews">
+            <column name="comment">
+                Брал видеокарту для популярных онлайн игр и не только. В целом претензий к ней нет, очень хорошая карта
+                за свои деньги. В популярных онлайн играх можно ставить высокие-ультра настройки. В gta 5 в онлайне в
+                среднем 80 fps, в wot 70-90 fps на ультра, в war thunder 70-130 fps на качестве кино, в rainbow six на
+                очень высоких в среднем 110 fps. Уровень производительности в целом порадовал, но запаса на будущее для
+                игр нового поколения нет. Карта больше подойдет любителям онлайн игр, ее хватит надолго. Свои деньги
+                отрабатывает, для нетребовательных по сегодняшним меркам игр рекомендую.
+            </column>
+            <column name="rating">4</column>
+            <column name="time_create">2021-04-21 19:25:00</column>
+            <column name="user_id">3</column>
+            <column name="product_id">11</column>
         </insert>
     </changeSet>
 </databaseChangeLog>

@@ -21,13 +21,13 @@
             <c:choose>
                 <c:when test="${deleteReviewSuccess}">
                     <div class="alert alert-success" role="alert" id="successDeleteReview">
-                        Review is deleted
+                        <fmt:message key="reviews.delete_message"/>
                     </div>
                     <c:remove var="deleteReviewSuccess" scope="session"/>
                 </c:when>
                 <c:when test="${deleteReviewError}">
                     <div class="alert alert-danger" role="alert" id="errorDeleteReview">
-                        Error is occurred
+                        <fmt:message key="reviews.error_message"/>
                     </div>
                     <c:remove var="deleteReviewError" scope="session"/>
                 </c:when>
@@ -38,12 +38,12 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col">Time creating</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">User email</th>
-                                <th scope="col">Product</th>
-                                <th scope="col">Rating</th>
-                                <th scope="col">Comment</th>
+                                <th scope="col"><fmt:message key="reviews.table.head.time_creating"/></th>
+                                <th scope="col"><fmt:message key="reviews.table.head.username"/></th>
+                                <th scope="col"><fmt:message key="reviews.table.head.email"/></th>
+                                <th scope="col"><fmt:message key="reviews.table.head.product"/></th>
+                                <th scope="col"><fmt:message key="reviews.table.head.rating"/></th>
+                                <th scope="col"><fmt:message key="reviews.table.head.comment"/></th>
                                 <th scope="col"></th>
                             </tr>
                             </thead>
@@ -67,8 +67,7 @@
                                                 <input type="hidden" name="command" value="delete_review">
                                                 <input type="hidden" name="reviewId" value="<c:out value="${review.id}"/>">
                                                 <button class="btn btn-outline-danger mx-2 my-2 my-sm-0" type="submit">
-                                            <span><i class="fas fa-trash"></i> <fmt:message
-                                                    key="reviews.button.delete"/></span>
+                                            <span><i class="fas fa-trash"></i> <fmt:message key="reviews.button.delete"/></span>
                                                 </button>
                                             </form>
                                         </div>

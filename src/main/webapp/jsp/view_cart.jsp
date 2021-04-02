@@ -42,12 +42,18 @@
             </div>
             <c:remove var="confirmOrderError" scope="session"/>
         </c:when>
+        <c:when test="${changeAmountError}">
+            <div class="alert alert-danger" role="alert" id="errorChangeAmount">
+                <fmt:message key="cart.change_amount_error_message"/>
+            </div>
+            <c:remove var="changeAmountError" scope="session"/>
+        </c:when>
     </c:choose>
     <c:choose>
         <c:when test="${orderIsEmpty or empty orderProducts}">
             <div class="card bg-light m-5" style="max-width: 100%;">
                 <div class="card-body bg-light" style="text-align: center">
-                    <h2> <fmt:message key="cart.empty_message"/></h2>
+                    <h2><fmt:message key="cart.empty_message"/></h2>
                 </div>
             </div>
         </c:when>
@@ -72,7 +78,8 @@
                                     <input type="hidden" name="command" value="view_product">
                                     <input type="hidden" name="productId"
                                            value="<c:out value="${orderProduct.product.id}"/>">
-                                    <button type="submit" class="btn btn-link px-0 ml-1">
+                                    <button type="submit" class="btn btn-link px-0 ml-1"
+                                            <c:if test="${not orderProduct.product.status}">disabled</c:if>>
                                         <p><c:out value="${orderProduct.product.name}"/></p>
                                     </button>
                                 </form>
@@ -91,23 +98,30 @@
                         </td>
 
                         <td>
-                            <form class="add-product-to-order" method="post"
-                                  action="${pageContext.request.contextPath}/controller">
-                                <input type="hidden" name="command" value="change_amount_product_in_order">
-                                <input type="hidden" name="orderProductId"
-                                       value="<c:out value="${orderProduct.id}"/>">
-                                <div class="input-group" style="width: 150px">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-minus"></i></span>
-                                    </div>
-                                    <input type="text" class="form-control" maxlength="5" name="amountProduct"
-                                           value="<c:out value="${orderProduct.amount}"/>" required
-                                           pattern="^(?!0)[0-9]{1,5}$"/>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text"><i class="fas fa-plus"></i></span>
-                                    </div>
-                                </div>
-                            </form>
+                            <c:choose>
+                                <c:when test="${orderProduct.product.status}">
+                                    <form class="add-product-to-order" method="post"
+                                          action="${pageContext.request.contextPath}/controller">
+                                        <input type="hidden" name="command" value="change_amount_product_in_order">
+                                        <input type="hidden" name="orderProductId"
+                                               value="<c:out value="${orderProduct.id}"/>">
+                                        <div class="input-group" style="width: 150px">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-minus"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" maxlength="5" name="amountProduct"
+                                                   value="<c:out value="${orderProduct.amount}"/>" required
+                                                   pattern="^(?!0)[0-9]{1,5}$"/>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i class="fas fa-plus"></i></span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="pl-5"><c:out value="${orderProduct.amount}"/></div>
+                                </c:otherwise>
+                            </c:choose>
                         </td>
 
                         <td style="text-align: end"><ctg:formatCurrency value="${orderProduct.totalPrice}"/></td>

@@ -36,10 +36,12 @@ public class ViewProductCommand implements Command {
             HttpSession session = request.getSession();
             if (optionalProduct.isPresent()) {
                 Product product = optionalProduct.get();
-                session.setAttribute(SessionAttribute.PRODUCT, product);
-                ReviewService reviewService = ReviewServiceImpl.getInstance();
-                List<Review> reviews = reviewService.findReviewByProduct(productId);
-                session.setAttribute(SessionAttribute.REVIEWS, reviews);
+                if (product.isStatus()) {
+                    session.setAttribute(SessionAttribute.PRODUCT, product);
+                    ReviewService reviewService = ReviewServiceImpl.getInstance();
+                    List<Review> reviews = reviewService.findReviewByProduct(productId);
+                    session.setAttribute(SessionAttribute.REVIEWS, reviews);
+                }
             }
             Router router = new Router(PagePath.VIEW_PRODUCT);
             session.setAttribute(SessionAttribute.CURRENT_PAGE, router);

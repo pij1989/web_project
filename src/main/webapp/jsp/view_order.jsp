@@ -38,7 +38,8 @@
                                     <input type="hidden" name="command" value="view_product">
                                     <input type="hidden" name="productId"
                                            value="<c:out value="${orderProduct.product.id}"/>">
-                                    <button type="submit" class="btn btn-link px-0 ml-1">
+                                    <button type="submit" class="btn btn-link px-0 ml-1"
+                                            <c:if test="${not orderProduct.product.status}">disabled</c:if>>
                                         <p><c:out value="${orderProduct.product.name}"/></p>
                                     </button>
                                 </form>

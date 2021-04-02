@@ -9,7 +9,7 @@
 <head>
     <c:import url="../fragment/bootstrap_style.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/admin.css">
-    <title><fmt:message key="reviews.title"/></title>
+    <title><fmt:message key="orders.title"/></title>
 </head>
 <body>
 <c:import url="../fragment/header.jsp"/>
@@ -21,25 +21,25 @@
             <c:choose>
                 <c:when test="${deleteOrderSuccess}">
                     <div class="alert alert-success" role="alert" id="successDeleteOrder">
-                        Order is deleted
+                        <fmt:message key="orders.delete_message"/>
                     </div>
                     <c:remove var="deleteOrderSuccess" scope="session"/>
                 </c:when>
                 <c:when test="${deleteOrderError}">
                     <div class="alert alert-danger" role="alert" id="errorDeleteOrder">
-                        Error is occurred
+                        <fmt:message key="orders.error_message"/>
                     </div>
                     <c:remove var="deleteOrderError" scope="session"/>
                 </c:when>
                 <c:when test="${changeStatusSuccess}">
                     <div class="alert alert-success" role="alert" id="successChangeStatus">
-                        Order status is changed
+                        <fmt:message key="orders.change_status_message"/>
                     </div>
                     <c:remove var="changeStatusSuccess" scope="session"/>
                 </c:when>
                 <c:when test="${changeStatusError}">
                     <div class="alert alert-danger" role="alert" id="errorChangeStatus">
-                        Error is occurred
+                        <fmt:message key="orders.error_message"/>
                     </div>
                     <c:remove var="changeStatusError" scope="session"/>
                 </c:when>
