@@ -77,22 +77,22 @@
                                                         style="width: 143px;"
                                                         <c:if test="${order.statusType eq 'NEW'}">disabled</c:if>>
                                                     <c:if test="${order.statusType eq 'NEW'}">
-                                                        <option selected disabled>NEW</option>
+                                                        <option selected disabled><fmt:message key="orders.select.option.new"/></option>
                                                     </c:if>
                                                     <option
                                                             <c:if test="${order.statusType eq 'PROCESSING'}">selected</c:if>
                                                             value="PROCESSING">
-                                                        PROCESSING
+                                                        <fmt:message key="orders.select.option.processing"/>
                                                     </option>
                                                     <option
                                                             <c:if test="${order.statusType eq 'DELIVERED'}">selected</c:if>
                                                             value="DELIVERED">
-                                                        DELIVERED
+                                                        <fmt:message key="orders.select.option.delivered"/>
                                                     </option>
                                                     <option
                                                             <c:if test="${order.statusType eq 'CANCELED'}">selected</c:if>
                                                             value="CANCELED">
-                                                        CANCELED
+                                                        <fmt:message key="orders.select.option.canceled"/>
                                                     </option>
                                                 </select>
                                             </div>
@@ -106,7 +106,7 @@
                                                 <input type="hidden" name="orderId"
                                                        value="<c:out value="${order.id}"/>">
                                                 <button class="btn btn-outline-success mx-2 my-2 my-sm-0" type="submit">
-                                                    <span><i class="far fa-eye"></i> View</span>
+                                                    <span><i class="far fa-eye"></i> <fmt:message key="orders.button.view"/></span>
                                                 </button>
                                             </form>
                                         </div>
@@ -120,7 +120,7 @@
                                                     <input type="hidden" name="orderId"
                                                            value="<c:out value="${order.id}"/>">
                                                     <button class="btn btn-outline-danger mx-2 my-2 my-sm-0" type="submit">
-                                                        <span><i class="fas fa-trash"></i> Delete</span>
+                                                        <span><i class="fas fa-trash"></i> <fmt:message key="orders.button.delete"/></span>
                                                     </button>
                                                 </form>
                                             </div>

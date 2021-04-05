@@ -18,10 +18,10 @@
                     <span><i class="fas fa-store"></i></span> <fmt:message key="header.brand"/>
                 </a>
             </c:when>
-            <c:otherwise>
-                <a class="navbar-brand" href="#"><span><i class="fas fa-store"></i></span> <fmt:message
-                        key="header.brand"/></a>
-            </c:otherwise>
+            <c:when test="${role eq 'GUEST'}">
+                <a class="navbar-brand" href="${pageContext.request.contextPath}/controller?command=to_login_page_command">
+                    <span><i class="fas fa-store"></i></span> <fmt:message key="header.brand"/></a>
+            </c:when>
         </c:choose>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

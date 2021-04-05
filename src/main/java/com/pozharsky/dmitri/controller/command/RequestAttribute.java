@@ -14,6 +14,7 @@ public class RequestAttribute {
     public static final String VIEW_ORDER = "viewOrder";
     public static final String DELIVERY = "delivery";
     public static final String USER = "user";
+    public static final String VIEW_USER ="viewUser";
 
     private RequestAttribute() {
     }

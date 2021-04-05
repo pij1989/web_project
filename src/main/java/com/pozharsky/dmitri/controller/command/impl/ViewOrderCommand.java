@@ -58,7 +58,7 @@ public class ViewOrderCommand implements Command {
                         }
                         if (optionalUser.isPresent()) {
                             User user = optionalUser.get();
-                            request.setAttribute(RequestAttribute.USER, user);
+                            request.setAttribute(RequestAttribute.VIEW_USER, user);
                         }
                         request.setAttribute(RequestAttribute.VIEW_ORDER, order);
                     }

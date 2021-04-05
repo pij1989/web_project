@@ -9,7 +9,7 @@
 <head>
     <c:import url="../fragment/bootstrap_style.jsp"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/admin.css">
-    <title><fmt:message key="reviews.title"/></title>
+    <title><fmt:message key="order.title"/></title>
 </head>
 <body>
 <c:import url="../fragment/header.jsp"/>
@@ -23,18 +23,16 @@
                     <div class="row" style="line-height: 1;border-bottom: 1px solid #e5e5e5;">
                         <div class="col-6">
                             <c:if test="${not empty delivery}">
-                                <h4 class="mb-3"><fmt:message key="cart.delivery.title"/></h4>
+                                <h4 class="mb-3"><fmt:message key="order.delivery.title"/></h4>
                                 <form>
                                     <div class="row">
                                         <div class="col-6 mb-3">
-                                            <label for="firstName"><fmt:message
-                                                    key="cart.delivery.form.first_name"/></label>
+                                            <label for="firstName"><fmt:message key="order.delivery.form.first_name"/></label>
                                             <input type="text" class="form-control" id="firstName"
                                                    value="<c:out value="${delivery.firstName}"/>" disabled>
                                         </div>
                                         <div class="col-6 mb-3">
-                                            <label for="lastName"><fmt:message
-                                                    key="cart.delivery.form.last_name"/></label>
+                                            <label for="lastName"><fmt:message key="order.delivery.form.last_name"/></label>
                                             <input type="text" class="form-control" id="lastName"
                                                    value="<c:out value="${delivery.lastName}"/>" disabled>
                                         </div>
@@ -43,26 +41,24 @@
                                     <div class="mb-3">
                                         <div class="row">
                                             <div class="col-4 mb-3">
-                                                <label for="city"><fmt:message key="cart.delivery.form.city"/></label>
+                                                <label for="city"><fmt:message key="order.delivery.form.city"/></label>
                                                 <input type="text" class="form-control" id="city"
                                                        value="<c:out value="${delivery.address.city}"/>" disabled>
                                             </div>
                                             <div class="col-4 mb-3">
-                                                <label for="street"><fmt:message
-                                                        key="cart.delivery.form.street"/></label>
+                                                <label for="street"><fmt:message key="order.delivery.form.street"/></label>
                                                 <input type="text" class="form-control" id="street"
                                                        value="<c:out value="${delivery.address.street}"/>" disabled>
                                             </div>
                                             <div class="col-4 mb-3">
-                                                <label for="homeNumber"><fmt:message
-                                                        key="cart.delivery.form.home_number"/></label>
+                                                <label for="homeNumber"><fmt:message key="order.delivery.form.home_number"/></label>
                                                 <input type="text" class="form-control" id="homeNumber"
                                                        value="<c:out value="${delivery.address.homeNumber}"/>" disabled>
                                             </div>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="phone"><fmt:message key="cart.delivery.form.telephone"/></label>
+                                            <label for="phone"><fmt:message key="order.delivery.form.telephone"/></label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
@@ -76,45 +72,43 @@
                             </c:if>
                         </div>
                         <div class="col-6">
-                            <h4 class="mb-3">User</h4>
+                            <h4 class="mb-3"><fmt:message key="order.user.title"/> </h4>
                             <form>
 
                                 <div class="row">
                                     <div class="col-6 mb-3">
-                                        <label for="userFirstName"><fmt:message
-                                                key="cart.delivery.form.first_name"/></label>
+                                        <label for="userFirstName"><fmt:message key="order.user.form.first_name"/></label>
                                         <input type="text" class="form-control" id="userFirstName"
-                                               value="<c:out value="${user.firstName}"/>" disabled>
+                                               value="<c:out value="${viewUser.firstName}"/>" disabled>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <label for="userLastName"><fmt:message
-                                                key="cart.delivery.form.last_name"/></label>
+                                        <label for="userLastName"><fmt:message key="order.user.form.last_name"/></label>
                                         <input type="text" class="form-control" id="userLastName"
-                                               value="<c:out value="${user.lastName}"/>" disabled>
+                                               value="<c:out value="${viewUser.lastName}"/>" disabled>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-6 mb-3">
-                                        <label for="username"><fmt:message key="registration.username.label"/></label>
+                                        <label for="username"><fmt:message key="order.user.form.username"/></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text bg-white"><i
                                                         class="fas fa-user"></i></span>
                                             </div>
                                             <input type="text" class="form-control"
-                                                   value="<c:out value="${user.username}"/>"
+                                                   value="<c:out value="${viewUser.username}"/>"
                                                    id="username" disabled>
                                         </div>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <label for="email"><fmt:message key="registration.email.label"/></label>
+                                        <label for="email"><fmt:message key="order.user.form.email"/></label>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text bg-white"><i class="fas fa-envelope"></i></span>
                                             </div>
                                             <input type="text" class="form-control"
-                                                   value="<c:out value="${user.email}"/>"
+                                                   value="<c:out value="${viewUser.email}"/>"
                                                    id="email" disabled>
                                         </div>
                                     </div>
