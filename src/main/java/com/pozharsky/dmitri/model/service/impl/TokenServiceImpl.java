@@ -44,21 +44,6 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public Optional<Token> findTokenByValue(String tokenValue) throws ServiceException {
-        TransactionManager transactionManager = new TransactionManager();
-        try {
-            TokenDao tokenDao = new TokenDao();
-            transactionManager.init(tokenDao);
-            return tokenDao.findTokenByValue(tokenValue);
-        } catch (DaoException e) {
-            logger.error("Can not find token:" + e);
-            throw new ServiceException(e);
-        } finally {
-            transactionManager.end();
-        }
-    }
-
-    @Override
     public Optional<Token> findTokenByUserEmail(String email) throws ServiceException {
         TransactionManager transactionManager = new TransactionManager();
         try {

@@ -8,7 +8,5 @@ import java.util.Optional;
 public interface TokenService {
     Optional<Token> confirmToken(String tokenValue) throws ServiceException;
 
-    Optional<Token> findTokenByValue(String tokenValue) throws ServiceException;
-
     Optional<Token> findTokenByUserEmail(String email) throws ServiceException;
 }

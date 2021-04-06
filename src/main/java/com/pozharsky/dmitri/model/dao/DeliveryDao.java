@@ -52,23 +52,23 @@ public class DeliveryDao extends AbstractDao {
     }
 
     @Override
-    public Optional findById(long id) throws DaoException {
-        throw new UnsupportedOperationException("Unsupported operation 'findById' for table 'deliveries'");
+    public Optional findById(long id) {
+        throw new UnsupportedOperationException("Unsupported operation 'findById' for DeliveryDao");
     }
 
     @Override
-    public List findAll() throws DaoException {
-        return null;
+    public List findAll() {
+        throw new UnsupportedOperationException("Unsupported operation 'findAll' for DeliveryDao");
     }
 
     @Override
-    public Optional update(Entity entity) throws DaoException {
-        return Optional.empty();
+    public Optional update(Entity entity) {
+        throw new UnsupportedOperationException("Unsupported operation 'update' for DeliveryDao");
     }
 
     @Override
-    public boolean delete(Entity entity) throws DaoException {
-        return false;
+    public boolean deleteById(long id) {
+        throw new UnsupportedOperationException("Unsupported operation 'deleteById' for DeliveryDao");
     }
 
     private Delivery createDeliveryFromResultSet(ResultSet resultSet) throws SQLException {

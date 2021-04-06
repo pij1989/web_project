@@ -223,7 +223,7 @@ public class OrderServiceImpl implements OrderService {
             long id = Long.parseLong(orderProductId);
             Optional<OrderProduct> optionalOrderProduct = orderProductDao.findById(id);
             if (optionalOrderProduct.isPresent()) {
-                if (orderProductDao.delete(id)) {
+                if (orderProductDao.deleteById(id)) {
                     OrderProduct orderProduct = optionalOrderProduct.get();
                     long orderId = orderProduct.getOrder().getId();
                     int amountProduct = orderProduct.getAmount();

@@ -15,8 +15,6 @@ public interface OrderService {
 
     boolean addProductToOrder(String amountProduct, Product product, Order order) throws ServiceException;
 
-//    boolean addNewOrder(String amountProduct, Product product, long userId) throws ServiceException;
-
     List<Order> findAllOrders() throws ServiceException;
 
     Optional<Order> findOrderById(long orderId) throws ServiceException;

@@ -40,7 +40,7 @@ public class ProductDao extends AbstractDao<Product> {
     private static final String MIN_PRODUCT_PRICE_BY_CATEGORY_ID_SQL = "SELECT min(price) FROM products WHERE category_id = ?";
     private static final String INCREASE_AMOUNT_BY_ID_SQL = "UPDATE  products SET amount = amount + ? WHERE id = ?";
     private static final String DECREASE_AMOUNT_BY_ID_SQL = "UPDATE products SET amount = amount - ? WHERE id = ? AND amount >= ?";
-    private static final String DELETE_PRODUCT_BY_CATEGORY_SQL = "DELETE FROM products WHERE category_id = ?";
+    private static final String DELETE_PRODUCT_BY_CATEGORY_ID_SQL = "DELETE FROM products WHERE category_id = ?";
 
     public boolean create(Product product) throws DaoException {
         try (PreparedStatement productPreparedStatement = connection.prepareStatement(CREATE_PRODUCT_SQL)) {
@@ -225,12 +225,8 @@ public class ProductDao extends AbstractDao<Product> {
     }
 
     @Override
-    public boolean delete(Product entity) throws DaoException {
-        throw new UnsupportedOperationException("Operation 'delete product' is unsupported");
-    }
-
-    public boolean deleteByCategory(long categoryId) throws DaoException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUCT_BY_CATEGORY_SQL)) {
+    public boolean deleteById(long categoryId) throws DaoException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUCT_BY_CATEGORY_ID_SQL)) {
             preparedStatement.setLong(1, categoryId);
             int result = preparedStatement.executeUpdate();
             return result > 0;

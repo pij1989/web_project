@@ -112,8 +112,8 @@ public class CategoryServiceImpl implements CategoryService {
             ProductDao productDao = new ProductDao();
             transactionManager.initTransaction(categoryDao, productDao);
             long id = Long.parseLong(categoryId);
-            productDao.deleteByCategory(id);
-            isDelete = categoryDao.delete(id);
+            productDao.deleteById(id);
+            isDelete = categoryDao.deleteById(id);
             transactionManager.commit();
             return isDelete;
         } catch (DaoException e) {

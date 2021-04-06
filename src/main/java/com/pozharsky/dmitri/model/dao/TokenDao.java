@@ -5,7 +5,10 @@ import com.pozharsky.dmitri.model.entity.Token;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +30,6 @@ public class TokenDao extends AbstractDao<Token> {
             logger.error("Impossible create token in database");
             throw new DaoException(e);
         }
-
     }
 
     public Optional<Token> findTokenByValue(String tokenValue) throws DaoException {
@@ -63,23 +65,23 @@ public class TokenDao extends AbstractDao<Token> {
     }
 
     @Override
-    public Optional<Token> findById(long id) throws DaoException {
-        return Optional.empty();
+    public Optional<Token> findById(long id) {
+        throw new UnsupportedOperationException("Unsupported operation 'findById' for TokenDao");
     }
 
     @Override
-    public List<Token> findAll() throws DaoException {
-        return null;
+    public List<Token> findAll() {
+        throw new UnsupportedOperationException("Unsupported operation 'findAll' for TokenDao");
     }
 
     @Override
-    public Optional<Token> update(Token entity) throws DaoException {
-        return Optional.empty();
+    public Optional<Token> update(Token entity) {
+        throw new UnsupportedOperationException("Unsupported operation 'update' for TokenDao");
     }
 
     @Override
-    public boolean delete(Token entity) throws DaoException {
-        return false;
+    public boolean deleteById(long id) {
+        throw new UnsupportedOperationException("Unsupported operation 'deleteById' for TokenDao");
     }
 
     private Token createTokenFromResultSet(ResultSet resultSet) throws SQLException {

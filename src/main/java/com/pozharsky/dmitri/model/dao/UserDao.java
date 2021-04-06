@@ -20,11 +20,11 @@ public class UserDao extends AbstractDao<User> {
     private static final String FIND_STATUS_ID_BY_NAME_SQL = "SELECT id FROM status WHERE status_name = ?;";
     private static final String FIND_USER_BY_EMAIL_SQL = "SELECT u.id,u.first_name,u.last_name,u.username,u.email,r.role_name,s.status_name FROM users AS u INNER JOIN roles AS r ON u.role_id = r.id INNER JOIN status AS s ON u.status_id = s.id WHERE u.email = ?";
     private static final String FIND_PASSWORD_BY_EMAIL_SQL = "SELECT password FROM users WHERE email = ?";
+    private static final String UPDATE_USER_STATUS_BY_ID_SQL = "UPDATE users SET status_id = ? WHERE id = ?";
+    private static final String UPDATE_PASSWORD_BY_EMAIL_SQL = "UPDATE users SET password = ? WHERE email = ?";
     private static final String FIND_USER_BY_ID_SQL = "SELECT u.id,u.first_name,u.last_name,u.username,u.email,r.role_name,s.status_name FROM users AS u INNER JOIN roles AS r ON u.role_id = r.id INNER JOIN status AS s ON u.status_id = s.id WHERE u.id = ?";
     private static final String FIND_ALL_USERS_SQL = "SELECT u.id,u.first_name,u.last_name,u.username,u.email,r.role_name,s.status_name FROM users AS u INNER JOIN roles AS r ON u.role_id = r.id INNER JOIN status AS s ON u.status_id = s.id";
     private static final String UPDATE_USER_SQL = "UPDATE users SET first_name = ?,last_name = ?,username = ?,email = ?,role_id = ?,status_id = ? WHERE id = ?";
-    private static final String UPDATE_USER_STATUS_BY_ID_SQL = "UPDATE users SET status_id = ? WHERE id = ?";
-    private static final String UPDATE_PASSWORD_BY_EMAIL_SQL = "UPDATE users SET password = ? WHERE email = ?";
 
     public Optional<Long> create(User user, String password) throws DaoException {
         try (PreparedStatement userPreparedStatement = connection.prepareStatement(CREATE_USER_SQL, Statement.RETURN_GENERATED_KEYS);
@@ -39,7 +39,7 @@ public class UserDao extends AbstractDao<User> {
             userPreparedStatement.setLong(6, roleId);
             long statusId = findStatusId(statusPreparedStatement, user.getStatusType());
             userPreparedStatement.setLong(7, statusId);
-            int resultCreateUser = userPreparedStatement.executeUpdate();
+            userPreparedStatement.executeUpdate();
             ResultSet userKeys = userPreparedStatement.getGeneratedKeys();
             if (userKeys.next()) {
                 long userId = userKeys.getLong(1);
@@ -175,8 +175,8 @@ public class UserDao extends AbstractDao<User> {
     }
 
     @Override
-    public boolean delete(User entity) throws DaoException {
-        return false;
+    public boolean deleteById(long id) {
+        throw new UnsupportedOperationException("Unsupported operation 'deleteById' for UserDao");
     }
 
     private User createUserFromResultSet(ResultSet resultSet) throws SQLException {

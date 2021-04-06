@@ -14,10 +14,10 @@ import java.util.Optional;
 
 public class ReviewDao extends AbstractDao<Review> {
     private static final Logger logger = LogManager.getLogger(ReviewDao.class);
-    private static final String CREATE_REVIEW_SQL = "INSERT INTO reviews(comment, rating, time_create, user_id, product_id) VALUES (?,?,?,?,?)";
+    private static final String CREATE_REVIEW_SQL = "INSERT INTO reviews(comment, rating, time_create, user_id, product_id) VALUES (?,?,?,?,?);";
+    private static final String FIND_REVIEW_BY_PRODUCT_ID_SQL = "SELECT r.id, r.comment, r.rating, r.time_create, r.user_id, r.product_id, u.username, u.email FROM reviews AS r JOIN users AS u on r.user_id = u.id WHERE r.product_id = ?;";
     private static final String FIND_ALL_REVIEWS_SQL = "SELECT r.id, r.comment, r.rating, r.time_create, r.user_id, r.product_id, u.username, u.email, p.product_name FROM reviews AS r JOIN users AS u ON r.user_id = u.id JOIN products AS p ON r.product_id = p.id;";
-    private static final String FIND_REVIEW_BY_PRODUCT_ID_SQL = "SELECT r.id, r.comment, r.rating, r.time_create, r.user_id, r.product_id, u.username, u.email FROM reviews AS r JOIN users AS u on r.user_id = u.id WHERE r.product_id = ?";
-    private static final String DELETE_REVIEW_BY_ID_SQL = "DELETE FROM reviews WHERE id = ?";
+    private static final String DELETE_REVIEW_BY_ID_SQL = "DELETE FROM reviews WHERE id = ?;";
 
 
     public Optional<Review> create(Review review) throws DaoException {
@@ -61,8 +61,8 @@ public class ReviewDao extends AbstractDao<Review> {
     }
 
     @Override
-    public Optional<Review> findById(long id) throws DaoException {
-        return Optional.empty();
+    public Optional<Review> findById(long id) {
+        throw new UnsupportedOperationException("Unsupported operation 'findById' for ReviewDao");
     }
 
     @Override
@@ -84,15 +84,11 @@ public class ReviewDao extends AbstractDao<Review> {
     }
 
     @Override
-    public Optional<Review> update(Review entity) throws DaoException {
-        return Optional.empty();
+    public Optional<Review> update(Review entity) {
+        throw new UnsupportedOperationException("Unsupported operation 'update' for ReviewDao");
     }
 
     @Override
-    public boolean delete(Review entity) throws DaoException {
-        return false;
-    }
-
     public boolean deleteById(long reviewId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_REVIEW_BY_ID_SQL)) {
             preparedStatement.setLong(1, reviewId);

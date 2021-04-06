@@ -17,10 +17,9 @@ public class CategoryDao extends AbstractDao<Category> {
     private static final Logger logger = LogManager.getLogger(ProductDao.class);
     private static final String CREATE_CATEGORY_SQL = "INSERT INTO categories (category_name) VALUES (?);";
     private static final String FIND_CATEGORY_BY_NAME_SQL = "SELECT id, category_name FROM categories WHERE category_name = ?;";
-    private static final String FIND_ALL_CATEGORY_SQL = "SELECT id, category_name FROM categories;";
     private static final String FIND_CATEGORY_BY_ID_SQL = "SELECT id, category_name FROM categories WHERE id = ?;";
+    private static final String FIND_ALL_CATEGORY_SQL = "SELECT id, category_name FROM categories;";
     private static final String DELETE_CATEGORY_BY_ID_SQL = "DELETE FROM categories WHERE id = ?;";
-    private static final String UPDATE_CATEGORY_SQL = "UPDATE categories SET category_name = ? WHERE id = ?;";
 
     public Optional<Long> create(Category category) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_CATEGORY_SQL, Statement.RETURN_GENERATED_KEYS)) {
@@ -108,11 +107,7 @@ public class CategoryDao extends AbstractDao<Category> {
     }
 
     @Override
-    public boolean delete(Category entity) throws DaoException {
-        return false;
-    }
-
-    public boolean delete(long id) throws DaoException {
+    public boolean deleteById(long id) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_CATEGORY_BY_ID_SQL)) {
             preparedStatement.setLong(1, id);
             int result = preparedStatement.executeUpdate();

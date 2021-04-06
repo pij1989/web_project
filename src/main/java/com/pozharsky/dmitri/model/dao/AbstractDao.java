@@ -21,7 +21,7 @@ public abstract class AbstractDao<T extends Entity> {
 
     public abstract Optional<T> update(T entity) throws DaoException;
 
-    public abstract boolean delete(T entity) throws DaoException;
+    public abstract boolean deleteById(long id) throws DaoException;
 
     public void close(Statement statement) {
         if (statement != null) {
