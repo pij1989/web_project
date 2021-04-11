@@ -5,12 +5,15 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 import java.io.IOException;
 
+/**
+ * Web filter used to set encoding UTF-8 to request, if exist encoding of request is different.
+ *
+ * @author Dmitri Pozharsky
+ */
 @WebFilter(urlPatterns = {"/*"},
-        initParams = {
-                @WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param")})
+        initParams = {@WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param")})
 public class EncodingFilter implements Filter {
     private static final String ENCODING = "encoding";
-
     private String code;
 
     @Override

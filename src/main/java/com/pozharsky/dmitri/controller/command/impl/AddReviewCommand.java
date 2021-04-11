@@ -15,6 +15,11 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Command for adding review to product.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class AddReviewCommand implements Command {
     private static final Logger logger = LogManager.getLogger(AddReviewCommand.class);
 

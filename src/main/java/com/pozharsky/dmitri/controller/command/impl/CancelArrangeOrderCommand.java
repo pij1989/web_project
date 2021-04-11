@@ -10,6 +10,11 @@ import com.pozharsky.dmitri.model.entity.Order;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Command for canceling arranging of order.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class CancelArrangeOrderCommand implements Command {
 
     @Override

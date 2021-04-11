@@ -9,6 +9,11 @@ import com.pozharsky.dmitri.exception.CommandException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Command for forwarding to main page.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ToMainPageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

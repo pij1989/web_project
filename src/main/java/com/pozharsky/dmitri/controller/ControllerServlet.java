@@ -20,7 +20,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet(urlPatterns = {"/controller"/*, "*.do"*/})
+/**
+ * Controller class used to process all requests from users.
+ *
+ * @author Dmitri Pozharsky
+ */
+@WebServlet(urlPatterns = {"/controller"})
 @MultipartConfig(fileSizeThreshold = 1024 * 1024,
         maxFileSize = 1024 * 1024 * 5,
         maxRequestSize = 1024 * 1024 * 5 * 5)

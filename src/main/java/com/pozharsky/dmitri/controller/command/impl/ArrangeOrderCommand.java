@@ -9,6 +9,11 @@ import com.pozharsky.dmitri.model.entity.Order;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Command for arranging user's order.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ArrangeOrderCommand implements Command {
 
     @Override

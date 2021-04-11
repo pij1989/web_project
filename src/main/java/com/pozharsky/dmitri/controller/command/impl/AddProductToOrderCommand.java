@@ -16,8 +16,13 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
-public class AddProductToOrder implements Command {
-    private static final Logger logger = LogManager.getLogger(AddProductToOrder.class);
+/**
+ * Command for adding product to user's order.
+ *
+ * @author Dmitri Pozharsky
+ */
+public class AddProductToOrderCommand implements Command {
+    private static final Logger logger = LogManager.getLogger(AddProductToOrderCommand.class);
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {

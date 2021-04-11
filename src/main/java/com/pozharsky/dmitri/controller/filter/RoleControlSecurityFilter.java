@@ -18,7 +18,12 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-@WebFilter(urlPatterns = {"/controller"}, initParams = @WebInitParam(name = "INDEX_PATH", value = "/index.jsp"))
+/**
+ * Web filter used to control user's permission according to user's role.
+ *
+ * @author Dmitri Pozharsky
+ */
+@WebFilter(urlPatterns = {"/controller"}, initParams = {@WebInitParam(name = "INDEX_PATH", value = "/index.jsp")})
 public class RoleControlSecurityFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(RoleControlSecurityFilter.class);
     private static final String INDEX_PATH = "INDEX_PATH";

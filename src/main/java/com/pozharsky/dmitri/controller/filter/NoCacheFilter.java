@@ -6,7 +6,13 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(value = {"/*"}, initParams = @WebInitParam(name = "Cache-Control", value = "no-cache, no-store, must-revalidate"))
+/**
+ * Web filter used to exclude cache.
+ *
+ * @author Dmitri Pozharsky
+ */
+@WebFilter(value = {"/*"},
+        initParams = {@WebInitParam(name = "Cache-Control", value = "no-cache, no-store, must-revalidate")})
 public class NoCacheFilter implements Filter {
     private static final String CACHE_CONTROL = "Cache-Control";
     private String value;

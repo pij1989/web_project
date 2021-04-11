@@ -8,6 +8,11 @@ import com.pozharsky.dmitri.controller.command.SessionAttribute;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Command for forwarding to create product page.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ToCreatProductPageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {

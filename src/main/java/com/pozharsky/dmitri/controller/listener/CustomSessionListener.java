@@ -14,6 +14,11 @@ import javax.servlet.http.HttpSessionListener;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Web listener of session creation.
+ *
+ * @author Dmitri Pozharsky
+ */
 @WebListener
 public class CustomSessionListener implements HttpSessionListener {
     private static final Logger logger = LogManager.getLogger(CustomSessionListener.class);

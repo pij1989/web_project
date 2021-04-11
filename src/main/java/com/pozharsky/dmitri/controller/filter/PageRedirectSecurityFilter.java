@@ -14,7 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/jsp/*"}, initParams = @WebInitParam(name = "INDEX_PATH", value = "/index.jsp"))
+/**
+ * Web filter used to redirect users if they requested JSP pages directly.
+ *
+ * @author Dmitri Pozharsky
+ */
+@WebFilter(urlPatterns = {"/jsp/*"}, initParams = {@WebInitParam(name = "INDEX_PATH", value = "/index.jsp")})
 public class PageRedirectSecurityFilter implements Filter {
     private static final Logger logger = LogManager.getLogger(PageRedirectSecurityFilter.class);
     private static final String INDEX_PATH = "INDEX_PATH";
