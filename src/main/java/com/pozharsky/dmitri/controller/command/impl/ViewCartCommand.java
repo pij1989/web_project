@@ -16,6 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Command for viewing user's cart.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ViewCartCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ViewCartCommand.class);
 

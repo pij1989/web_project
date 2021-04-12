@@ -14,6 +14,11 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Command for changing user's status.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ChangeUserStatusCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ChangeUserStatusCommand.class);
 
@@ -23,7 +28,6 @@ public class ChangeUserStatusCommand implements Command {
             String userId = request.getParameter(RequestParameter.USER_ID);
             String status = request.getParameter(RequestParameter.STATUS);
             HttpSession session = request.getSession();
-            logger.debug("User id: " + userId + " Status: " + status);
             UserService userService = UserServiceImpl.getInstance();
             long id = Long.parseLong(userId);
             User.StatusType statusType = User.StatusType.valueOf(status);

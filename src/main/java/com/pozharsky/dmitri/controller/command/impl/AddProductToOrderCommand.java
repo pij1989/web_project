@@ -56,7 +56,6 @@ public class AddProductToOrderCommand implements Command {
                 session.setAttribute(SessionAttribute.ORDER_PRODUCTS, orderProducts);
             }
             session.setAttribute(SessionAttribute.ORDER, order);
-//            session.setAttribute(SessionAttribute.ADD_ORDER_SUCCESS, isAdd);
             return router;
         } catch (Exception e) {
             logger.error(e);

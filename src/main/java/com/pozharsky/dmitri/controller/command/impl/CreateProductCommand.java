@@ -17,6 +17,11 @@ import java.util.Map;
 
 import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
+/**
+ * Command for creating product.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class CreateProductCommand implements Command {
     private static final Logger logger = LogManager.getLogger(CreateProductCommand.class);
 
@@ -28,7 +33,6 @@ public class CreateProductCommand implements Command {
             Part part;
             try {
                 part = request.getPart(RequestParameter.IMAGE);
-                logger.debug("Image name: " + part.getSubmittedFileName());
             } catch (IOException | ServletException e) {
                 logger.fatal("Impossible receive part of form", e);
                 throw new RuntimeException(e);

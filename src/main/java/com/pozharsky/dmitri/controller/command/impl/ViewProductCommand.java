@@ -17,6 +17,11 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Command for viewing product.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ViewProductCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ViewProductCommand.class);
 

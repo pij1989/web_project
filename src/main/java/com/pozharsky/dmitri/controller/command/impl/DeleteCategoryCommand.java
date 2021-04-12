@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Command for deleting product's category.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class DeleteCategoryCommand implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteCategoryCommand.class);
 
@@ -33,6 +38,5 @@ public class DeleteCategoryCommand implements Command {
             logger.error(e);
             throw new CommandException(e);
         }
-
     }
 }

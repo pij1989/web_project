@@ -15,6 +15,11 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Command for changing amount of product in user's order.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ChangeAmountProductInOrderCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ChangeAmountProductInOrderCommand.class);
 
@@ -23,7 +28,6 @@ public class ChangeAmountProductInOrderCommand implements Command {
         try {
             String orderProductId = request.getParameter(RequestParameter.ORDER_PRODUCT_ID);
             String amountProduct = request.getParameter(RequestParameter.AMOUNT_PRODUCT);
-            logger.debug("Id: " + orderProductId + " amount: " + amountProduct);
             HttpSession session = request.getSession();
             Order order = (Order) session.getAttribute(SessionAttribute.ORDER);
             OrderService orderService = OrderServiceImpl.getInstance();

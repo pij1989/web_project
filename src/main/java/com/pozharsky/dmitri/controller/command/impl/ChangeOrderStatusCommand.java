@@ -14,6 +14,11 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Command for changing status of order.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ChangeOrderStatusCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ChangeOrderStatusCommand.class);
 

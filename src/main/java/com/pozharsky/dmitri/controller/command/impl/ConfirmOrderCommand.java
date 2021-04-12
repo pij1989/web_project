@@ -18,6 +18,11 @@ import java.util.Map;
 
 import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
+/**
+ * Command for confirming user's order.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ConfirmOrderCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ConfirmOrderCommand.class);
 
@@ -25,9 +30,6 @@ public class ConfirmOrderCommand implements Command {
     public Router execute(HttpServletRequest request) throws CommandException {
         try {
             Map<String, String> deliveryForm = requestParameterToMap(request, FIRST_NAME, LAST_NAME, CITY, STREET, HOME_NUMBER, PHONE);
-            logger.debug("First name: " + deliveryForm.get(FIRST_NAME) + " Last name: " + deliveryForm.get(LAST_NAME) +
-                    " City: " + deliveryForm.get(CITY) + " Street: " + deliveryForm.get(STREET) +
-                    " Home number: " + deliveryForm.get(HOME_NUMBER) + " Phone: " + deliveryForm.get(PHONE));
             HttpSession session = request.getSession();
             Order order = (Order) session.getAttribute(SessionAttribute.ORDER);
             Order.StatusType statusType = order.getStatusType();

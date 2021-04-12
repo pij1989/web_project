@@ -17,7 +17,11 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * Command for editing product's category.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class EditCategoryCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditCategoryCommand.class);
 

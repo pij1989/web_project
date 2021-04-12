@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Command for creating category.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class CreateCategoryCommand implements Command {
     private static final Logger logger = LogManager.getLogger(CreateCategoryCommand.class);
 

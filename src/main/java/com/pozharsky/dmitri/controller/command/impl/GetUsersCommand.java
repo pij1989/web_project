@@ -16,6 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Command for getting list of users.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class GetUsersCommand implements Command {
     private static final Logger logger = LogManager.getLogger(GetUsersCommand.class);
 

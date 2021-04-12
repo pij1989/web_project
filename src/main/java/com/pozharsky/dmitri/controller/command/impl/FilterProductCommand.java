@@ -15,13 +15,17 @@ import java.util.Map;
 
 import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
+/**
+ * Command for filtering products by price and in stock.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class FilterProductCommand implements Command {
     private static final Logger logger = LogManager.getLogger(FilterProductCommand.class);
 
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String stringCategoryId = request.getParameter(CATEGORY_ID);
-        logger.debug("Category id: " + stringCategoryId);
         long categoryId;
         try {
             categoryId = Long.parseLong(stringCategoryId);

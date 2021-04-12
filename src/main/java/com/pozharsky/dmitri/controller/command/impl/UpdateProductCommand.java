@@ -22,6 +22,11 @@ import java.util.Optional;
 
 import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
+/**
+ * Command for updating product.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class UpdateProductCommand implements Command {
     private static final Logger logger = LogManager.getLogger(UpdateProductCommand.class);
 

@@ -12,6 +12,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Thread-safe connection pool is used to contain, give and manage Connection objects.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ConnectionPool {
     private static final Logger logger = LogManager.getLogger(ConnectionPool.class);
     private static final int INITIAL_POOL_SIZE = 32;
@@ -51,6 +56,11 @@ public class ConnectionPool {
         return instance;
     }
 
+    /**
+     * Gives a Connection object from the pool.
+     *
+     * @return Connection object.
+     */
     public Connection getConnection() {
         ProxyConnection connection = null;
         try {
@@ -63,6 +73,11 @@ public class ConnectionPool {
         return connection;
     }
 
+    /**
+     * Puts a Connection object back in the pool.
+     *
+     * @param connection Connection object that should be an instance of ProxyConnection.
+     */
     void releaseConnection(Connection connection) {
         try {
             if (connection.getClass() == ProxyConnection.class) {
@@ -75,10 +90,13 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * Destroys a connection pool. Should be called before finishing the program.
+     */
     public void destroyPool() {
         try {
             for (int i = 0; i < INITIAL_POOL_SIZE; i++) {
-                freeConnection.take().realyClose();
+                freeConnection.take().reallyClose();
             }
             deregisterDrivers();
         } catch (InterruptedException e) {

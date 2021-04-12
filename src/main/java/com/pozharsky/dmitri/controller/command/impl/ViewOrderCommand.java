@@ -19,6 +19,11 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Command for viewing user's order.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ViewOrderCommand implements Command {
     private static final Logger logger = LogManager.getLogger(ViewOrderCommand.class);
 

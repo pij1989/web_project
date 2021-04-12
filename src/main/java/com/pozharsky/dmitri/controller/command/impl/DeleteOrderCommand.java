@@ -14,6 +14,11 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Command for deleting user's order.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class DeleteOrderCommand implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteOrderCommand.class);
 

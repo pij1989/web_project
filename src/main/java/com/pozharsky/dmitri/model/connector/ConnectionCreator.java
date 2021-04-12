@@ -10,6 +10,11 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Class used to create Connection objects.
+ *
+ * @author Dmitri Pozharsky
+ */
 class ConnectionCreator {
     private static final Logger logger = LogManager.getLogger(ConnectionCreator.class);
     private static final String DATABASE_PROPERTIES = "database.properties";
@@ -33,6 +38,12 @@ class ConnectionCreator {
     private ConnectionCreator() {
     }
 
+    /**
+     * Creates a Connection object.
+     *
+     * @return Connection object.
+     * @throws SQLException if a database access error occurs.
+     */
     static Connection createConnection() throws SQLException {
         String url = properties.getProperty(URL);
         String username = properties.getProperty(USERNAME);

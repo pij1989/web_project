@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Locale;
 
+/**
+ * Command for changing locale.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ChangeLocaleCommand implements Command {
     private static final String RU_BY = "ru-BY";
     private static final String EN_US = "en-US";

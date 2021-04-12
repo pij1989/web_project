@@ -12,6 +12,11 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Command for updating product's category.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class UpdateCategoryCommand implements Command {
     private static final Logger logger = LogManager.getLogger(UpdateCategoryCommand.class);
 

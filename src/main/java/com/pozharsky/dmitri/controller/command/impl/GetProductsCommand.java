@@ -18,6 +18,11 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Command for getting list of products.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class GetProductsCommand implements Command {
     private static final Logger logger = LogManager.getLogger(GetProductsCommand.class);
     private static final long ZERO = 0L;
@@ -25,7 +30,6 @@ public class GetProductsCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) throws CommandException {
         String stringCategoryId = request.getParameter(RequestParameter.CATEGORY_ID);
-        logger.debug("Category id: " + stringCategoryId);
         long categoryId;
         try {
             categoryId = stringCategoryId != null ? Long.parseLong(stringCategoryId) : ZERO;
@@ -40,7 +44,6 @@ public class GetProductsCommand implements Command {
             ProductService productService = ProductServiceImpl.getInstance();
             HttpSession session = request.getSession();
             User.RoleType roleType = (User.RoleType) session.getAttribute(SessionAttribute.ROLE);
-            logger.debug("Page: " + page + " perPage: " + perPage + " categoryId: " + categoryId + " Sort: " + sort);
             int amountProduct = 0;
             List<Product> products = new ArrayList<>();
             Router router = null;

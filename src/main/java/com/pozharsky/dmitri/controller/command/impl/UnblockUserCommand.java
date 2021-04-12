@@ -16,6 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+/**
+ * Command for unblocking user.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class UnblockUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger(UnblockUserCommand.class);
 
@@ -26,7 +31,6 @@ public class UnblockUserCommand implements Command {
             UserService userService = UserServiceImpl.getInstance();
             String tokenValue = request.getParameter(RequestParameter.TOKEN);
             HttpSession session = request.getSession();
-            logger.debug("Token: " + tokenValue);
             Optional<Token> optionalToken = tokenService.confirmToken(tokenValue);
             if (optionalToken.isPresent()) {
                 Token token = optionalToken.get();

@@ -15,6 +15,11 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Command for deleting product from user's order.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class DeleteProductFromOrderCommand implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteProductFromOrderCommand.class);
 

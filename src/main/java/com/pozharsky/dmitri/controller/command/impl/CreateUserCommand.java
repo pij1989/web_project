@@ -18,6 +18,11 @@ import java.util.Map;
 
 import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
+/**
+ * Command for creating user.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class CreateUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger(CreateUserCommand.class);
 

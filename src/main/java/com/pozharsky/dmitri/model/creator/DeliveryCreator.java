@@ -7,6 +7,11 @@ import java.util.Map;
 
 import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
+/**
+ * Creator is used to create a Delivery object.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class DeliveryCreator {
 
     private DeliveryCreator() {

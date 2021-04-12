@@ -7,6 +7,11 @@ import com.pozharsky.dmitri.controller.command.Router;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * Command for logout.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class LogoutCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request) {

@@ -16,6 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+/**
+ * Command for getting list of product's categories.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class GetCategoriesCommand implements Command {
     private static final Logger logger = LogManager.getLogger(GetCategoriesCommand.class);
 

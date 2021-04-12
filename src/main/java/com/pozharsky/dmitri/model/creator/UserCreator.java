@@ -6,6 +6,11 @@ import java.util.Map;
 
 import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
+/**
+ * Creator is used to create an User object.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class UserCreator {
 
     private UserCreator() {

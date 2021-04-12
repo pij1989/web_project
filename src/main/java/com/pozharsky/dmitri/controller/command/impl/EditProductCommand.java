@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+/**
+ * Command for editing product.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class EditProductCommand implements Command {
     private static final Logger logger = LogManager.getLogger(EditProductCommand.class);
 

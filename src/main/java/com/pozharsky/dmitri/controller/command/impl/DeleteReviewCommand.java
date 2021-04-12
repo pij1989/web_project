@@ -14,6 +14,11 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Command for deleting product's review.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class DeleteReviewCommand implements Command {
     private static final Logger logger = LogManager.getLogger(DeleteReviewCommand.class);
 

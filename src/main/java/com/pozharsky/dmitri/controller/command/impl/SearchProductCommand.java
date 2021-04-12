@@ -15,6 +15,11 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Command for searching products by product name.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class SearchProductCommand implements Command {
     private static final Logger logger = LogManager.getLogger(SearchProductCommand.class);
 

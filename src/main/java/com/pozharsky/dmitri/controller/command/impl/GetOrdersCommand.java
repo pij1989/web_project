@@ -18,6 +18,11 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Command for getting list of user's orders.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class GetOrdersCommand implements Command {
     private static final Logger logger = LogManager.getLogger(GetOrdersCommand.class);
 
