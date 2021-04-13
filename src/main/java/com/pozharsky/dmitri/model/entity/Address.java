@@ -1,36 +1,78 @@
 package com.pozharsky.dmitri.model.entity;
 
+/**
+ * The type Address.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class Address {
     private String city;
     private String street;
     private String homeNumber;
 
+    /**
+     * Instantiates a new Address.
+     *
+     * @param city       the city
+     * @param street     the street
+     * @param homeNumber the home number
+     */
     public Address(String city, String street, String homeNumber) {
         this.city = city;
         this.street = street;
         this.homeNumber = homeNumber;
     }
 
+    /**
+     * Gets city.
+     *
+     * @return the city
+     */
     public String getCity() {
         return city;
     }
 
+    /**
+     * Sets city.
+     *
+     * @param city the city
+     */
     public void setCity(String city) {
         this.city = city;
     }
 
+    /**
+     * Gets street.
+     *
+     * @return the street
+     */
     public String getStreet() {
         return street;
     }
 
+    /**
+     * Sets street.
+     *
+     * @param street the street
+     */
     public void setStreet(String street) {
         this.street = street;
     }
 
+    /**
+     * Gets home number.
+     *
+     * @return the home number
+     */
     public String getHomeNumber() {
         return homeNumber;
     }
 
+    /**
+     * Sets home number.
+     *
+     * @param homeNumber the home number
+     */
     public void setHomeNumber(String homeNumber) {
         this.homeNumber = homeNumber;
     }

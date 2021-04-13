@@ -2,6 +2,11 @@ package com.pozharsky.dmitri.model.entity;
 
 import java.math.BigDecimal;
 
+/**
+ * The type Order product.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class OrderProduct extends Entity {
     private long id;
     private int amount;
@@ -10,51 +15,111 @@ public class OrderProduct extends Entity {
     private Order order;
 
 
+    /**
+     * Instantiates a new Order product.
+     */
     public OrderProduct() {
     }
 
+    /**
+     * Instantiates a new Order product.
+     *
+     * @param amount  the amount
+     * @param product the product
+     * @param order   the order
+     */
     public OrderProduct(int amount, Product product, Order order) {
         this.amount = amount;
         this.product = product;
         this.order = order;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * Gets amount.
+     *
+     * @return the amount
+     */
     public int getAmount() {
         return amount;
     }
 
+    /**
+     * Sets amount.
+     *
+     * @param amount the amount
+     */
     public void setAmount(int amount) {
         this.amount = amount;
     }
 
+    /**
+     * Gets total price.
+     *
+     * @return the total price
+     */
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
+    /**
+     * Sets total price.
+     *
+     * @param totalPrice the total price
+     */
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 
+    /**
+     * Gets product.
+     *
+     * @return the product
+     */
     public Product getProduct() {
         return product;
     }
 
+    /**
+     * Sets product.
+     *
+     * @param product the product
+     */
     public void setProduct(Product product) {
         this.product = product;
     }
 
+    /**
+     * Gets order.
+     *
+     * @return the order
+     */
     public Order getOrder() {
         return order;
     }
 
+    /**
+     * Sets order.
+     *
+     * @param order the order
+     */
     public void setOrder(Order order) {
         this.order = order;
     }

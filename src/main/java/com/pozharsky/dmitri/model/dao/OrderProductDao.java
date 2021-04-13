@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class OrderProductDao is used to interact with orders_product table in the database.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class OrderProductDao extends AbstractDao<OrderProduct> {
     private static final Logger logger = LogManager.getLogger(OrderProductDao.class);
     private static final String CREATE_ORDER_PRODUCT_SQL = "INSERT INTO order_products(amount_product, order_id, product_id) VALUES (?,?,?);";
@@ -23,6 +28,13 @@ public class OrderProductDao extends AbstractDao<OrderProduct> {
     private static final String FIND_ORDER_PRODUCT_BY_ID_SQL = "SELECT op.id, op.amount_product, op.product_id, op.order_id, p.product_name, p.price, p.amount, p.status, p.image, p.price*op.amount_product AS total_price FROM order_products AS op JOIN products AS p on op.product_id = p.id WHERE op.id = ?;";
     private static final String DELETE_ORDER_PRODUCT_BY_ID_SQL = "DELETE FROM order_products WHERE id = ?";
 
+    /**
+     * Create new OrderProduct object in database.
+     *
+     * @param orderProduct OrderProduct object will be created in the database.
+     * @return Not empty Optional with id of creating order if it has been created, otherwise Optional.empty().
+     * @throws DaoException if the database throws SQLException.
+     */
     public boolean create(OrderProduct orderProduct) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_ORDER_PRODUCT_SQL)) {
             Order order = orderProduct.getOrder();
@@ -38,6 +50,14 @@ public class OrderProductDao extends AbstractDao<OrderProduct> {
         }
     }
 
+    /**
+     * Find list of OrderProduct objects by user's ID and order's status.
+     *
+     * @param userId     user's id long value.
+     * @param statusType order's status object of Order.StatusType.
+     * @return List of OrderProduct objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<OrderProduct> findByUserIdAndStatus(long userId, Order.StatusType statusType) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_ORDER_PRODUCT_BY_USER_ID_AND_STATUS_SQL)) {
             preparedStatement.setLong(1, userId);
@@ -50,6 +70,13 @@ public class OrderProductDao extends AbstractDao<OrderProduct> {
         }
     }
 
+    /**
+     * Find list of OrderProduct objects by order's ID.
+     *
+     * @param orderId     order's id long value.
+     * @return List of OrderProduct objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<OrderProduct> findByOrderId(long orderId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_ORDER_PRODUCT_BY_ORDER_ID_SQL)) {
             preparedStatement.setLong(1, orderId);
@@ -61,6 +88,15 @@ public class OrderProductDao extends AbstractDao<OrderProduct> {
         }
     }
 
+    /**
+     * Update amount of products in order by order's and product's ID.
+     *
+     * @param amount    the amount.
+     * @param orderId   the order id.
+     * @param productId the product id.
+     * @return the boolean.
+     * @throws DaoException if the database throws SQLException.
+     */
     public boolean updateAmountProductByOrderIdAndProductId(int amount, long orderId, long productId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_AMOUNT_PRODUCT_BY_ORDER_ID_AND_PRODUCT_ID_SQL)) {
             preparedStatement.setInt(1, amount);

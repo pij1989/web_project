@@ -15,7 +15,7 @@ import java.util.Optional;
 /**
  * Class OrderDao is used to interact with orders table in the database.
  *
- * @author  Dmitri Pozharsky
+ * @author Dmitri Pozharsky
  */
 public class OrderDao extends AbstractDao<Order> {
     private static final Logger logger = LogManager.getLogger(OrderDao.class);
@@ -121,13 +121,13 @@ public class OrderDao extends AbstractDao<Order> {
     }
 
     /**
-     * Update status and time create by id boolean.
+     * Update order's status and creating time by id.
      *
-     * @param orderId       the order id
-     * @param localDateTime the local date time
-     * @param statusType    the status type
-     * @return the boolean
-     * @throws DaoException the dao exception
+     * @param orderId       order's id long value.
+     * @param localDateTime LocaleDateTime object of order's creating time.
+     * @param statusType    order's status object of Order.StatusType.
+     * @return boolean value is true, if updating was successfully, otherwise boolean value is false.
+     * @throws DaoException if the database throws SQLException.
      */
     public boolean updateStatusAndTimeCreateById(long orderId, LocalDateTime localDateTime, Order.StatusType statusType) throws DaoException {
         try (PreparedStatement orderPreparedStatement = connection.prepareStatement(UPDATE_ORDER_STATUS_AND_TIME_CREATE_BY_ID);
@@ -145,12 +145,12 @@ public class OrderDao extends AbstractDao<Order> {
     }
 
     /**
-     * Update status by id boolean.
+     * Update order's status by id.
      *
-     * @param orderId    the order id
-     * @param statusType the status type
-     * @return the boolean
-     * @throws DaoException the dao exception
+     * @param orderId       order's id long value.
+     * @param statusType    order's status object of Order.StatusType.
+     * @return boolean value is true, if updating was successfully, otherwise boolean value is false.
+     * @throws DaoException if the database throws SQLException.
      */
     public boolean updateStatusById(long orderId, Order.StatusType statusType) throws DaoException {
         try (PreparedStatement orderPreparedStatement = connection.prepareStatement(UPDATE_ORDER_STATUS_BY_ID);

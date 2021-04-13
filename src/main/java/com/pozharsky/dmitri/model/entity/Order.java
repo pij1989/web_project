@@ -3,12 +3,32 @@ package com.pozharsky.dmitri.model.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * The type Order.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class Order extends Entity {
 
+    /**
+     * The enum Status type.
+     */
     public enum StatusType {
+        /**
+         * New status type.
+         */
         NEW,
+        /**
+         * Processing status type.
+         */
         PROCESSING,
+        /**
+         * Delivered status type.
+         */
         DELIVERED,
+        /**
+         * Canceled status type.
+         */
         CANCELED
     }
 
@@ -18,9 +38,20 @@ public class Order extends Entity {
     private StatusType statusType;
     private long userId;
 
+    /**
+     * Instantiates a new Order.
+     */
     public Order() {
     }
 
+    /**
+     * Instantiates a new Order.
+     *
+     * @param cost         the cost
+     * @param creatingTime the creating time
+     * @param statusType   the status type
+     * @param userId       the user id
+     */
     public Order(BigDecimal cost, LocalDateTime creatingTime, StatusType statusType, long userId) {
         this.cost = cost;
         this.creatingTime = creatingTime;
@@ -28,42 +59,92 @@ public class Order extends Entity {
         this.userId = userId;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * Gets cost.
+     *
+     * @return the cost
+     */
     public BigDecimal getCost() {
         return cost;
     }
 
+    /**
+     * Sets cost.
+     *
+     * @param cost the cost
+     */
     public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
 
+    /**
+     * Gets creating time.
+     *
+     * @return the creating time
+     */
     public LocalDateTime getCreatingTime() {
         return creatingTime;
     }
 
+    /**
+     * Sets creating time.
+     *
+     * @param creatingTime the creating time
+     */
     public void setCreatingTime(LocalDateTime creatingTime) {
         this.creatingTime = creatingTime;
     }
 
+    /**
+     * Gets status type.
+     *
+     * @return the status type
+     */
     public StatusType getStatusType() {
         return statusType;
     }
 
+    /**
+     * Sets status type.
+     *
+     * @param statusType the status type
+     */
     public void setStatusType(StatusType statusType) {
         this.statusType = statusType;
     }
 
+    /**
+     * Gets user id.
+     *
+     * @return the user id
+     */
     public long getUserId() {
         return userId;
     }
 
+    /**
+     * Sets user id.
+     *
+     * @param userId the user id
+     */
     public void setUserId(long userId) {
         this.userId = userId;
     }

@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
+/**
+ * The type Product.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class Product extends Entity {
     private long id;
     private String name;
@@ -15,9 +20,24 @@ public class Product extends Entity {
     private LocalDateTime creatingTime;
     private long categoryId;
 
+    /**
+     * Instantiates a new Product.
+     */
     public Product() {
     }
 
+    /**
+     * Instantiates a new Product.
+     *
+     * @param name         the name
+     * @param price        the price
+     * @param amount       the amount
+     * @param status       the status
+     * @param description  the description
+     * @param image        the image
+     * @param creatingTime the creating time
+     * @param categoryId   the category id
+     */
     public Product(String name, BigDecimal price, int amount, boolean status, String description, byte[] image, LocalDateTime creatingTime, long categoryId) {
         this.name = name;
         this.price = price;
@@ -29,74 +49,164 @@ public class Product extends Entity {
         this.categoryId = categoryId;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets price.
+     *
+     * @return the price
+     */
     public BigDecimal getPrice() {
         return price;
     }
 
+    /**
+     * Sets price.
+     *
+     * @param price the price
+     */
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
+    /**
+     * Gets amount.
+     *
+     * @return the amount
+     */
     public int getAmount() {
         return amount;
     }
 
+    /**
+     * Sets amount.
+     *
+     * @param amount the amount
+     */
     public void setAmount(int amount) {
         this.amount = amount;
     }
 
+    /**
+     * Is status boolean.
+     *
+     * @return the boolean
+     */
     public boolean isStatus() {
         return status;
     }
 
+    /**
+     * Sets status.
+     *
+     * @param status the status
+     */
     public void setStatus(boolean status) {
         this.status = status;
     }
 
+    /**
+     * Gets description.
+     *
+     * @return the description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * Sets description.
+     *
+     * @param description the description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Get image byte [ ].
+     *
+     * @return the byte [ ]
+     */
     public byte[] getImage() {
         return image;
     }
 
+    /**
+     * Sets image.
+     *
+     * @param image the image
+     */
     public void setImage(byte[] image) {
         this.image = image;
     }
 
+    /**
+     * Gets creating time.
+     *
+     * @return the creating time
+     */
     public LocalDateTime getCreatingTime() {
         return creatingTime;
     }
 
+    /**
+     * Sets creating time.
+     *
+     * @param creatingTime the creating time
+     */
     public void setCreatingTime(LocalDateTime creatingTime) {
         this.creatingTime = creatingTime;
     }
 
+    /**
+     * Gets category id.
+     *
+     * @return the category id
+     */
     public long getCategoryId() {
         return categoryId;
     }
 
+    /**
+     * Sets category id.
+     *
+     * @param categoryId the category id
+     */
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
     }

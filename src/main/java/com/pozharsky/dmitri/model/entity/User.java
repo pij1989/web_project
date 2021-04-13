@@ -1,16 +1,45 @@
 package com.pozharsky.dmitri.model.entity;
 
+/**
+ * The type User.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class User extends Entity {
 
+    /**
+     * The enum Role type.
+     */
     public enum RoleType {
+        /**
+         * Admin role type.
+         */
         ADMIN,
+        /**
+         * User role type.
+         */
         USER,
+        /**
+         * Guest role type.
+         */
         GUEST
     }
 
+    /**
+     * The enum Status type.
+     */
     public enum StatusType {
+        /**
+         * Active status type.
+         */
         ACTIVE,
+        /**
+         * Blocked status type.
+         */
         BLOCKED,
+        /**
+         * Wait active status type.
+         */
         WAIT_ACTIVE
     }
 
@@ -22,14 +51,38 @@ public class User extends Entity {
     private RoleType roleType;
     private StatusType statusType;
 
+    /**
+     * Instantiates a new User.
+     */
     public User() {
     }
 
+    /**
+     * Instantiates a new User.
+     *
+     * @param id         the id
+     * @param firstName  the first name
+     * @param lastName   the last name
+     * @param username   the username
+     * @param email      the email
+     * @param roleType   the role type
+     * @param statusType the status type
+     */
     public User(long id, String firstName, String lastName, String username, String email, RoleType roleType, StatusType statusType) {
         this(firstName, lastName, username, email, roleType, statusType);
         this.id = id;
     }
 
+    /**
+     * Instantiates a new User.
+     *
+     * @param firstName  the first name
+     * @param lastName   the last name
+     * @param username   the username
+     * @param email      the email
+     * @param roleType   the role type
+     * @param statusType the status type
+     */
     public User(String firstName, String lastName, String username, String email, RoleType roleType, StatusType statusType) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -39,58 +92,128 @@ public class User extends Entity {
         this.statusType = statusType;
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     * Gets first name.
+     *
+     * @return the first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Sets first name.
+     *
+     * @param firstName the first name
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * Gets last name.
+     *
+     * @return the last name
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * Sets last name.
+     *
+     * @param lastName the last name
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * Gets username.
+     *
+     * @return the username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Sets username.
+     *
+     * @param username the username
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Gets email.
+     *
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Sets email.
+     *
+     * @param email the email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Gets role type.
+     *
+     * @return the role type
+     */
     public RoleType getRoleType() {
         return roleType;
     }
 
+    /**
+     * Sets role type.
+     *
+     * @param roleType the role type
+     */
     public void setRoleType(RoleType roleType) {
         this.roleType = roleType;
     }
 
+    /**
+     * Gets status type.
+     *
+     * @return the status type
+     */
     public StatusType getStatusType() {
         return statusType;
     }
 
+    /**
+     * Sets status type.
+     *
+     * @param statusType the status type
+     */
     public void setStatusType(StatusType statusType) {
         this.statusType = statusType;
     }

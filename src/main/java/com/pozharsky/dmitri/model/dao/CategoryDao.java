@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class CategoryDao is used to interact with categories table in the database.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class CategoryDao extends AbstractDao<Category> {
     private static final Logger logger = LogManager.getLogger(ProductDao.class);
     private static final String CREATE_CATEGORY_SQL = "INSERT INTO categories (category_name) VALUES (?);";
@@ -21,6 +26,13 @@ public class CategoryDao extends AbstractDao<Category> {
     private static final String FIND_ALL_CATEGORY_SQL = "SELECT id, category_name FROM categories;";
     private static final String DELETE_CATEGORY_BY_ID_SQL = "DELETE FROM categories WHERE id = ?;";
 
+    /**
+     * Create new category in database.
+     *
+     * @param category Category object will be created in the database.
+     * @return Not empty Optional with id of creating category if it has been created, otherwise Optional.empty().
+     * @throws DaoException if the database throws SQLException.
+     */
     public Optional<Long> create(Category category) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_CATEGORY_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, category.getName());
@@ -38,6 +50,13 @@ public class CategoryDao extends AbstractDao<Category> {
         }
     }
 
+    /**
+     * Find category by name.
+     *
+     * @param name String object of category's name.
+     * @return Not empty Optional entity object if it was found, Optional.empty() otherwise.
+     * @throws DaoException if the database throws SQLException.
+     */
     public Optional<Category> findCategoryByName(String name) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_CATEGORY_BY_NAME_SQL)) {
             preparedStatement.setString(1, name);

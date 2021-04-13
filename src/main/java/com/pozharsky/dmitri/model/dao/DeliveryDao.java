@@ -3,7 +3,6 @@ package com.pozharsky.dmitri.model.dao;
 import com.pozharsky.dmitri.exception.DaoException;
 import com.pozharsky.dmitri.model.entity.Address;
 import com.pozharsky.dmitri.model.entity.Delivery;
-import com.pozharsky.dmitri.model.entity.Entity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,11 +12,23 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public class DeliveryDao extends AbstractDao {
+/**
+ * Class DeliveryDao is used to interact with deliveries table in the database.
+ *
+ * @author Dmitri Pozharsky
+ */
+public class DeliveryDao extends AbstractDao<Delivery> {
     private static final Logger logger = LogManager.getLogger(DeliveryDao.class);
     private static final String CREATE_DELIVERY_SQL = "INSERT INTO deliveries (first_name, last_name, city, street, home_number, phone_number, order_id) VALUES (?,?,?,?,?,?,?);";
     private static final String FIND_DELIVERY_BY_ORDER_ID_SQL = "SELECT first_name, last_name, city, street, home_number, phone_number FROM deliveries WHERE order_id = ?;";
 
+    /**
+     * Create new delivery in database.
+     *
+     * @param delivery Delivery object will be created in the database.
+     * @return Not empty Optional with id of creating category if it has been created, otherwise Optional.empty().
+     * @throws DaoException if the database throws SQLException.
+     */
     public boolean create(Delivery delivery) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_DELIVERY_SQL)) {
             Address address = delivery.getAddress();
@@ -36,6 +47,13 @@ public class DeliveryDao extends AbstractDao {
         }
     }
 
+    /**
+     * Find delivery by order's ID.
+     *
+     * @param orderId order's id long value..
+     * @return Not empty Optional entity object if it was found, Optional.empty() otherwise.
+     * @throws DaoException if the database throws SQLException.
+     */
     public Optional<Delivery> findByOrderId(long orderId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_DELIVERY_BY_ORDER_ID_SQL)) {
             preparedStatement.setLong(1, orderId);
@@ -62,7 +80,7 @@ public class DeliveryDao extends AbstractDao {
     }
 
     @Override
-    public Optional update(Entity entity) {
+    public Optional update(Delivery entity) {
         throw new UnsupportedOperationException("Unsupported operation 'update' for DeliveryDao");
     }
 
