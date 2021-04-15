@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class ReviewDao is used to interact with reviews table in the database.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ReviewDao extends AbstractDao<Review> {
     private static final Logger logger = LogManager.getLogger(ReviewDao.class);
     private static final String CREATE_REVIEW_SQL = "INSERT INTO reviews(comment, rating, time_create, user_id, product_id) VALUES (?,?,?,?,?);";
@@ -20,6 +25,13 @@ public class ReviewDao extends AbstractDao<Review> {
     private static final String DELETE_REVIEW_BY_ID_SQL = "DELETE FROM reviews WHERE id = ?;";
 
 
+    /**
+     * Create new Review object in database.
+     *
+     * @param review Review object will be created in the database.
+     * @return Not empty Optional with id of creating review if it has been created, otherwise Optional.empty().
+     * @throws DaoException if the database throws SQLException.
+     */
     public Optional<Review> create(Review review) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_REVIEW_SQL, Statement.RETURN_GENERATED_KEYS)) {
             User user = review.getUser();
@@ -44,6 +56,13 @@ public class ReviewDao extends AbstractDao<Review> {
         }
     }
 
+    /**
+     * Find list of reviews by product's ID.
+     *
+     * @param productId product's id long value.
+     * @return List of Review objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Review> findByProductId(long productId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_REVIEW_BY_PRODUCT_ID_SQL)) {
             preparedStatement.setLong(1, productId);

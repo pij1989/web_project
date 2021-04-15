@@ -1,5 +1,10 @@
 package com.pozharsky.dmitri.validator;
 
+/**
+ * Category validator class used to check category fields values.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class CategoryValidator {
     private static final String NAME_REGEX = "[\\-\\s\\w]+";
 

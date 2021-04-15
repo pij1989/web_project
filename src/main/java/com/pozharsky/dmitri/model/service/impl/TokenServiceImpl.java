@@ -12,6 +12,11 @@ import org.apache.logging.log4j.Logger;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * TokenService implementation.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class TokenServiceImpl implements TokenService {
     private static final Logger logger = LogManager.getLogger(TokenServiceImpl.class);
     private static final TokenServiceImpl instance = new TokenServiceImpl();

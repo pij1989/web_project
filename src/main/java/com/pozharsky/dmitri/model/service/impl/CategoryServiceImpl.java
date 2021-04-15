@@ -14,6 +14,11 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * CategoryService implementation.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class CategoryServiceImpl implements CategoryService {
     private static final Logger logger = LogManager.getLogger(CategoryServiceImpl.class);
     private static final CategoryServiceImpl instance = new CategoryServiceImpl();

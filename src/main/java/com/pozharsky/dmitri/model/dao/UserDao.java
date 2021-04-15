@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class UserDao is used to interact with users table in the database.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class UserDao extends AbstractDao<User> {
     private static final Logger logger = LogManager.getLogger(UserDao.class);
     private static final String CREATE_USER_SQL = "INSERT INTO users (first_name,last_name,username,email,password,role_id,status_id) VALUES (?,?,?,?,?,?,?);";
@@ -26,6 +31,14 @@ public class UserDao extends AbstractDao<User> {
     private static final String FIND_ALL_USERS_SQL = "SELECT u.id,u.first_name,u.last_name,u.username,u.email,r.role_name,s.status_name FROM users AS u INNER JOIN roles AS r ON u.role_id = r.id INNER JOIN status AS s ON u.status_id = s.id";
     private static final String UPDATE_USER_SQL = "UPDATE users SET first_name = ?,last_name = ?,username = ?,email = ?,role_id = ?,status_id = ? WHERE id = ?";
 
+    /**
+     * Create new User object in database.
+     *
+     * @param user User object will be created in the database.
+     * @param password user password.
+     * @return Not empty Optional with id of creating user if it has been created, otherwise Optional.empty().
+     * @throws DaoException if the database throws SQLException.
+     */
     public Optional<Long> create(User user, String password) throws DaoException {
         try (PreparedStatement userPreparedStatement = connection.prepareStatement(CREATE_USER_SQL, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement rolePreparedStatement = connection.prepareStatement(FIND_ROLE_ID_BY_NAME_SQL);
@@ -43,7 +56,6 @@ public class UserDao extends AbstractDao<User> {
             ResultSet userKeys = userPreparedStatement.getGeneratedKeys();
             if (userKeys.next()) {
                 long userId = userKeys.getLong(1);
-                logger.debug("USER_ID: " + userId);
                 return Optional.of(userId);
             } else {
                 return Optional.empty();
@@ -54,6 +66,13 @@ public class UserDao extends AbstractDao<User> {
         }
     }
 
+    /**
+     * Find user by user email.
+     *
+     * @param email String object of user's email.
+     * @return Not empty Optional user object if it was found, Optional.empty() otherwise.
+     * @throws DaoException if the database throws SQLException.
+     */
     public Optional<User> findUserByEmail(String email) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_BY_EMAIL_SQL)) {
             preparedStatement.setString(1, email);
@@ -70,6 +89,13 @@ public class UserDao extends AbstractDao<User> {
         }
     }
 
+    /**
+     * Find user password by user email.
+     *
+     * @param email String object of user's email.
+     * @return String object of password.
+     * @throws DaoException if the database throws SQLException.
+     */
     public String findPasswordByEmail(String email) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PASSWORD_BY_EMAIL_SQL)) {
             String password = "";
@@ -85,6 +111,14 @@ public class UserDao extends AbstractDao<User> {
         }
     }
 
+    /**
+     * Update user status by user id.
+     *
+     * @param id     user id long value.
+     * @param status user status User.StatusType object.
+     * @return boolean value is true if user status was updated, otherwise boolean value is false.
+     * @throws DaoException if the database throws SQLException.
+     */
     public boolean updateUserStatusById(long id, User.StatusType status) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_STATUS_BY_ID_SQL);
              PreparedStatement statusPreparedStatement = connection.prepareStatement(FIND_STATUS_ID_BY_NAME_SQL)) {
@@ -99,6 +133,14 @@ public class UserDao extends AbstractDao<User> {
         }
     }
 
+    /**
+     * Update user password by email.
+     *
+     * @param email    user email.
+     * @param password user new password.
+     * @return boolean value is true if user password was updated, otherwise boolean value is false.
+     * @throws DaoException if the database throws SQLException.
+     */
     public boolean updatePasswordByEmail(String email, String password) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PASSWORD_BY_EMAIL_SQL)) {
             preparedStatement.setString(1, password);

@@ -4,6 +4,11 @@ import com.pozharsky.dmitri.controller.command.RequestParameter;
 
 import java.util.Map;
 
+/**
+ * User validator class used to check user fields values.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class UserValidator {
     private static final String EMPTY = "";
     private static final String NAME_REGEX = "[a-zA-Zа-яА-Я]+";

@@ -14,6 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class ProductDao is used to interact with products table in the database.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ProductDao extends AbstractDao<Product> {
     private static final Logger logger = LogManager.getLogger(ProductDao.class);
     private static final String PERCENT = "%";
@@ -42,6 +47,13 @@ public class ProductDao extends AbstractDao<Product> {
     private static final String DECREASE_AMOUNT_BY_ID_SQL = "UPDATE products SET amount = amount - ? WHERE id = ? AND amount >= ?";
     private static final String DELETE_PRODUCT_BY_CATEGORY_ID_SQL = "DELETE FROM products WHERE category_id = ?";
 
+    /**
+     * Create new Product object in database.
+     *
+     * @param product Product object will be created in the database.
+     * @return boolean value is true if product has been created, otherwise boolean value is false.
+     * @throws DaoException if the database throws SQLException.
+     */
     public boolean create(Product product) throws DaoException {
         try (PreparedStatement productPreparedStatement = connection.prepareStatement(CREATE_PRODUCT_SQL)) {
             productPreparedStatement.setString(1, product.getName());
@@ -60,6 +72,14 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Find list of products with limit and offset.
+     *
+     * @param limit  product's limit int value.
+     * @param offset offset int value.
+     * @return List of Product objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Product> findWithLimit(int limit, int offset) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_WITH_LIMIT_SQL)) {
             preparedStatement.setInt(1, limit);
@@ -72,6 +92,15 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Find list of products by category's ID with limit and offset.
+     *
+     * @param categoryId category's id long value.
+     * @param limit  product's limit int value.
+     * @param offset offset int value.
+     * @return List of Product objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Product> findByCategoryWithLimit(long categoryId, int limit, int offset) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CATEGORY_WITH_LIMIT_SQL)) {
             preparedStatement.setLong(1, categoryId);
@@ -85,22 +114,70 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Find list of products by category's ID and product's status with limit and offset.
+     *
+     * @param categoryId category's id long value.
+     * @param status     product's status boolean value.
+     * @param limit  product's limit int value.
+     * @param offset offset int value.
+     * @return List of Product objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Product> findByCategoryAndStatusWithLimit(long categoryId, boolean status, int limit, int offset) throws DaoException {
         return findByCategoryAndStatusWithLimit(categoryId, status, limit, offset, FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_SQL);
     }
 
+    /**
+     * Find list of products by category's ID and product's status with limit and offset sorted by price ascending.
+     *
+     * @param categoryId category's id long value.
+     * @param status     product's status boolean value.
+     * @param limit  product's limit int value.
+     * @param offset offset int value.
+     * @return List of Product objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Product> findByCategoryAndStatusWithLimitOrderByPriceAsc(long categoryId, boolean status, int limit, int offset) throws DaoException {
         return findByCategoryAndStatusWithLimit(categoryId, status, limit, offset, FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_ORDER_BY_PRICE_ASC_SQL);
     }
 
+    /**
+     * Find list of products by category's ID and product's status with limit and offset sorted by price descending.
+     *
+     * @param categoryId category's id long value.
+     * @param status     product's status boolean value.
+     * @param limit  product's limit int value.
+     * @param offset offset int value.
+     * @return List of Product objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Product> findByCategoryAndStatusWithLimitOrderByPriceDesc(long categoryId, boolean status, int limit, int offset) throws DaoException {
         return findByCategoryAndStatusWithLimit(categoryId, status, limit, offset, FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_ORDER_BY_PRICE_DESC_SQL);
     }
 
+    /**
+     * Find list of products by category's ID and product's status with limit and offset sorted by creating time
+     * descending.
+     *
+     * @param categoryId category's id long value.
+     * @param status     product's status boolean value.
+     * @param limit  product's limit int value.
+     * @param offset offset int value.
+     * @return List of Product objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Product> findByCategoryAndStatusWithLimitOrderByTimeCreateDesc(long categoryId, boolean status, int limit, int offset) throws DaoException {
         return findByCategoryAndStatusWithLimit(categoryId, status, limit, offset, FIND_PRODUCT_BY_CATEGORY_AND_STATUS_WITH_LIMIT_ORDER_BY_CREATE_TIME_DESC_SQL);
     }
 
+    /**
+     * Find list of products by category's ID.
+     *
+     * @param categoryId category's id long value.
+     * @return List of Product objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Product> findByCategory(long categoryId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CATEGORY_SQL)) {
             preparedStatement.setLong(1, categoryId);
@@ -112,6 +189,13 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Find list of products by name.
+     *
+     * @param productName name of product String object.
+     * @return List of Product objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Product> findByProductName(String productName) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_NAME_SQL)) {
             preparedStatement.setString(1, PERCENT + productName + PERCENT);
@@ -123,6 +207,14 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Find list of products by name and status.
+     *
+     * @param productName name of product String object.
+     * @param status     product's status boolean value.
+     * @return List of Product objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Product> findByProductNameAndStatus(String productName, boolean status) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_NAME_AND_STATUS_SQL)) {
             preparedStatement.setString(1, PERCENT + productName + PERCENT);
@@ -135,6 +227,14 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Find list of products by status with limit sorted by creating time descending.
+     *
+     * @param limit  product's limit int value.
+     * @param status     product's status boolean value.
+     * @return List of Product objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Product> findWithOrderByCreateTimeDescAndStatusWithLimit(int limit, boolean status) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_WITH_ORDER_BY_CREATE_TIME_DESC_AND_STATUS_WITH_LIMIT_SQL)) {
             preparedStatement.setBoolean(1, status);
@@ -147,6 +247,16 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Find list of products by category's ID and product's status filtered by price.
+     *
+     * @param categoryId category's id long value.
+     * @param status     product's status boolean value.
+     * @param priceFrom  product's price from BigDecimal object.
+     * @param priceTo    product's price to BigDecimal object.
+     * @return List of Product objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Product> findProductByCategoryIdAndStatusBetweenPrice(long categoryId, boolean status, BigDecimal priceFrom, BigDecimal priceTo) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CATEGORY_ID_AND_STATUS_BETWEEN_PRICE_SQL)) {
             preparedStatement.setLong(1, categoryId);
@@ -161,6 +271,17 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Find list of products by category's ID and product's status and amount filtered by price.
+     *
+     * @param categoryId category's id long value.
+     * @param status     product's status boolean value.
+     * @param amount     product's amount int value.
+     * @param priceFrom  product's price from BigDecimal object.
+     * @param priceTo    product's price to BigDecimal object.
+     * @return List of Product objects if it has been found, otherwise empty List object.
+     * @throws DaoException if the database throws SQLException.
+     */
     public List<Product> findProductByCategoryIdAndStatusAndAmountGtBetweenPrice(long categoryId, boolean status, int amount, BigDecimal priceFrom, BigDecimal priceTo) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_PRODUCT_BY_CATEGORY_ID_AND_STATUS_AND_AMOUNT_GT_BETWEEN_PRICE_SQL)) {
             preparedStatement.setLong(1, categoryId);
@@ -236,6 +357,13 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Increase amount by id.
+     *
+     * @param amount    the amount
+     * @param productId the product id
+     * @throws DaoException the dao exception
+     */
     public void increaseAmountById(int amount, long productId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INCREASE_AMOUNT_BY_ID_SQL)) {
             preparedStatement.setInt(1, amount);
@@ -247,6 +375,14 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Decrease amount by id boolean.
+     *
+     * @param amount    the amount
+     * @param productId the product id
+     * @return the boolean
+     * @throws DaoException the dao exception
+     */
     public boolean decreaseAmountById(int amount, long productId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(DECREASE_AMOUNT_BY_ID_SQL)) {
             preparedStatement.setInt(1, amount);
@@ -260,6 +396,12 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Count all product int.
+     *
+     * @return the int
+     * @throws DaoException the dao exception
+     */
     public int countAllProduct() throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(COUNT_ALL_PRODUCT_SQL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -271,6 +413,13 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Count product by category int.
+     *
+     * @param categoryId the category id
+     * @return the int
+     * @throws DaoException the dao exception
+     */
     public int countProductByCategory(long categoryId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(COUNT_PRODUCT_BY_CATEGORY_SQL)) {
             preparedStatement.setLong(1, categoryId);
@@ -283,6 +432,14 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Count product by category and status int.
+     *
+     * @param categoryId the category id
+     * @param status     the status
+     * @return the int
+     * @throws DaoException the dao exception
+     */
     public int countProductByCategoryAndStatus(long categoryId, boolean status) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(COUNT_PRODUCT_BY_CATEGORY_AND_STATUS_SQL)) {
             preparedStatement.setLong(1, categoryId);
@@ -296,6 +453,14 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Count product by search name and status int.
+     *
+     * @param searchProduct the search product
+     * @param status        the status
+     * @return the int
+     * @throws DaoException the dao exception
+     */
     public int countProductBySearchNameAndStatus(String searchProduct, boolean status) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(COUNT_PRODUCT_BY_SEARCH_NAME_AND_STATUS_SQL)) {
             preparedStatement.setString(1, PERCENT + searchProduct + PERCENT);
@@ -309,6 +474,13 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Max product price by category id big decimal.
+     *
+     * @param categoryId the category id
+     * @return the big decimal
+     * @throws DaoException the dao exception
+     */
     public BigDecimal maxProductPriceByCategoryId(long categoryId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(MAX_PRODUCT_PRICE_BY_CATEGORY_ID_SQL)) {
             preparedStatement.setLong(1, categoryId);
@@ -321,6 +493,13 @@ public class ProductDao extends AbstractDao<Product> {
         }
     }
 
+    /**
+     * Min product price by category id big decimal.
+     *
+     * @param categoryId the category id
+     * @return the big decimal
+     * @throws DaoException the dao exception
+     */
     public BigDecimal minProductPriceByCategoryId(long categoryId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(MIN_PRODUCT_PRICE_BY_CATEGORY_ID_SQL)) {
             preparedStatement.setLong(1, categoryId);

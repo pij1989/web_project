@@ -6,6 +6,11 @@ import com.pozharsky.dmitri.model.entity.Category;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Interface provides actions on category.
+ *
+ * @author Dmitri Pozharsky
+ */
 public interface CategoryService {
     boolean createCategory(Category category) throws ServiceException;
 

@@ -8,6 +8,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+/**
+ * Product validator class used to check product fields values.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ProductValidator {
     private static final Logger logger = LogManager.getLogger(ProductValidator.class);
     private static final String EMPTY = "";

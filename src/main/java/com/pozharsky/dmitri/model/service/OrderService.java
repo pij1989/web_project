@@ -10,6 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Interface provides actions on order.
+ *
+ * @author Dmitri Pozharsky
+ */
 public interface OrderService {
     Optional<Order> addNewOrder(long userId) throws ServiceException;
 

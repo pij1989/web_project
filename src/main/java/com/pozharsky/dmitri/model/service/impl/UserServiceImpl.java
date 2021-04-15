@@ -23,6 +23,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * UserService implementation.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class UserServiceImpl implements UserService {
     private static final Logger logger = LogManager.getLogger(UserServiceImpl.class);
     private static final int ZERO = 0;

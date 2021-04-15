@@ -20,6 +20,11 @@ import java.util.stream.Collectors;
 
 import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
+/**
+ * ProductService implementation.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ProductServiceImpl implements ProductService {
     private static final Logger logger = LogManager.getLogger(ProductServiceImpl.class);
     private static final int DEFAULT_PER_PAGE = 5;

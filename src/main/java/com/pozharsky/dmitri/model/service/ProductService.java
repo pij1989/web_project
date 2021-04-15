@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Interface provides actions on product.
+ *
+ * @author Dmitri Pozharsky
+ */
 public interface ProductService {
     boolean createProduct(Map<String, String> productForm, Part part) throws ServiceException;
 

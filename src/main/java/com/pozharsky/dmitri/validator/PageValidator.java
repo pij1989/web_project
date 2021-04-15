@@ -1,5 +1,10 @@
 package com.pozharsky.dmitri.validator;
 
+/**
+ * Page validator class used to check pagination values.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class PageValidator {
     private static final String PAGE_REGEX = "^(?!0)[0-9]{1,5}$";
 

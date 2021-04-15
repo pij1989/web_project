@@ -8,6 +8,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Interface provides actions on user.
+ *
+ * @author Dmitri Pozharsky
+ */
 public interface UserService {
     Optional<User> loginUser(String email, String password, AtomicInteger blockingCount) throws ServiceException;
 

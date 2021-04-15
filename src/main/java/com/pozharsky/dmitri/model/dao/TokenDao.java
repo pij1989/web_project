@@ -12,12 +12,25 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class TokenDao is used to interact with tokens table in the database.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class TokenDao extends AbstractDao<Token> {
     private static final Logger logger = LogManager.getLogger(TokenDao.class);
     private static final String CREATE_TOKEN_SQL = "INSERT INTO tokens (token_value, time_create, time_expire, user_id) VALUES (?,?,?,?)";
     private static final String FIND_TOKEN_BY_VALUE_SQL = "SELECT id, token_value, time_create, time_expire,user_id FROM tokens WHERE token_value = ?";
     private static final String FIND_TOKEN_BY_USER_EMAIL_SQL = "SELECT t.id,t.token_value,t.time_create,t.time_expire,t.user_id FROM tokens AS t INNER JOIN users AS u ON u.id = t.user_id WHERE u.email = ? ORDER BY time_create DESC";
 
+    /**
+     * Create new Token object in database.
+     *
+     * @param token Token object will be created in the database.
+     * @param userId user's id long value.
+     * @return boolean value is true if token has been created, otherwise boolean value is false.
+     * @throws DaoException if the database throws SQLException.
+     */
     public boolean create(Token token, long userId) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_TOKEN_SQL);) {
             preparedStatement.setString(1, token.getTokenValue());
@@ -32,6 +45,13 @@ public class TokenDao extends AbstractDao<Token> {
         }
     }
 
+    /**
+     * Find token by value.
+     *
+     * @param tokenValue String object of token's value.
+     * @return Not empty Optional token object if it was found, Optional.empty() otherwise.
+     * @throws DaoException if the database throws SQLException.
+     */
     public Optional<Token> findTokenByValue(String tokenValue) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_TOKEN_BY_VALUE_SQL)) {
             preparedStatement.setString(1, tokenValue);
@@ -48,6 +68,13 @@ public class TokenDao extends AbstractDao<Token> {
         }
     }
 
+    /**
+     * Find token by user's email.
+     *
+     * @param email String object of user's email.
+     * @return Not empty Optional token object if it was found, Optional.empty() otherwise.
+     * @throws DaoException if the database throws SQLException.
+     */
     public Optional<Token> findTokenByUserEmail(String email) throws DaoException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(FIND_TOKEN_BY_USER_EMAIL_SQL)) {
             preparedStatement.setString(1, email);

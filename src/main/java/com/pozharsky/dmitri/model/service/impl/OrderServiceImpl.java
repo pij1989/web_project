@@ -20,6 +20,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * OrderService implementation.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class OrderServiceImpl implements OrderService {
     private static final Logger logger = LogManager.getLogger(OrderServiceImpl.class);
     private static final int ZERO = 0;
@@ -86,36 +91,6 @@ public class OrderServiceImpl implements OrderService {
             transactionManager.end();
         }
     }
-
-    /* @Override
-    public boolean addNewOrder(String amountProduct, Product product, long userId) throws ServiceException {
-        TransactionManager transactionManager = new TransactionManager();
-        try {
-            boolean isAdd = false;
-            OrderDao orderDao = new OrderDao();
-            OrderProductDao orderProductDao = new OrderProductDao();
-            transactionManager.initTransaction(orderDao, orderProductDao);
-            LocalDateTime timeCreating = LocalDateTime.now();
-            int amount = Integer.parseInt(amountProduct);
-            BigDecimal cost = calculateCost(amount, product.getPrice());
-            Order order = new Order(cost, timeCreating, Order.StatusType.NEW, userId);
-            Optional<Long> optionalLong = orderDao.create(order);
-            if (optionalLong.isPresent()) {
-                long orderId = optionalLong.get();
-                order.setId(orderId);
-                OrderProduct orderProduct = new OrderProduct(amount, product, order);
-                isAdd = orderProductDao.create(orderProduct);
-            }
-            transactionManager.commit();
-            return isAdd;
-        } catch (DaoException e) {
-            logger.error(e);
-            transactionManager.rollback();
-            throw new ServiceException(e);
-        } finally {
-            transactionManager.endTransaction();
-        }
-    }*/
 
     @Override
     public Optional<Order> findNewOrder(long userId) throws ServiceException {

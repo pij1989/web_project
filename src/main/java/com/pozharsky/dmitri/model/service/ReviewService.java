@@ -8,6 +8,11 @@ import com.pozharsky.dmitri.model.entity.User;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Interface provides actions on review.
+ *
+ * @author Dmitri Pozharsky
+ */
 public interface ReviewService {
     Optional<Review> createReview(String comment, String rating, User user, Product product) throws ServiceException;
 

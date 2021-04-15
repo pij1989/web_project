@@ -8,10 +8,22 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Transaction manager is responsible for initialization, making commit or rollback and closing transaction.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class TransactionManager {
     private static final Logger logger = LogManager.getLogger(TransactionManager.class);
     private Connection connection;
 
+    /**
+     * Initialize transaction.
+     *
+     * @param dao  One dao object.
+     * @param daos Multiple dao objects.
+     * @throws DaoException if the database throws SQLException.
+     */
     public void initTransaction(AbstractDao dao, AbstractDao... daos) throws DaoException {
         if (connection == null) {
             connection = ConnectionPool.getInstance().getConnection();
@@ -28,6 +40,11 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * Setting connection to dao.
+     *
+     * @param dao Dao object.
+     */
     public void init(AbstractDao dao) {
         if (connection == null) {
             ConnectionPool connectionPool = ConnectionPool.getInstance();
@@ -36,6 +53,9 @@ public class TransactionManager {
         dao.setConnection(connection);
     }
 
+    /**
+     * Closing connection and setting autocommit is true.
+     */
     public void endTransaction() {
         if (connection != null) {
             try {
@@ -48,6 +68,9 @@ public class TransactionManager {
         connection = null;
     }
 
+    /**
+     * Closing connection.
+     */
     public void end() {
         if (connection != null) {
             try {
@@ -59,6 +82,11 @@ public class TransactionManager {
         connection = null;
     }
 
+    /**
+     * Commit transaction.
+     *
+     * @throws DaoException if the database throws SQLException.
+     */
     public void commit() throws DaoException {
         try {
             connection.commit();
@@ -68,6 +96,9 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * Rollback transaction.
+     */
     public void rollback() {
         try {
             connection.rollback();

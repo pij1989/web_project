@@ -7,6 +7,11 @@ import com.pozharsky.dmitri.model.service.EmailService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * EmailService implementation.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class EmailServiceImpl implements EmailService {
     private static final Logger logger = LogManager.getLogger(EmailServiceImpl.class);
     private static final String ACTIVATE_LINK = "http://localhost:8080/web_project_war/controller?command=activate_registration&token=";

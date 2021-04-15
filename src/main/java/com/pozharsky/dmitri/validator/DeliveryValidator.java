@@ -4,6 +4,11 @@ import java.util.Map;
 
 import static com.pozharsky.dmitri.controller.command.RequestParameter.*;
 
+/**
+ * Delivery validator class used to check delivery fields values.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class DeliveryValidator {
     private static final String EMPTY = "";
     private static final String NAME_REGEX = "[a-zA-Zа-яА-Я]+";

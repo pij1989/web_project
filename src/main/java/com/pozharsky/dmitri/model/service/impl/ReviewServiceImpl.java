@@ -15,6 +15,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * ReviewService implementation.
+ *
+ * @author Dmitri Pozharsky
+ */
 public class ReviewServiceImpl implements ReviewService {
     private static final Logger logger = LogManager.getLogger(ReviewServiceImpl.class);
     private static final ReviewServiceImpl instance = new ReviewServiceImpl();
