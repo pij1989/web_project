@@ -183,7 +183,7 @@
             constraint `order_products_orders_id_fk`
             foreign key (`order_id`) references `orders` (`id`) on delete cascade,
             constraint `order_products_products_id_fk`
-            foreign key (`product_id`) references `products` (`id`))
+            foreign key (`product_id`) references `products` (`id`) on delete cascade)
             default character set = utf8;
         </sql>
     </changeSet>
